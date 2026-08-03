@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buddy — Fractions Vocabulary</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f6fa; color: #1a1a2e; min-height: 100vh; }
+
+.header { background: #0f766e; color: #fff; padding: 18px 24px; display: flex; align-items: center; gap: 14px; }
+.header-icon { width: 44px; height: 44px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.header h1 { font-size: 20px; font-weight: 700; }
+.header p  { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+
+/* TAB BAR */
+.main-nav { background: #fff; border-bottom: 1px solid #e2e8f0; display: flex; overflow-x: auto; }
+.main-tab { padding: 13px 18px; font-size: 13px; font-weight: 600; color: #64748b; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
+.main-tab:hover  { color: #0f766e; background: #f0fdfa; }
+.main-tab.active { color: #0f766e; border-bottom-color: #0f766e; background: #f0fdfa; }
+
+.container { max-width: 820px; margin: 0 auto; padding: 24px 16px; }
+.section { display: none; } .section.on { display: block; }
+
+/* SEARCH BAR */
+.search-wrap { position: relative; margin-bottom: 20px; }
+.search-wrap input { width: 100%; padding: 11px 16px 11px 42px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 14px; font-family: inherit; color: #1a1a2e; background: #fff; outline: none; transition: border 0.15s; }
+.search-wrap input:focus { border-color: #0f766e; box-shadow: 0 0 0 3px rgba(15,118,110,0.12); }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 16px; color: #94a3b8; pointer-events: none; }
+
+/* CATEGORY FILTER */
+.cat-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.cat-btn { padding: 6px 14px; border-radius: 20px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 12px; font-weight: 600; font-family: inherit; transition: all 0.15s; }
+.cat-btn:hover  { border-color: #0f766e; color: #0f766e; }
+.cat-btn.active { background: #0f766e; color: #fff; border-color: #0f766e; }
+
+/* VOCAB GRID */
+.vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 12px; }
+@media(max-width:560px){ .vocab-grid { grid-template-columns: 1fr; } }
+
+.vocab-card {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+  padding: 14px 16px; cursor: pointer; transition: all 0.18s;
+  border-left: 4px solid #0f766e;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.vocab-card:hover { border-color: #0f766e; box-shadow: 0 2px 8px rgba(15,118,110,0.10); transform: translateY(-1px); }
+.vocab-card.cat-type    { border-left-color: #7c3aed; }
+.vocab-card.cat-op      { border-left-color: #2563eb; }
+.vocab-card.cat-compare { border-left-color: #dc2626; }
+.vocab-card.cat-process { border-left-color: #d97706; }
+.vocab-card.cat-number  { border-left-color: #059669; }
+
+.vc-top { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.vc-word { font-size: 16px; font-weight: 700; color: #1a1a2e; }
+.vc-pos  { font-size: 11px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; padding: 1px 7px; background: #f1f5f9; border-radius: 10px; }
+.vc-pron { font-size: 12px; color: #64748b; font-style: italic; }
+.vc-th   { font-size: 13px; font-weight: 700; color: #0f766e; margin-top: 2px; }
+.vc-def  { font-size: 13px; color: #374151; line-height: 1.55; }
+.vc-ex   { font-size: 12px; color: #64748b; font-style: italic; margin-top: 2px; line-height: 1.5; display: none; border-top: 1px solid #f1f5f9; padding-top: 6px; }
+.vc-ex.open { display: block; }
+.vc-ex strong { color: #0f766e; font-style: normal; }
+.vc-tag  { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px; margin-top: 4px; }
+.tag-type    { background: #f5f3ff; color: #5b21b6; }
+.tag-op      { background: #eff6ff; color: #1e40af; }
+.tag-compare { background: #fef2f2; color: #7f1d1d; }
+.tag-process { background: #fffbeb; color: #78350f; }
+.tag-number  { background: #f0fdf4; color: #14532d; }
+
+.no-result { text-align: center; padding: 40px 20px; color: #94a3b8; font-size: 15px; }
+
+/* FLASHCARD MODE */
+.flash-wrap { max-width: 500px; margin: 0 auto; }
+.flashcard {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 16px;
+  min-height: 240px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; text-align: center;
+  padding: 30px 24px; cursor: pointer; transition: all 0.3s;
+  margin-bottom: 16px; position: relative;
+}
+.flashcard:hover { box-shadow: 0 4px 16px rgba(15,118,110,0.12); }
+.flash-side { width: 100%; }
+.flash-label { font-size: 11px; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+.flash-word  { font-size: 32px; font-weight: 800; color: #1a1a2e; margin-bottom: 8px; }
+.flash-pron  { font-size: 14px; color: #64748b; font-style: italic; margin-bottom: 4px; }
+.flash-pos   { font-size: 12px; color: #94a3b8; text-transform: uppercase; }
+.flash-back  { display: none; }
+.flash-back.show { display: block; }
+.flash-th    { font-size: 22px; font-weight: 700; color: #0f766e; margin-bottom: 8px; }
+.flash-def   { font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 8px; }
+.flash-ex    { font-size: 13px; color: #64748b; font-style: italic; line-height: 1.5; }
+.flash-hint  { font-size: 12px; color: #94a3b8; position: absolute; bottom: 12px; right: 16px; }
+
+.flash-nav { display: flex; gap: 10px; align-items: center; justify-content: center; margin-bottom: 16px; }
+.flash-count { font-size: 14px; color: #64748b; font-weight: 600; }
+.btn-flash { padding: 10px 22px; border-radius: 8px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all 0.15s; }
+.btn-f-prev { background: #fff; color: #0f766e; border: 1px solid #0f766e; }
+.btn-f-prev:hover { background: #f0fdfa; }
+.btn-f-next { background: #0f766e; color: #fff; }
+.btn-f-next:hover { background: #0d6560; }
+.btn-f-shuf { background: #fff; color: #64748b; border: 1px solid #cbd5e1; padding: 10px 16px; }
+.btn-f-shuf:hover { background: #f8fafc; }
+.flash-progress { height: 6px; background: #e2e8f0; border-radius: 3px; margin-bottom: 20px; overflow: hidden; }
+.flash-pfill    { height: 100%; background: #0f766e; border-radius: 3px; transition: width 0.4s; }
+.flash-cat-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; justify-content: center; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">🤖</div>
+  <div>
+    <h1>Buddy — Fractions Vocabulary</h1>
+    <p>Grade 5 EP &nbsp;|&nbsp; Chapter 3 &nbsp;|&nbsp; 40 Key Words &amp; Terms</p>
+  </div>
+</div>
+
+<nav class="main-nav">
+  <button class="main-tab active" onclick="showMain('glossary')">📚 Glossary</button>
+  <button class="main-tab" onclick="showMain('flashcard')">🃏 Flashcards</button>
+</nav>
+
+<div class="container">
+
+<!-- ══════════ GLOSSARY ══════════ -->
+<div class="section on" id="sec-glossary">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="search-box" placeholder="Search a word..." oninput="filterCards()">
+  </div>
+  <div class="cat-bar" id="cat-bar"></div>
+  <div class="vocab-grid" id="vocab-grid"></div>
+  <div class="no-result" id="no-result" style="display:none;">No words found. Try a different search! 😊</div>
+</div>
+
+<!-- ══════════ FLASHCARDS ══════════ -->
+<div class="section" id="sec-flashcard">
+  <div class="flash-cat-filter" id="flash-cat-bar"></div>
+  <div class="flash-progress"><div class="flash-pfill" id="flash-pfill"></div></div>
+  <div class="flash-wrap">
+    <div class="flashcard" id="flashcard" onclick="flipCard()">
+      <div class="flash-side flash-front" id="flash-front"></div>
+      <div class="flash-side flash-back" id="flash-back"></div>
+      <span class="flash-hint">Tap to flip 👆</span>
+    </div>
+    <div class="flash-nav">
+      <button class="btn-flash btn-f-prev" onclick="flashNav(-1)">&larr; Prev</button>
+      <span class="flash-count" id="flash-count">1 / 40</span>
+      <button class="btn-flash btn-f-next" onclick="flashNav(1)">Next &rarr;</button>
+      <button class="btn-flash btn-f-shuf" onclick="shuffleFlash()">🔀</button>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+/* ──────────────────────────────────────
+   VOCABULARY DATA
+   cat: 'type' | 'op' | 'compare' | 'process' | 'number'
+────────────────────────────────────── */
+var VOCAB = [
+
+  /* ── TYPES OF FRACTIONS ── */
+  { word:'Fraction',       pron:'/ˈfræk.ʃən/',  pos:'noun',
+    th:'เศษส่วน',
+    def:'A number that represents a part of a whole, written as one number over another.',
+    ex:'<strong>Example:</strong> "3/4 is a fraction — it means 3 parts out of 4."',
+    cat:'type' },
+
+  { word:'Numerator',      pron:'/ˈnjuː.mər.eɪ.tər/', pos:'noun',
+    th:'ตัวเศษ',
+    def:'The top number of a fraction. It tells how many parts are taken.',
+    ex:'<strong>Example:</strong> "In 3/4, the numerator is 3."',
+    cat:'type' },
+
+  { word:'Denominator',    pron:'/dɪˈnɒm.ɪ.neɪ.tər/', pos:'noun',
+    th:'ตัวส่วน',
+    def:'The bottom number of a fraction. It tells the total number of equal parts.',
+    ex:'<strong>Example:</strong> "In 3/4, the denominator is 4."',
+    cat:'type' },
+
+  { word:'Proper fraction', pron:'/ˈprɒp.ər ˈfræk.ʃən/', pos:'noun phrase',
+    th:'เศษส่วนแท้',
+    def:'A fraction where the numerator is LESS THAN the denominator.',
+    ex:'<strong>Example:</strong> "1/2, 3/4, and 7/10 are proper fractions."',
+    cat:'type' },
+
+  { word:'Improper fraction', pron:'/ɪmˈprɒp.ər ˈfræk.ʃən/', pos:'noun phrase',
+    th:'เศษส่วนเกิน',
+    def:'A fraction where the numerator is MORE THAN or EQUAL TO the denominator.',
+    ex:'<strong>Example:</strong> "7/4, 9/9, and 15/7 are improper fractions."',
+    cat:'type' },
+
+  { word:'Mixed fraction',  pron:'/mɪkst ˈfræk.ʃən/', pos:'noun phrase',
+    th:'เศษส่วนผสม',
+    def:'A number made of a whole number AND a proper fraction together.',
+    ex:'<strong>Example:</strong> "2 3/4 is a mixed fraction — it means 2 whole and 3/4 more."',
+    cat:'type' },
+
+  { word:'Equivalent fractions', pron:'/ɪˈkwɪv.ə.lənt ˈfræk.ʃənz/', pos:'noun phrase',
+    th:'เศษส่วนที่เท่ากัน',
+    def:'Two or more fractions that have the same value even though they look different.',
+    ex:'<strong>Example:</strong> "1/2 and 2/4 and 4/8 are all equivalent fractions."',
+    cat:'type' },
+
+  /* ── NUMBER TERMS ── */
+  { word:'Whole number',    pron:'/həʊl ˈnʌm.bər/', pos:'noun phrase',
+    th:'จำนวนเต็ม',
+    def:'A complete number with no fraction part (0, 1, 2, 3 …).',
+    ex:'<strong>Example:</strong> "In 3 1/4, the whole number is 3."',
+    cat:'number' },
+
+  { word:'Quotient',        pron:'/ˈkwəʊ.ʃənt/', pos:'noun',
+    th:'ผลหาร',
+    def:'The answer you get when you divide one number by another.',
+    ex:'<strong>Example:</strong> "74 ÷ 9 = 8 remainder 2. The quotient is 8."',
+    cat:'number' },
+
+  { word:'Remainder',       pron:'/rɪˈmeɪn.dər/', pos:'noun',
+    th:'เศษ (จากการหาร)',
+    def:'The number left over after dividing.',
+    ex:'<strong>Example:</strong> "74 ÷ 9 = 8 remainder 2. The remainder is 2."',
+    cat:'number' },
+
+  { word:'Dividend',        pron:'/ˈdɪv.ɪ.dend/', pos:'noun',
+    th:'ตัวตั้ง (ในการหาร)',
+    def:'The number being divided. In a fraction, it is the numerator.',
+    ex:'<strong>Example:</strong> "In 74 ÷ 9, the dividend is 74."',
+    cat:'number' },
+
+  { word:'Divisor',         pron:'/dɪˈvaɪ.zər/', pos:'noun',
+    th:'ตัวหาร',
+    def:'The number you divide by. In a fraction, it is the denominator.',
+    ex:'<strong>Example:</strong> "In 74 ÷ 9, the divisor is 9."',
+    cat:'number' },
+
+  { word:'LCM',             pron:'/el siː em/', pos:'abbreviation',
+    th:'ค.ร.น. (ตัวคูณร่วมน้อย)',
+    def:'Least Common Multiple — the smallest number that two or more numbers can divide into evenly. Used to find a common denominator.',
+    ex:'<strong>Example:</strong> "The LCM of 4 and 6 is 12."',
+    cat:'number' },
+
+  { word:'GCF',             pron:'/dʒiː siː ef/', pos:'abbreviation',
+    th:'ห.ร.ม. (ตัวหารร่วมมาก)',
+    def:'Greatest Common Factor — the largest number that divides into two or more numbers evenly. Used to simplify fractions.',
+    ex:'<strong>Example:</strong> "The GCF of 24 and 64 is 8."',
+    cat:'number' },
+
+  { word:'Common denominator', pron:'/ˈkɒm.ən dɪˈnɒm.ɪ.neɪ.tər/', pos:'noun phrase',
+    th:'ตัวส่วนร่วม',
+    def:'A shared denominator that two or more fractions can use, found by using the LCM.',
+    ex:'<strong>Example:</strong> "To add 1/4 and 1/6, we find the common denominator 12."',
+    cat:'number' },
+
+  { word:'Placeholder',     pron:'/ˈpleɪs.həʊl.dər/', pos:'noun',
+    th:'ตัวกำหนดตำแหน่ง (เลข 0)',
+    def:'The digit zero (0) used to show that a place has no value.',
+    ex:'<strong>Example:</strong> "In 305, the zero is a placeholder for the tens place."',
+    cat:'number' },
+
+  /* ── OPERATIONS ── */
+  { word:'Add / Addition',  pron:'/æd / əˈdɪʃ.ən/', pos:'verb / noun',
+    th:'บวก / การบวก',
+    def:'To combine two or more numbers together to find a total.',
+    ex:'<strong>Example:</strong> "3/8 + 1/8 = 4/8. We add the numerators and keep the denominator."',
+    cat:'op' },
+
+  { word:'Subtract / Subtraction', pron:'/səbˈtrækt / səbˈtræk.ʃən/', pos:'verb / noun',
+    th:'ลบ / การลบ',
+    def:'To take one number away from another.',
+    ex:'<strong>Example:</strong> "7/9 − 4/9 = 3/9. We subtract the numerators."',
+    cat:'op' },
+
+  { word:'Multiply / Multiplication', pron:'/ˈmʌl.tɪ.plaɪ / ˌmʌl.tɪ.plɪˈkeɪ.ʃən/', pos:'verb / noun',
+    th:'คูณ / การคูณ',
+    def:'To add a number to itself a certain number of times.',
+    ex:'<strong>Example:</strong> "1/5 × 2/3 = 2/15. Multiply numerator × numerator and denominator × denominator."',
+    cat:'op' },
+
+  { word:'Divide / Division', pron:'/dɪˈvaɪd / dɪˈvɪʒ.ən/', pos:'verb / noun',
+    th:'หาร / การหาร',
+    def:'To split a number into equal parts.',
+    ex:'<strong>Example:</strong> "1/5 ÷ 2/5 = 1/2. Keep → Change → Flip, then multiply."',
+    cat:'op' },
+
+  /* ── PROCESS WORDS ── */
+  { word:'Simplify',        pron:'/ˈsɪm.plɪ.faɪ/', pos:'verb',
+    th:'ทำให้อยู่ในรูปอย่างต่ำ',
+    def:'To reduce a fraction to its lowest form by dividing both numerator and denominator by their GCF.',
+    ex:'<strong>Example:</strong> "Simplify 6/9 → divide by 3 → 2/3."',
+    cat:'process' },
+
+  { word:'Simplest form',   pron:'/ˈsɪm.pləst fɔːm/', pos:'noun phrase',
+    th:'รูปอย่างต่ำ',
+    def:'A fraction where no number greater than 1 can divide both the numerator and denominator.',
+    ex:'<strong>Example:</strong> "3/5 is in its simplest form because GCF of 3 and 5 is 1."',
+    cat:'process' },
+
+  { word:'Convert',         pron:'/kənˈvɜːt/', pos:'verb',
+    th:'แปลงรูป',
+    def:'To change a fraction from one form to another (e.g. improper to mixed, or mixed to improper).',
+    ex:'<strong>Example:</strong> "Convert 74/9 to a mixed fraction: 8 2/9."',
+    cat:'process' },
+
+  { word:'Cancel',          pron:'/ˈkæn.səl/', pos:'verb',
+    th:'ตัดทอน (ก่อนคูณ)',
+    def:'To divide a numerator and a denominator by the same number before multiplying, to make the calculation easier.',
+    ex:'<strong>Example:</strong> "In 4/6 × 3/8, cancel 4 and 8 by 4, and 3 and 6 by 3."',
+    cat:'process' },
+
+  { word:'Borrow',          pron:'/ˈbɒr.əʊ/', pos:'verb',
+    th:'ยืม (จากเลขหน้า)',
+    def:'In subtraction, to take 1 from the whole number and change it into a fraction to help subtract.',
+    ex:'<strong>Example:</strong> "5 2/9 − 2 6/9: borrow 1 from 5 → 4 11/9 − 2 6/9 = 2 5/9."',
+    cat:'process' },
+
+  { word:'Reciprocal',      pron:'/rɪˈsɪp.rə.kəl/', pos:'noun / adjective',
+    th:'ส่วนกลับ',
+    def:'The number you get when you flip a fraction upside down (swap numerator and denominator).',
+    ex:'<strong>Example:</strong> "The reciprocal of 3/4 is 4/3. The reciprocal of 8 is 1/8."',
+    cat:'process' },
+
+  { word:'Cross multiply',  pron:'/krɒs ˈmʌl.tɪ.plaɪ/', pos:'verb phrase',
+    th:'คูณไขว้',
+    def:'To multiply the numerator of one fraction by the denominator of the other, used to compare fractions.',
+    ex:'<strong>Example:</strong> "Compare 3/4 and 2/5: 3×5=15, 2×4=8. 15>8, so 3/4 > 2/5."',
+    cat:'process' },
+
+  { word:'Keep, Change, Flip', pron:'/kiːp tʃeɪndʒ flɪp/', pos:'phrase',
+    th:'เก็บ, เปลี่ยน, กลับ',
+    def:'The three steps for dividing fractions: Keep the first fraction, Change ÷ to ×, Flip the second fraction.',
+    ex:'<strong>Example:</strong> "1/5 ÷ 2/5 → Keep 1/5, Change to ×, Flip 2/5 to 5/2 → 1/5 × 5/2 = 1/2."',
+    cat:'process' },
+
+  { word:'Find the LCM',    pron:'/faɪnd ðə el siː em/', pos:'verb phrase',
+    th:'หา ค.ร.น.',
+    def:'To find the smallest number that all denominators can divide into evenly, so fractions can have the same denominator.',
+    ex:'<strong>Example:</strong> "To add 1/4 and 1/6, find the LCM of 4 and 6 = 12."',
+    cat:'process' },
+
+  { word:'Arrange',         pron:'/əˈreɪndʒ/', pos:'verb',
+    th:'จัดเรียง',
+    def:'To put numbers or fractions in a specific order.',
+    ex:'<strong>Example:</strong> "Arrange 3/10, 7/10, 1/10 in ascending order: 1/10, 3/10, 7/10."',
+    cat:'process' },
+
+  /* ── COMPARISON WORDS ── */
+  { word:'Compare',         pron:'/kəmˈpeər/', pos:'verb',
+    th:'เปรียบเทียบ',
+    def:'To look at two or more fractions and decide which is bigger, smaller, or equal.',
+    ex:'<strong>Example:</strong> "Compare 3/5 and 4/5. Since 3 < 4, we know 3/5 < 4/5."',
+    cat:'compare' },
+
+  { word:'Greater than',    pron:'/ˈɡreɪ.tər ðæn/', pos:'phrase',
+    th:'มากกว่า',
+    def:'Bigger in value. Written with the symbol >.',
+    ex:'<strong>Example:</strong> "7/10 > 5/10 — seven tenths is greater than five tenths."',
+    cat:'compare' },
+
+  { word:'Less than',       pron:'/les ðæn/', pos:'phrase',
+    th:'น้อยกว่า',
+    def:'Smaller in value. Written with the symbol <.',
+    ex:'<strong>Example:</strong> "4/15 < 4/11 — because a bigger denominator means a smaller fraction."',
+    cat:'compare' },
+
+  { word:'Equal to',        pron:'/ˈiː.kwəl tuː/', pos:'phrase',
+    th:'เท่ากับ',
+    def:'Having exactly the same value. Written with the symbol =.',
+    ex:'<strong>Example:</strong> "1/2 = 2/4 = 3/6. They are all equal to one half."',
+    cat:'compare' },
+
+  { word:'Ascending order', pron:'/əˈsend.ɪŋ ˈɔː.dər/', pos:'noun phrase',
+    th:'การเรียงลำดับจากน้อยไปมาก',
+    def:'Arranging numbers from the smallest to the largest value.',
+    ex:'<strong>Example:</strong> "Ascending order: 1/10, 7/10, 9/10 (smallest first)."',
+    cat:'compare' },
+
+  { word:'Descending order', pron:'/dɪˈsend.ɪŋ ˈɔː.dər/', pos:'noun phrase',
+    th:'การเรียงลำดับจากมากไปน้อย',
+    def:'Arranging numbers from the largest to the smallest value.',
+    ex:'<strong>Example:</strong> "Descending order: 9/10, 7/10, 1/10 (biggest first)."',
+    cat:'compare' },
+
+  { word:'Lowest term',     pron:'/ˈləʊ.ɪst tɜːm/', pos:'noun phrase',
+    th:'รูปอย่างต่ำ (รูปที่ลดแล้ว)',
+    def:'The simplest form of a fraction where the GCF of numerator and denominator is 1.',
+    ex:'<strong>Example:</strong> "6/8 in its lowest term is 3/4."',
+    cat:'compare' },
+
+  { word:'Difference',      pron:'/ˈdɪf.ər.əns/', pos:'noun',
+    th:'ผลต่าง (คำตอบของการลบ)',
+    def:'The result of a subtraction problem.',
+    ex:'<strong>Example:</strong> "11/13 − 6/13 = 5/13. The difference is 5/13."',
+    cat:'compare' },
+
+  /* ── EXTRA USEFUL ── */
+  { word:'Sum',             pron:'/sʌm/', pos:'noun',
+    th:'ผลรวม (คำตอบของการบวก)',
+    def:'The result of an addition problem.',
+    ex:'<strong>Example:</strong> "3/4 + 1/4 = 1. The sum is 1."',
+    cat:'op' },
+
+  { word:'Product',         pron:'/ˈprɒd.ʌkt/', pos:'noun',
+    th:'ผลคูณ',
+    def:'The result of a multiplication problem.',
+    ex:'<strong>Example:</strong> "1/5 × 2/3 = 2/15. The product is 2/15."',
+    cat:'op' },
+
+  { word:'Brackets',        pron:'/ˈbræk.ɪts/', pos:'noun (plural)',
+    th:'วงเล็บ',
+    def:'The symbols ( ) used in combined operations to show which calculation must be done first.',
+    ex:'<strong>Example:</strong> "(3/5 + 4/10) × 1/2 — solve the brackets first: 3/5 + 4/10 = 1."',
+    cat:'process' },
+
+  { word:'Opposite',        pron:'/ˈɒp.ə.zɪt/', pos:'adjective / noun',
+    th:'ตรงข้าม',
+    def:'In cross multiplication, the denominator "opposite" to a numerator means the one across from it.',
+    ex:'<strong>Example:</strong> "Multiply 3 by the opposite denominator 5: 3 × 5 = 15."',
+    cat:'process' },
+];
+
+/* ──────────────────────────────────────
+   CATEGORIES
+────────────────────────────────────── */
+var CATS = [
+  { key:'all',     label:'All Words',   cls:'' },
+  { key:'type',    label:'Types of Fractions', cls:'cat-type' },
+  { key:'number',  label:'Number Terms', cls:'cat-number' },
+  { key:'op',      label:'Operations',  cls:'cat-op' },
+  { key:'process', label:'Process Words', cls:'cat-process' },
+  { key:'compare', label:'Comparing & Ordering', cls:'cat-compare' },
+];
+
+var activeCat    = 'all';
+var searchQuery  = '';
+var openCards    = {};
+
+/* ──────────────────────────────────────
+   GLOSSARY
+────────────────────────────────────── */
+function initGlossary() {
+  var bar = document.getElementById('cat-bar');
+  bar.innerHTML = '';
+  CATS.forEach(function(c) {
+    var b = document.createElement('button');
+    b.className = 'cat-btn' + (c.key === activeCat ? ' active' : '');
+    b.textContent = c.label;
+    b.addEventListener('click', function() { activeCat = c.key; filterCards(); updateCatBtns(); });
+    bar.appendChild(b);
+  });
+  renderCards();
+}
+
+function updateCatBtns() {
+  document.querySelectorAll('.cat-btn').forEach(function(b, i) {
+    b.classList.toggle('active', CATS[i].key === activeCat);
+  });
+}
+
+function filterCards() {
+  searchQuery = document.getElementById('search-box').value.toLowerCase();
+  renderCards();
+}
+
+function renderCards() {
+  var filtered = VOCAB.filter(function(v) {
+    var matchCat    = activeCat === 'all' || v.cat === activeCat;
+    var matchSearch = !searchQuery ||
+      v.word.toLowerCase().includes(searchQuery) ||
+      v.th.toLowerCase().includes(searchQuery) ||
+      v.def.toLowerCase().includes(searchQuery);
+    return matchCat && matchSearch;
+  });
+
+  var grid = document.getElementById('vocab-grid');
+  var noR  = document.getElementById('no-result');
+
+  if (!filtered.length) {
+    grid.innerHTML = '';
+    noR.style.display = 'block';
+    return;
+  }
+  noR.style.display = 'none';
+
+  var catMap = { type:'cat-type', op:'cat-op', compare:'cat-compare', process:'cat-process', number:'cat-number' };
+  var tagMap = { type:'tag-type', op:'tag-op', compare:'tag-compare', process:'tag-process', number:'tag-number' };
+  var tagLabel = { type:'Type', op:'Operation', compare:'Comparison', process:'Process', number:'Number' };
+
+  grid.innerHTML = filtered.map(function(v, i) {
+    var exOpen = openCards[v.word] ? ' open' : '';
+    return '<div class="vocab-card ' + (catMap[v.cat] || '') + '" onclick="toggleEx(this,\'' + v.word.replace(/'/g,"\\'") + '\')">'
+      + '<div class="vc-top">'
+      + '<span class="vc-word">' + v.word + '</span>'
+      + '<span class="vc-pos">' + v.pos + '</span>'
+      + '</div>'
+      + '<div class="vc-pron">' + v.pron + '</div>'
+      + '<div class="vc-th">' + v.th + '</div>'
+      + '<div class="vc-def">' + v.def + '</div>'
+      + '<span class="vc-tag ' + (tagMap[v.cat] || '') + '">' + (tagLabel[v.cat] || '') + '</span>'
+      + '<div class="vc-ex' + exOpen + '">' + v.ex + '</div>'
+      + '</div>';
+  }).join('');
+}
+
+function toggleEx(card, word) {
+  var ex = card.querySelector('.vc-ex');
+  if (ex) {
+    var isOpen = ex.classList.toggle('open');
+    openCards[word] = isOpen;
+  }
+}
+
+/* ──────────────────────────────────────
+   FLASHCARDS
+────────────────────────────────────── */
+var flashList  = VOCAB.slice();
+var flashIdx   = 0;
+var flashFlipped = false;
+var flashCat   = 'all';
+
+function initFlashCatBar() {
+  var bar = document.getElementById('flash-cat-bar');
+  bar.innerHTML = '';
+  CATS.forEach(function(c) {
+    var b = document.createElement('button');
+    b.className = 'cat-btn' + (c.key === flashCat ? ' active' : '');
+    b.textContent = c.label;
+    b.addEventListener('click', function() {
+      flashCat = c.key;
+      document.querySelectorAll('#flash-cat-bar .cat-btn').forEach(function(x, i) {
+        x.classList.toggle('active', CATS[i].key === flashCat);
+      });
+      rebuildFlash();
+    });
+    bar.appendChild(b);
+  });
+}
+
+function rebuildFlash() {
+  flashList = VOCAB.filter(function(v) { return flashCat === 'all' || v.cat === flashCat; });
+  flashIdx  = 0; flashFlipped = false;
+  renderFlash();
+}
+
+function shuffleFlash() {
+  for (var i = flashList.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = flashList[i]; flashList[i] = flashList[j]; flashList[j] = tmp;
+  }
+  flashIdx = 0; flashFlipped = false;
+  renderFlash();
+}
+
+function flashNav(dir) {
+  flashIdx = (flashIdx + dir + flashList.length) % flashList.length;
+  flashFlipped = false;
+  renderFlash();
+}
+
+function flipCard() {
+  flashFlipped = !flashFlipped;
+  var front = document.getElementById('flash-front');
+  var back  = document.getElementById('flash-back');
+  front.style.display = flashFlipped ? 'none' : 'block';
+  back.classList.toggle('show', flashFlipped);
+  document.getElementById('flashcard').style.background = flashFlipped ? '#f0fdfa' : '#fff';
+}
+
+function renderFlash() {
+  if (!flashList.length) return;
+  var v    = flashList[flashIdx];
+  var pct  = Math.round((flashIdx + 1) / flashList.length * 100);
+  document.getElementById('flash-pfill').style.width = pct + '%';
+  document.getElementById('flash-count').textContent = (flashIdx+1) + ' / ' + flashList.length;
+
+  document.getElementById('flash-front').innerHTML =
+    '<div class="flash-label">What does this word mean?</div>'
+    + '<div class="flash-word">' + v.word + '</div>'
+    + '<div class="flash-pron">' + v.pron + '</div>'
+    + '<div class="flash-pos">' + v.pos + '</div>';
+
+  var back = document.getElementById('flash-back');
+  back.classList.remove('show');
+  back.innerHTML =
+    '<div class="flash-label">Answer</div>'
+    + '<div class="flash-th">' + v.th + '</div>'
+    + '<div class="flash-def">' + v.def + '</div>'
+    + '<div class="flash-ex">' + v.ex + '</div>';
+
+  document.getElementById('flash-front').style.display = 'block';
+  document.getElementById('flashcard').style.background = '#fff';
+  flashFlipped = false;
+}
+
+/* ──────────────────────────────────────
+   MAIN NAV
+────────────────────────────────────── */
+var glossaryInited = false, flashInited = false;
+
+function showMain(id) {
+  ['glossary','flashcard'].forEach(function(s) {
+    document.getElementById('sec-' + s).classList.toggle('on', s === id);
+  });
+  document.querySelectorAll('.main-tab').forEach(function(t, i) {
+    t.classList.toggle('active', ['glossary','flashcard'][i] === id);
+  });
+  if (id === 'glossary' && !glossaryInited) { glossaryInited = true; initGlossary(); }
+  if (id === 'flashcard' && !flashInited) {
+    flashInited = true;
+    initFlashCatBar();
+    rebuildFlash();
+  }
+}
+
+/* init */
+initGlossary();
+</script>
+</body>
+</html>

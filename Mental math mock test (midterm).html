@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buddy — Mental Math Mock Test</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f6fa; color: #1a1a2e; min-height: 100vh; }
+
+/* FRACTION CSS */
+.frac { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; vertical-align: middle; margin: 0 2px; line-height: 1.1; }
+.frac .fn { display: block; text-align: center; padding: 0 3px; font-size: 0.80em; }
+.frac .fl { display: block; width: 100%; border-top: 1.5px solid currentColor; }
+.frac .fd { display: block; text-align: center; padding: 0 3px; font-size: 0.80em; }
+
+/* HEADER */
+.header { background: linear-gradient(135deg,#1e40af,#7c3aed); color:#fff; padding:18px 24px; display:flex; align-items:center; gap:14px; }
+.header-icon { width:48px; height:48px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:24px; flex-shrink:0; }
+.header h1 { font-size:20px; font-weight:700; }
+.header p  { font-size:13px; opacity:.85; margin-top:2px; }
+
+/* CONTAINER */
+.container { max-width:720px; margin:0 auto; padding:24px 16px; }
+
+/* INTRO CARD */
+.intro-card { background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:28px 24px; text-align:center; margin-bottom:20px; }
+.intro-card h2 { font-size:20px; font-weight:800; color:#1e40af; margin-bottom:8px; }
+.intro-card p  { font-size:14px; color:#64748b; line-height:1.7; margin-bottom:6px; }
+.info-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin:16px 0; }
+.info-chip { background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; border-radius:20px; padding:6px 16px; font-size:13px; font-weight:700; }
+.info-chip.purple { background:#f5f3ff; color:#5b21b6; border-color:#ddd6fe; }
+.info-chip.green  { background:#f0fdf4; color:#15803d; border-color:#86efac; }
+.btn-start { padding:14px 40px; background:linear-gradient(135deg,#1e40af,#7c3aed); color:#fff; border:none; border-radius:10px; font-size:16px; font-weight:800; cursor:pointer; font-family:inherit; transition:all .2s; letter-spacing:.3px; }
+.btn-start:hover { opacity:.9; transform:translateY(-1px); }
+
+/* COUNTDOWN */
+.countdown-wrap { display:none; text-align:center; padding:40px 20px; }
+.countdown-num { font-size:120px; font-weight:900; color:#1e40af; line-height:1; animation:pop .6s ease; }
+.countdown-label { font-size:18px; color:#64748b; margin-top:8px; }
+@keyframes pop { 0%{transform:scale(1.4);opacity:0} 100%{transform:scale(1);opacity:1} }
+
+/* TIMER BAR */
+.timer-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.timer-label { font-size:13px; color:#64748b; }
+.timer-box { font-size:22px; font-weight:800; color:#1e40af; background:#eff6ff; border:2px solid #bfdbfe; border-radius:8px; padding:4px 16px; min-width:80px; text-align:center; transition:color .3s, border-color .3s; }
+.timer-box.warn  { color:#d97706; border-color:#fcd34d; background:#fffbeb; }
+.timer-box.danger { color:#dc2626; border-color:#f87171; background:#fef2f2; animation:pulse .5s infinite alternate; }
+@keyframes pulse { from{transform:scale(1)} to{transform:scale(1.04)} }
+.score-box { font-size:14px; font-weight:700; color:#5b21b6; background:#f5f3ff; border:1px solid #ddd6fe; border-radius:8px; padding:4px 14px; }
+
+/* PROGRESS */
+.pbar  { height:8px; background:#e2e8f0; border-radius:4px; margin-bottom:6px; overflow:hidden; }
+.pfill { height:100%; background:linear-gradient(90deg,#1e40af,#7c3aed); border-radius:4px; transition:width .4s; }
+.qdots { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:16px; }
+.qdot { width:24px; height:24px; border-radius:50%; border:2px solid #cbd5e1; background:#fff; font-size:10px; font-weight:700; color:#94a3b8; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .15s; flex-shrink:0; }
+.qdot:hover   { border-color:#1e40af; }
+.qdot.current { background:linear-gradient(135deg,#1e40af,#7c3aed); border-color:#1e40af; color:#fff; }
+.qdot.done-ok { background:#bbf7d0; border-color:#4ade80; color:#15803d; }
+.qdot.done-no { background:#fecaca; border-color:#f87171; color:#dc2626; }
+
+/* SECTION LABEL */
+.sec-label { display:inline-block; font-size:11px; font-weight:700; padding:3px 12px; border-radius:20px; margin-bottom:10px; letter-spacing:.5px; text-transform:uppercase; }
+.sec-wn { background:#eff6ff; color:#1e40af; }
+.sec-fr { background:#f5f3ff; color:#5b21b6; }
+.sec-op { background:#f0fdf4; color:#15803d; }
+
+/* QUESTION CARD */
+.qcard { background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:22px 20px; margin-bottom:14px; }
+.qtext { font-size:20px; font-weight:700; color:#1a1a2e; margin-bottom:16px; line-height:2.2; text-align:center; }
+
+/* CHOICES */
+.choices { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media(max-width:480px){ .choices { grid-template-columns:1fr; } }
+.choice { padding:13px 16px; border:1.5px solid #cbd5e1; border-radius:10px; background:#fff; cursor:pointer; font-size:15px; font-weight:600; color:#1a1a2e; text-align:center; transition:all .15s; font-family:inherit; line-height:2; }
+.choice:hover:not(:disabled) { border-color:#1e40af; background:#eff6ff; }
+.choice .lbl { font-size:11px; font-weight:700; color:#94a3b8; display:block; }
+.choice.correct   { background:#f0fdf4; border-color:#4ade80; color:#14532d; }
+.choice.wrong     { background:#fef2f2; border-color:#f87171; color:#7f1d1d; }
+.choice.reveal-ok { background:#f0fdf4; border-color:#4ade80; color:#14532d; }
+.choice:disabled  { cursor:default; }
+
+/* FEEDBACK */
+.fb { border-radius:8px; padding:11px 14px; margin-top:12px; font-size:13px; font-weight:600; display:none; line-height:1.6; }
+.fb.show { display:block; }
+.fb.good { background:#f0fdf4; color:#14532d; border:1px solid #86efac; }
+.fb.bad  { background:#fef2f2; color:#7f1d1d; border:1px solid #f87171; }
+
+/* NAV */
+.nav-row { display:flex; gap:8px; margin-top:12px; }
+.btn-prev   { flex:1; padding:11px; background:#fff; color:#1e40af; border:1.5px solid #1e40af; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; }
+.btn-prev:hover { background:#eff6ff; }
+.btn-prev:disabled { opacity:.35; cursor:default; }
+.btn-next   { flex:2; padding:11px; background:linear-gradient(135deg,#1e40af,#7c3aed); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; }
+.btn-next:hover { opacity:.9; }
+.btn-next:disabled { opacity:.4; cursor:default; }
+.btn-submit { flex:2; padding:11px; background:#15803d; color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; }
+.btn-submit:hover { background:#166534; }
+
+/* RESULT */
+.result-card { background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:32px 20px; text-align:center; }
+.result-emoji { font-size:48px; margin-bottom:10px; }
+.result-name  { font-size:14px; color:#64748b; margin-bottom:4px; }
+.result-score { font-size:56px; font-weight:900; background:linear-gradient(135deg,#1e40af,#7c3aed); -webkit-background-clip:text; -webkit-text-fill-color:transparent; line-height:1; }
+.result-of    { font-size:14px; color:#64748b; margin:4px 0 6px; }
+.result-pct   { font-size:22px; font-weight:800; color:#1e40af; margin-bottom:8px; }
+.result-grade { display:inline-block; font-size:18px; font-weight:800; padding:6px 22px; border-radius:24px; margin-bottom:16px; }
+.grade-a  { background:#f0fdf4; color:#15803d; border:2px solid #4ade80; }
+.grade-b  { background:#eff6ff; color:#1e40af; border:2px solid #60a5fa; }
+.grade-c  { background:#fffbeb; color:#b45309; border:2px solid #fcd34d; }
+.grade-d  { background:#fef2f2; color:#dc2626; border:2px solid #f87171; }
+.result-msg { font-size:15px; color:#374151; margin-bottom:20px; font-weight:500; }
+.section-scores { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin:16px 0 20px; }
+.ss-card { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px 8px; text-align:center; }
+.ss-title { font-size:11px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; }
+.ss-score { font-size:20px; font-weight:800; color:#1e40af; }
+.ss-of    { font-size:11px; color:#94a3b8; }
+.btn-restart  { padding:11px 24px; background:linear-gradient(135deg,#1e40af,#7c3aed); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; margin:4px; }
+.btn-secondary { padding:11px 24px; background:#fff; color:#374151; border:1px solid #cbd5e1; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; margin:4px; }
+.breakdown { margin-top:20px; text-align:left; }
+.bd-title { font-size:12px; font-weight:700; color:#64748b; margin-bottom:8px; text-transform:uppercase; letter-spacing:.4px; }
+.bd-row { display:flex; align-items:flex-start; gap:8px; padding:6px 0; border-bottom:1px solid #f1f5f9; font-size:13px; }
+.bd-row:last-child { border-bottom:none; }
+.bd-num { font-weight:700; color:#94a3b8; min-width:26px; flex-shrink:0; }
+.bd-q   { flex:1; color:#374151; line-height:1.5; }
+.bd-ok  { font-weight:700; color:#15803d; flex-shrink:0; }
+.bd-no  { font-weight:700; color:#dc2626; flex-shrink:0; }
+.bd-sk  { font-weight:700; color:#94a3b8; flex-shrink:0; }
+.bd-sec { font-size:10px; font-weight:700; padding:1px 7px; border-radius:10px; flex-shrink:0; }
+.bd-wn  { background:#eff6ff; color:#1e40af; }
+.bd-fr  { background:#f5f3ff; color:#5b21b6; }
+.bd-op  { background:#f0fdf4; color:#15803d; }
+
+/* hidden */
+.hidden { display:none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">🧠</div>
+  <div>
+    <h1>Buddy — Mental Math Mock Test</h1>
+    <p>Grade 5 EP &nbsp;|&nbsp; Whole Numbers · Fractions · Four Operations &nbsp;|&nbsp; Midterm Preparation</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- INTRO -->
+  <div id="intro-wrap">
+    <div class="intro-card">
+      <h2>🧠 Mental Math Mock Test</h2>
+      <p>This test covers three topics from your midterm exam.</p>
+      <p>Read each question carefully and choose the best answer!</p>
+      <div class="info-row">
+        <span class="info-chip">📝 30 Questions</span>
+        <span class="info-chip purple">⏱ 20 Minutes</span>
+        <span class="info-chip green">🎯 Multiple Choice</span>
+      </div>
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:14px 18px;margin:14px 0;text-align:left;font-size:13px;color:#374151;line-height:1.9;">
+        <strong>📚 Topics covered:</strong><br>
+        🔵 Part 1 — Whole Numbers (Q1–10): place value, comparing, ordering, rounding<br>
+        🟣 Part 2 — Fractions (Q11–20): types, simplifying, comparing, operations<br>
+        🟢 Part 3 — Four Operations (Q21–30): +, −, ×, ÷ with whole numbers
+      </div>
+      <p style="font-size:13px;color:#94a3b8;">⏳ The timer starts when you press Begin!</p>
+      <br>
+      <button class="btn-start" onclick="beginCountdown()">Begin Test &rarr;</button>
+    </div>
+  </div>
+
+  <!-- COUNTDOWN -->
+  <div class="countdown-wrap" id="countdown-wrap">
+    <div class="countdown-num" id="countdown-num">3</div>
+    <div class="countdown-label">Get ready!</div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="hidden" id="quiz-wrap">
+    <div class="timer-row">
+      <span class="timer-label">⏱ Time remaining</span>
+      <span class="timer-box" id="timer-box">20:00</span>
+      <span class="score-box" id="score-box">Score: 0</span>
+    </div>
+    <div class="pbar"><div class="pfill" id="pfill"></div></div>
+    <div class="qdots" id="qdots"></div>
+    <div id="qcard-wrap"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="hidden" id="result-wrap"></div>
+
+</div><!-- container -->
+
+<script>
+/* ─────────────────────────────────────────
+   FRACTION HELPER
+───────────────────────────────────────── */
+function f(str) {
+  return str.replace(/(\d+)\s+(\d+)\/(\d+)/g, function(_,w,n,d){
+    return w+'<span class="frac"><span class="fn">'+n+'</span><span class="fl"></span><span class="fd">'+d+'</span></span>';
+  }).replace(/(\d+)\/(\d+)/g, function(_,n,d){
+    return '<span class="frac"><span class="fn">'+n+'</span><span class="fl"></span><span class="fd">'+d+'</span></span>';
+  });
+}
+
+/* ─────────────────────────────────────────
+   QUESTION BANK  — 30 questions
+   sec: 'wn' | 'fr' | 'op'
+───────────────────────────────────────── */
+var QBANK = [
+
+  /* ── PART 1: WHOLE NUMBERS (10 Qs) ── */
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'What is the value of the digit <strong>7</strong> in the number <strong>3,756,482</strong>?',
+    choices:['700','7,000','700,000','7,000,000'], ans:2,
+    hint:'7 is in the hundred-thousands place → value = 700,000.' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'Which number is written in <strong>expanded form</strong> correctly for <strong>5,609</strong>?',
+    choices:['5,000 + 600 + 9','5,000 + 60 + 9','500 + 600 + 9','5,000 + 600 + 90'], ans:0,
+    hint:'5,609 = 5,000 + 600 + 0 + 9.' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'Which symbol makes this correct? &nbsp;<strong>8,578 ___ 8,587</strong>',
+    choices:['=','>','<','cannot tell'], ans:2,
+    hint:'Compare tens: 7 < 8, so 8,578 < 8,587.' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'Round <strong>26,785</strong> to the nearest <strong>hundreds</strong>.',
+    choices:['26,700','26,800','27,000','26,780'], ans:1,
+    hint:'Tens digit is 8. Since 8 ≥ 5, round up → 26,800.' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'Round <strong>729,652</strong> to the nearest <strong>ten-thousands</strong>.',
+    choices:['720,000','700,000','730,000','740,000'], ans:2,
+    hint:'Thousands digit is 9. Since 9 ≥ 5, round up → 730,000.' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'Which set is in <strong>ascending order</strong>?',
+    choices:['12,365 / 32,782 / 45,785 / 98,059',
+             '98,059 / 45,785 / 32,782 / 12,365',
+             '32,782 / 12,365 / 98,059 / 45,785',
+             '45,785 / 32,782 / 12,365 / 98,059'], ans:0,
+    hint:'Ascending = smallest to biggest. 12,365 < 32,782 < 45,785 < 98,059 ✓' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'What is the value of <strong>8,697,623</strong> rounded to the nearest <strong>millions</strong>?',
+    choices:['8,000,000','8,700,000','9,000,000','8,600,000'], ans:2,
+    hint:'Hundred-thousands digit is 6. Since 6 ≥ 5, round up → 9,000,000.' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'Which number has the digit <strong>4</strong> in the <strong>ten-thousands</strong> place?',
+    choices:['3,456,789','1,004,567','2,748,500','9,504,812'], ans:2,
+    hint:'2,748,500: 2=millions, 7=hundred-thousands, 4=ten-thousands, 8=thousands. The 4 is in the ten-thousands place ✓' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'Which set is in <strong>descending order</strong>?',
+    choices:['75,956 / 56,784 / 65,759 / 32,845',
+             '32,845 / 56,784 / 65,759 / 75,956',
+             '75,956 / 65,759 / 56,784 / 32,845',
+             '65,759 / 75,956 / 32,845 / 56,784'], ans:2,
+    hint:'Descending = biggest to smallest. 75,956 > 65,759 > 56,784 > 32,845 ✓' },
+
+  { sec:'wn', secLabel:'Whole Numbers',
+    q:'Round <strong>6,423,650</strong> to the nearest <strong>hundred-thousands</strong>.',
+    choices:['6,500,000','6,300,000','6,000,000','6,400,000'], ans:3,
+    hint:'Ten-thousands digit is 2. Since 2 < 5, round down → 6,400,000.' },
+
+  /* ── PART 2: FRACTIONS (10 Qs) ── */
+  { sec:'fr', secLabel:'Fractions',
+    q:'Convert <strong>74/9</strong> to a mixed fraction.',
+    choices:['7 4/9','8 4/9','8 2/9','9 2/8'], ans:2,
+    hint:'74 ÷ 9 = 8 remainder 2 → 8 2/9 ✓' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'Which symbol is correct? &nbsp; <strong>6/11 ___ 6/19</strong>',
+    choices:['<','=','>','cannot tell'], ans:2,
+    hint:'Same numerator. Smallest denominator = biggest fraction. 11 < 19, so 6/11 > 6/19.' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'Simplify <strong>18/24</strong> to its lowest term.',
+    choices:['9/12','6/8','2/3','3/4'], ans:3,
+    hint:'GCF of 18 and 24 is 6. 18÷6=3, 24÷6=4 → 3/4.' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'<strong>3/4 + 2/5 = ?</strong>',
+    choices:['5/9','5/20','23/20','6/20'], ans:2,
+    hint:'LCM=20. 15/20 + 8/20 = 23/20 = 1 3/20.' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'<strong>5 2/9 − 2 6/9 = ?</strong>',
+    choices:['3 4/9','2 5/9','3 5/9','2 4/9'], ans:1,
+    hint:'Borrow 1 from 5: 4 11/9 − 2 6/9 = 2 5/9.' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'<strong>1/5 × 2/3 = ?</strong>',
+    choices:['3/15','2/8','3/8','2/15'], ans:3,
+    hint:'1×2=2, 5×3=15 → 2/15.' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'<strong>1/5 ÷ 2/5 = ?</strong>',
+    choices:['2/25','2/5','1/2','5/2'], ans:2,
+    hint:'Keep → Change → Flip: 1/5 × 5/2 = 5/10 = 1/2.' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'Arrange in <strong>ascending order</strong>: &nbsp; <strong>9/10 , 1/10 , 7/10</strong>',
+    choices:['1/10, 7/10, 9/10','9/10, 7/10, 1/10','7/10, 1/10, 9/10','1/10, 9/10, 7/10'], ans:0,
+    hint:'Same denominator. Numerators: 1 < 7 < 9 → 1/10, 7/10, 9/10.' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'What is the <strong>reciprocal</strong> of 8?',
+    choices:['8/1','8/8','0/8','1/8'], ans:3,
+    hint:'8 = 8/1. Flip it → 1/8.' },
+
+  { sec:'fr', secLabel:'Fractions',
+    q:'Solve: <strong>(3/5 + 4/10) × 1/2 = ?</strong>',
+    choices:['7/10','1/2','7/20','1/10'], ans:1,
+    hint:'3/5 = 6/10. 6/10 + 4/10 = 1. Then 1 × 1/2 = 1/2.' },
+
+  /* ── PART 3: FOUR OPERATIONS (10 Qs) ── */
+  { sec:'op', secLabel:'Four Operations',
+    q:'<strong>3,456 + 2,789 = ?</strong>',
+    choices:['6,145','6,245','6,235','6,225'], ans:1,
+    hint:'3,456 + 2,789: ones 6+9=15 carry 1, tens 5+8+1=14 carry 1, hundreds 4+7+1=12 carry 1, thousands 3+2+1=6 → 6,245 ✓' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'<strong>10,005 − 3,678 = ?</strong>',
+    choices:['7,327','6,327','7,437','6,437'], ans:1,
+    hint:'10,005 − 3,678: borrow carefully through the zeros. 10,005 − 3,678 = 6,327 ✓' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'<strong>324 × 15 = ?</strong>',
+    choices:['4,860','3,860','4,760','4,960'], ans:0,
+    hint:'324 × 15 = 324 × 10 + 324 × 5 = 3,240 + 1,620 = 4,860.' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'<strong>7,200 ÷ 8 = ?</strong>',
+    choices:['800','900','700','1,000'], ans:1,
+    hint:'7,200 ÷ 8 = 900. (Think: 72 ÷ 8 = 9, then add two zeros → 900.)' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'<strong>125 × 8 = ?</strong>',
+    choices:['900','1,000','1,100','880'], ans:1,
+    hint:'125 × 8 = 1,000. (Think: 125 × 8 = 125 × 4 × 2 = 500 × 2 = 1,000.)' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'<strong>450 ÷ 18 = ?</strong>',
+    choices:['20','25','30','15'], ans:1,
+    hint:'450 ÷ 18 = 25. (18 × 25 = 18 × 20 + 18 × 5 = 360 + 90 = 450 ✓)' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'Solve: <strong>5 × 300 + 2,400 ÷ 4 = ?</strong>',
+    choices:['2,100','1,500','2,400','4,100'], ans:0,
+    hint:'Multiply and divide first: 5×300=1,500 and 2,400÷4=600. Then 1,500+600=2,100.' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'A bag has <strong>144</strong> pencils. They are shared equally among <strong>12</strong> students. How many pencils does each student get?',
+    choices:['11','12','13','14'], ans:1,
+    hint:'144 ÷ 12 = 12 pencils each.' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'A school has <strong>8</strong> classrooms. Each classroom has <strong>35</strong> students. How many students are there in total?',
+    choices:['270','280','285','290'], ans:1,
+    hint:'8 × 35 = 8 × 30 + 8 × 5 = 240 + 40 = 280 students.' },
+
+  { sec:'op', secLabel:'Four Operations',
+    q:'Solve: <strong>(48 + 12) × (100 − 75) = ?</strong>',
+    choices:['1,000','1,250','1,500','750'], ans:2,
+    hint:'Brackets first: (48+12)=60 and (100−75)=25. Then 60×25=1,500.' },
+];
+
+/* ─────────────────────────────────────────
+   STATE
+───────────────────────────────────────── */
+var quizQs      = [];
+var quizIdx     = 0;
+var quizScore   = 0;
+var userAnswers = [];
+var timerSec    = 20 * 60;
+var timerInterval = null;
+
+/* ─────────────────────────────────────────
+   COUNTDOWN → START
+───────────────────────────────────────── */
+function beginCountdown() {
+  document.getElementById('intro-wrap').style.display = 'none';
+  var cw = document.getElementById('countdown-wrap');
+  cw.style.display = 'block';
+  var n = 3;
+  document.getElementById('countdown-num').textContent = n;
+
+  var ci = setInterval(function() {
+    n--;
+    if (n > 0) {
+      document.getElementById('countdown-num').textContent = n;
+    } else {
+      clearInterval(ci);
+      cw.style.display = 'none';
+      startQuiz();
+    }
+  }, 900);
+}
+
+function startQuiz() {
+  quizQs      = QBANK.slice();
+  quizIdx     = 0;
+  quizScore   = 0;
+  userAnswers = quizQs.map(function() { return -1; });
+  document.getElementById('quiz-wrap').classList.remove('hidden');
+  startTimer();
+  renderQ();
+}
+
+/* ─────────────────────────────────────────
+   TIMER
+───────────────────────────────────────── */
+function startTimer() {
+  timerSec = 20 * 60;
+  updateTimerDisplay();
+  timerInterval = setInterval(function() {
+    timerSec--;
+    updateTimerDisplay();
+    if (timerSec <= 0) {
+      clearInterval(timerInterval);
+      timeUp();
+    }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  var m   = Math.floor(timerSec / 60);
+  var s   = timerSec % 60;
+  var txt = (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  var box = document.getElementById('timer-box');
+  box.textContent = txt;
+  box.className = 'timer-box' + (timerSec <= 60 ? ' danger' : timerSec <= 180 ? ' warn' : '');
+}
+
+function timeUp() {
+  document.getElementById('quiz-wrap').classList.add('hidden');
+  renderResult(true);
+}
+
+/* ─────────────────────────────────────────
+   QUIZ RENDER
+───────────────────────────────────────── */
+function recountScore() {
+  quizScore = 0;
+  userAnswers.forEach(function(a, i) {
+    if (a !== -1 && a === quizQs[i].ans) quizScore++;
+  });
+}
+
+function renderQ() {
+  recountScore();
+  document.getElementById('score-box').textContent = 'Score: ' + quizScore;
+
+  if (quizIdx >= quizQs.length) {
+    clearInterval(timerInterval);
+    document.getElementById('quiz-wrap').classList.add('hidden');
+    renderResult(false);
+    return;
+  }
+
+  var q        = quizQs[quizIdx];
+  var labels   = ['A','B','C','D'];
+  var myAns    = userAnswers[quizIdx];
+  var answered = (myAns !== -1);
+  var pct      = Math.round(quizIdx / quizQs.length * 100);
+  var isLast   = (quizIdx === quizQs.length - 1);
+  var allDone  = userAnswers.every(function(a) { return a !== -1; });
+
+  /* progress fill */
+  document.getElementById('pfill').style.width = pct + '%';
+
+  /* dots */
+  var secColors = { wn:'bd-wn', fr:'bd-fr', op:'bd-op' };
+  var dots = '';
+  for (var d = 0; d < quizQs.length; d++) {
+    var dc = 'qdot';
+    if (d === quizIdx) dc += ' current';
+    else if (userAnswers[d] === -1) dc += '';
+    else if (userAnswers[d] === quizQs[d].ans) dc += ' done-ok';
+    else dc += ' done-no';
+    dots += '<div class="'+dc+'" data-go="'+d+'">'+(d+1)+'</div>';
+  }
+  document.getElementById('qdots').innerHTML = dots;
+  document.querySelectorAll('.qdot').forEach(function(dot) {
+    dot.addEventListener('click', function() { quizIdx = parseInt(this.dataset.go); renderQ(); });
+  });
+
+  /* section label */
+  var secCls = { wn:'sec-wn', fr:'sec-fr', op:'sec-op' };
+  var secIcon = { wn:'🔵', fr:'🟣', op:'🟢' };
+
+  /* choices */
+  var choicesHtml = '';
+  for (var i = 0; i < q.choices.length; i++) {
+    var cc = 'choice';
+    if (answered) {
+      if (i === q.ans) cc += ' reveal-ok';
+      if (i === myAns && myAns !== q.ans) cc += ' wrong';
+      if (i === myAns && myAns === q.ans) cc += ' correct';
+    }
+    choicesHtml += '<button class="'+cc+'" id="qc'+i+'"'+(answered?' disabled':'')+'>'+
+      '<span class="lbl">'+labels[i]+'</span>'+f(q.choices[i])+'</button>';
+  }
+
+  /* feedback */
+  var fbHtml = '';
+  if (answered) {
+    var ok   = (myAns === q.ans);
+    var msgs = ['Great job! 🎉','You got it! ⭐','Excellent! 💪','Perfect! 🌟'];
+    fbHtml   = '<div class="fb show '+(ok?'good':'bad')+'">'
+             + (ok ? msgs[Math.floor(Math.random()*msgs.length)] : '💡 Hint: '+f(q.hint))
+             + '</div>';
+  }
+
+  /* nav */
+  var navHtml = '<div class="nav-row">'
+    + '<button class="btn-prev" id="btn-prev"'+(quizIdx===0?' disabled':'')+'>← Prev</button>';
+  if (isLast && allDone) {
+    navHtml += '<button class="btn-submit" id="btn-submit">Submit &amp; See Results →</button>';
+  } else {
+    navHtml += '<button class="btn-next" id="btn-next"'+(answered?'':' disabled')+'>'+
+      (isLast?'Finish →':'Next →')+'</button>';
+  }
+  navHtml += '</div>';
+
+  /* render card */
+  document.getElementById('qcard-wrap').innerHTML =
+    '<div class="qcard">'
+    + '<span class="sec-label '+secCls[q.sec]+'">'+secIcon[q.sec]+' '+q.secLabel+' — Q'+(quizIdx+1)+'</span>'
+    + '<div class="qtext">'+f(q.q)+'</div>'
+    + '<div class="choices">'+choicesHtml+'</div>'
+    + fbHtml
+    + '</div>'
+    + navHtml;
+
+  /* events */
+  if (!answered) {
+    for (var j = 0; j < q.choices.length; j++) {
+      (function(idx) {
+        var btn = document.getElementById('qc'+idx);
+        if (btn) btn.addEventListener('click', function() { pickAnswer(idx); });
+      })(j);
+    }
+  }
+  var pb = document.getElementById('btn-prev');
+  if (pb) pb.addEventListener('click', function() { if (quizIdx>0){quizIdx--;renderQ();} });
+  var nb = document.getElementById('btn-next');
+  if (nb) nb.addEventListener('click', function() { quizIdx++;renderQ(); });
+  var sb = document.getElementById('btn-submit');
+  if (sb) sb.addEventListener('click', function() {
+    clearInterval(timerInterval);
+    document.getElementById('quiz-wrap').classList.add('hidden');
+    renderResult(false);
+  });
+}
+
+function pickAnswer(idx) {
+  userAnswers[quizIdx] = idx;
+  recountScore();
+  renderQ();
+}
+
+/* ─────────────────────────────────────────
+   RESULT
+───────────────────────────────────────── */
+function renderResult(timedOut) {
+  recountScore();
+  var total = quizQs.length;
+  var pct   = Math.round(quizScore / total * 100);
+
+  /* per-section scores */
+  var secScore = { wn:0, fr:0, op:0 };
+  var secTotal = { wn:0, fr:0, op:0 };
+  quizQs.forEach(function(q,i){
+    secTotal[q.sec]++;
+    if (userAnswers[i]===q.ans) secScore[q.sec]++;
+  });
+
+  /* grade */
+  var grade, gradeCls, emoji, msg;
+  if      (pct===100){ grade='A+'; gradeCls='grade-a'; emoji='🏆'; msg='Perfect score! Outstanding work! 🌟'; }
+  else if (pct>=80)  { grade='A';  gradeCls='grade-a'; emoji='🌟'; msg='Excellent! You are almost perfect!'; }
+  else if (pct>=70)  { grade='B';  gradeCls='grade-b'; emoji='😊'; msg='Good job! Review a few questions and you will be perfect!'; }
+  else if (pct>=60)  { grade='C';  gradeCls='grade-c'; emoji='👍'; msg='Not bad! Some more practice and you will do great!'; }
+  else               { grade='D';  gradeCls='grade-d'; emoji='💡'; msg='Keep going! Review the summary and try again!'; }
+
+  /* breakdown */
+  var bkRows = '';
+  quizQs.forEach(function(q,i){
+    var a   = userAnswers[i];
+    var ico = a===-1 ? '<span class="bd-sk">—</span>'
+            : a===q.ans ? '<span class="bd-ok">✓</span>' : '<span class="bd-no">✗</span>';
+    var secCls2 = {wn:'bd-wn bd-sec',fr:'bd-fr bd-sec',op:'bd-op bd-sec'};
+    var secTxt  = {wn:'WN',fr:'FR',op:'OP'};
+    bkRows += '<div class="bd-row">'
+      +'<span class="bd-num">'+(i+1)+'.</span>'
+      +'<span class="bd-sec '+secCls2[q.sec]+'">'+secTxt[q.sec]+'</span>'
+      +'<span class="bd-q">'+q.q.replace(/<[^>]*>/g,'')+'</span>'
+      +ico+'</div>';
+  });
+
+  var timeNote = timedOut ? '<p style="color:#dc2626;font-weight:700;margin-bottom:12px;">⏰ Time is up! The test was submitted automatically.</p>' : '';
+
+  document.getElementById('result-wrap').classList.remove('hidden');
+  document.getElementById('result-wrap').innerHTML =
+    '<div class="result-card">'
+    +(timedOut?'<div style="background:#fef2f2;border:1px solid #f87171;border-radius:8px;padding:10px 14px;margin-bottom:16px;color:#7f1d1d;font-weight:700;font-size:13px;">⏰ Time is up! The test was submitted automatically.</div>':'')
+    +'<div class="result-emoji">'+emoji+'</div>'
+    +'<div class="result-score">'+quizScore+'</div>'
+    +'<div class="result-of">out of '+total+' questions</div>'
+    +'<div class="result-pct">'+pct+'%</div>'
+    +'<span class="result-grade '+gradeCls+'">Grade '+grade+'</span>'
+    +'<div class="result-msg">'+msg+'</div>'
+    +'<div class="section-scores">'
+    +'<div class="ss-card"><div class="ss-title">🔵 Whole Numbers</div><div class="ss-score">'+secScore.wn+'</div><div class="ss-of">out of '+secTotal.wn+'</div></div>'
+    +'<div class="ss-card"><div class="ss-title">🟣 Fractions</div><div class="ss-score">'+secScore.fr+'</div><div class="ss-of">out of '+secTotal.fr+'</div></div>'
+    +'<div class="ss-card"><div class="ss-title">🟢 Four Operations</div><div class="ss-score">'+secScore.op+'</div><div class="ss-of">out of '+secTotal.op+'</div></div>'
+    +'</div>'
+    +'<button class="btn-restart" id="res-again">Try again</button>'
+    +'<button class="btn-secondary" id="res-review">Review answers</button>'
+    +'<div class="breakdown"><div class="bd-title">Question breakdown</div>'+bkRows+'</div>'
+    +'</div>';
+
+  document.getElementById('res-again').addEventListener('click', function() {
+    document.getElementById('result-wrap').classList.add('hidden');
+    document.getElementById('intro-wrap').style.display = 'block';
+  });
+  document.getElementById('res-review').addEventListener('click', function() {
+    document.getElementById('result-wrap').classList.add('hidden');
+    quizIdx = 0;
+    document.getElementById('quiz-wrap').classList.remove('hidden');
+    startTimer();
+    renderQ();
+    window.scrollTo(0,0);
+  });
+}
+</script>
+</body>
+</html>

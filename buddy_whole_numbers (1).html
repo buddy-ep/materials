@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buddy — Whole Numbers</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f6fa; color: #1a1a2e; min-height: 100vh; }
+
+  .header { background: #2563eb; color: #fff; padding: 18px 24px; display: flex; align-items: center; gap: 14px; }
+  .header-icon { width: 44px; height: 44px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+  .header h1 { font-size: 20px; font-weight: 700; }
+  .header p { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+
+  .main-nav { background: #fff; border-bottom: 1px solid #e2e8f0; display: flex; overflow-x: auto; }
+  .main-tab { padding: 14px 22px; font-size: 14px; font-weight: 600; color: #64748b; border: none; background: none; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; transition: all 0.2s; }
+  .main-tab:hover { color: #2563eb; background: #f0f7ff; }
+  .main-tab.active { color: #2563eb; border-bottom-color: #2563eb; background: #f0f7ff; }
+
+  .container { max-width: 780px; margin: 0 auto; padding: 24px 16px; }
+  .section { display: none; }
+  .section.on { display: block; }
+
+  /* SUMMARY */
+  .sum-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; }
+  .sum-card h3 { font-size: 15px; font-weight: 700; color: #1e40af; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .num-badge { background: #2563eb; color: #fff; border-radius: 50%; width: 24px; height: 24px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .sum-card p, .sum-card li { font-size: 14px; line-height: 1.7; color: #374151; }
+  .sum-card ul { padding-left: 18px; }
+  .ex-box { background: #f0f7ff; border: 1px solid #bfdbfe; border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 13px; color: #1e3a8a; font-family: 'Courier New', monospace; }
+  .rule-green { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 13px; color: #14532d; }
+  .rule-amber { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 8px; padding: 10px 14px; margin: 8px 0; font-size: 13px; color: #78350f; }
+  .hl { color: #dc2626; font-weight: 700; }
+  .hl-blue { color: #2563eb; font-weight: 700; }
+  .place-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .place-table th { background: #eff6ff; color: #1e40af; padding: 7px 10px; text-align: left; border: 1px solid #bfdbfe; font-weight: 600; }
+  .place-table td { padding: 7px 10px; border: 1px solid #e2e8f0; color: #374151; }
+  .place-table tr:nth-child(even) td { background: #f8fafc; }
+  .round-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 10px 0; }
+  .round-table th { background: #eff6ff; color: #1e40af; padding: 7px 10px; text-align: center; border: 1px solid #bfdbfe; font-weight: 600; }
+  .round-table td { padding: 7px 10px; border: 1px solid #e2e8f0; color: #374151; text-align: center; }
+  .round-table tr:nth-child(even) td { background: #f8fafc; }
+  .round-table td:first-child { text-align: left; font-weight: 600; }
+
+  /* QUIZ SHARED */
+  .mode-bar { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .mode-btn { padding: 7px 16px; border-radius: 20px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.15s; font-family: inherit; }
+  .mode-btn:hover { border-color: #2563eb; color: #2563eb; }
+  .mode-btn.active { background: #eff6ff; color: #2563eb; border-color: #2563eb; }
+  .q-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .q-counter { font-size: 13px; color: #64748b; }
+  .score-pill { background: #eff6ff; color: #2563eb; border-radius: 20px; padding: 4px 14px; font-size: 13px; font-weight: 700; border: 1px solid #bfdbfe; }
+  .pbar { height: 7px; background: #e2e8f0; border-radius: 4px; margin-bottom: 16px; overflow: hidden; }
+  .pfill { height: 100%; background: #2563eb; border-radius: 4px; transition: width 0.4s; }
+  .qcard { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+  .q-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; letter-spacing: 0.4px; text-transform: uppercase; }
+  .tag-rnd { background: #eff6ff; color: #1e40af; }
+  .tag-asc { background: #f0fdf4; color: #14532d; }
+  .tag-desc { background: #fff7ed; color: #9a3412; }
+  .qtext { font-size: 16px; font-weight: 700; color: #1a1a2e; margin-bottom: 4px; }
+  .qsub { font-size: 13px; color: #64748b; margin-bottom: 14px; }
+
+  /* Multiple choice */
+  .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .choice { padding: 11px 14px; border: 1px solid #cbd5e1; border-radius: 8px; background: #fff; cursor: pointer; font-size: 14px; color: #1a1a2e; text-align: left; display: flex; align-items: center; gap: 8px; transition: all 0.15s; font-family: inherit; }
+  .choice:hover:not(:disabled) { border-color: #2563eb; background: #eff6ff; }
+  .choice .lbl { font-size: 11px; font-weight: 700; color: #94a3b8; min-width: 16px; }
+  .choice.correct { background: #f0fdf4; border-color: #4ade80; color: #14532d; }
+  .choice.wrong { background: #fef2f2; border-color: #f87171; color: #7f1d1d; }
+  .choice:disabled { cursor: default; }
+
+  /* Fill in blank */
+  .fill-input { width: 100%; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px 14px; font-size: 15px; font-family: inherit; color: #1a1a2e; background: #fff; outline: none; transition: border 0.15s; }
+  .fill-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(191,219,254,0.5); }
+
+  /* Feedback */
+  .fb { border-radius: 8px; padding: 11px 14px; margin-top: 12px; font-size: 13px; font-weight: 500; display: none; }
+  .fb.show { display: block; }
+  .fb.good { background: #f0fdf4; color: #14532d; border: 1px solid #86efac; }
+  .fb.bad  { background: #fef2f2; color: #7f1d1d; border: 1px solid #f87171; }
+
+  /* Buttons */
+  .btn-check { width: 100%; padding: 11px; background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; font-family: inherit; transition: all 0.15s; }
+  .btn-check:hover { background: #dbeafe; }
+  .btn-next { width: 100%; padding: 11px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 10px; font-family: inherit; transition: all 0.15s; display: none; }
+  .btn-next:hover { background: #1d4ed8; }
+  .btn-next.show { display: block; }
+
+  /* Result */
+  .result-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 36px 20px; text-align: center; }
+  .result-emoji { font-size: 40px; margin-bottom: 8px; }
+  .result-score { font-size: 52px; font-weight: 800; color: #2563eb; line-height: 1; }
+  .result-total { font-size: 14px; color: #64748b; margin: 4px 0 12px; }
+  .result-msg { font-size: 15px; color: #374151; margin-bottom: 20px; font-weight: 500; }
+  .btn-restart { padding: 11px 26px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; margin: 4px; }
+  .btn-restart:hover { background: #1d4ed8; }
+  .btn-secondary { padding: 11px 26px; background: #fff; color: #374151; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; margin: 4px; }
+  .btn-secondary:hover { background: #f8fafc; }
+
+  /* DRAG & DROP */
+  .zone-label { font-size: 12px; font-weight: 700; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.4px; }
+  .drag-zone { display: flex; flex-wrap: wrap; gap: 8px; min-height: 54px; padding: 10px; border: 1.5px dashed #cbd5e1; border-radius: 8px; background: #f8fafc; margin-bottom: 8px; align-items: center; transition: all 0.15s; }
+  .answer-zone { background: #f0f7ff; border-color: #bfdbfe; }
+  .drag-zone.drag-over { border-color: #2563eb; background: #eff6ff; }
+  .num-tile { padding: 9px 16px; background: #fff; border: 1.5px solid #cbd5e1; border-radius: 8px; font-size: 14px; font-weight: 700; color: #1a1a2e; cursor: grab; user-select: none; transition: all 0.15s; white-space: nowrap; }
+  .num-tile:hover { border-color: #2563eb; background: #eff6ff; color: #2563eb; }
+  .num-tile:active { cursor: grabbing; }
+  .num-tile.dragging { opacity: 0.35; }
+  .num-tile.correct-tile { background: #f0fdf4; border-color: #4ade80; color: #14532d; cursor: default; }
+  .num-tile.wrong-tile  { background: #fef2f2; border-color: #f87171; color: #7f1d1d; cursor: default; }
+  .arrow-box { background: #fffbeb; border: 1px solid #fcd34d; border-radius: 6px; padding: 6px 12px; font-size: 12px; color: #78350f; font-weight: 700; margin-bottom: 10px; }
+
+  @media (max-width: 520px) {
+    .choices { grid-template-columns: 1fr; }
+    .header h1 { font-size: 17px; }
+    .main-tab { padding: 11px 14px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-icon">🤖</div>
+  <div>
+    <h1>Buddy — Whole Numbers</h1>
+    <p>Grade 5–6 EP &nbsp;|&nbsp; Chapter 1 &nbsp;|&nbsp; Summary, Rounding &amp; Ordering Drills</p>
+  </div>
+</div>
+
+<nav class="main-nav">
+  <button class="main-tab active" onclick="showMain('summary')">📖 Summary</button>
+  <button class="main-tab" onclick="showMain('rounding')">🎯 Rounding Drills</button>
+  <button class="main-tab" onclick="showMain('ordering')">🔢 Ordering Drills</button>
+</nav>
+
+<div class="container">
+
+  <!-- SUMMARY -->
+  <div class="section on" id="sec-summary">
+    <div class="sum-card">
+      <h3><span class="num-badge">1</span> Numbers &amp; Place Value</h3>
+      <p>Every digit in a number has a <strong>place value</strong> — its position tells you how much it is worth.</p>
+      <div class="ex-box">3,456,987 → Millions | Hundred-Thousands | Ten-Thousands | Thousands | Hundreds | Tens | Ones</div>
+      <table class="place-table">
+        <tr><th>Number</th><th>Place value</th><th>Digit value</th></tr>
+        <tr><td>3,456,<span class="hl">9</span>87</td><td>Hundreds</td><td>900</td></tr>
+        <tr><td>3,4<span class="hl">5</span>6,987</td><td>Ten-Thousands</td><td>50,000</td></tr>
+        <tr><td>3,<span class="hl">4</span>56,987</td><td>Hundred-Thousands</td><td>400,000</td></tr>
+        <tr><td><span class="hl">3</span>,456,987</td><td>Millions</td><td>3,000,000</td></tr>
+      </table>
+      <p style="margin-top:10px;"><strong>Expanded form:</strong> 5,649 = 5,000 + 600 + 40 + 9</p>
+      <div class="ex-box">62,562,789 = 60,000,000 + 2,000,000 + 500,000 + 60,000 + 2,000 + 700 + 80 + 9</div>
+      <p style="margin-top:8px;"><strong>Zero (0) as a placeholder</strong> — it shows that a place has no value, e.g. 3,0<span class="hl">0</span>5 = 3,000 + 5.</p>
+    </div>
+
+    <div class="sum-card">
+      <h3><span class="num-badge">2</span> Comparing Numbers</h3>
+      <ul>
+        <li><strong>&gt;</strong> greater than / bigger than / more than</li>
+        <li><strong>&lt;</strong> fewer than / smaller than / less than</li>
+        <li><strong>=</strong> equal to</li>
+        <li>Always compare digits from <strong>left to right</strong>.</li>
+      </ul>
+      <div class="ex-box">8,<span class="hl-blue">5</span>78 &lt; 8,<span class="hl-blue">5</span>87 &nbsp;→&nbsp; Same up to tens: 7 &lt; 8 ✓</div>
+      <div class="ex-box">758,<span class="hl-blue">3</span>23 &gt; 758,<span class="hl-blue">2</span>32 &nbsp;→&nbsp; Hundreds: 3 &gt; 2 ✓</div>
+    </div>
+
+    <div class="sum-card">
+      <h3><span class="num-badge">3</span> Ordering Numbers</h3>
+      <p><strong>Ascending order</strong> = arranging from <span class="hl-blue">smallest to biggest</span></p>
+      <div class="ex-box">45,785 &nbsp; 12,365 &nbsp; 32,782 &nbsp; 98,059<br>→ <strong>12,365 &nbsp; 32,782 &nbsp; 45,785 &nbsp; 98,059</strong></div>
+      <p style="margin-top:10px;"><strong>Descending order</strong> = arranging from <span class="hl">biggest to smallest</span></p>
+      <div class="ex-box">75,956 &nbsp; 32,845 &nbsp; 65,759 &nbsp; 56,784<br>→ <strong>75,956 &nbsp; 65,759 &nbsp; 56,784 &nbsp; 32,845</strong></div>
+    </div>
+
+    <div class="sum-card">
+      <h3><span class="num-badge">4</span> Rounding Off — The Golden Rule</h3>
+      <div class="rule-green">
+        Look at the digit to the <strong>RIGHT</strong> of your target place:<br>
+        ✅ <strong>5 or more</strong> → Round UP (add 1 to the target digit)<br>
+        ✅ <strong>Less than 5</strong> → Round DOWN (keep the target digit)<br>
+        Then change all digits to the RIGHT to <strong>0</strong>.
+      </div>
+    </div>
+
+    <div class="sum-card">
+      <h3><span class="num-badge">5</span> Rounding Examples</h3>
+      <table class="round-table">
+        <tr><th>Number</th><th>Nearest Tens</th><th>Nearest Hundreds</th><th>Nearest Thousands</th></tr>
+        <tr><td>26,785</td><td>26,79<span class="hl-blue">0</span></td><td>26,<span class="hl-blue">8</span>00</td><td><span class="hl-blue">27</span>,000</td></tr>
+        <tr><td>452,652</td><td>452,65<span class="hl-blue">0</span></td><td>452,<span class="hl-blue">7</span>00</td><td><span class="hl-blue">453</span>,000</td></tr>
+      </table>
+      <div class="rule-amber" style="margin-top:12px;">
+        <strong>Nearest ten-thousands:</strong><br>
+        729,652 → thousands digit is <strong>9</strong> (≥5) → <strong>730,000</strong><br>
+        452,867 → thousands digit is <strong>2</strong> (&lt;5) → <strong>450,000</strong>
+      </div>
+      <div class="rule-amber" style="margin-top:8px;">
+        <strong>Nearest hundred-thousands:</strong><br>
+        5,679,758 → ten-thousands digit is <strong>7</strong> (≥5) → <strong>5,700,000</strong><br>
+        6,423,650 → ten-thousands digit is <strong>2</strong> (&lt;5) → <strong>6,400,000</strong>
+      </div>
+      <div class="rule-amber" style="margin-top:8px;">
+        <strong>Nearest millions:</strong><br>
+        8,697,623 → hundred-thousands digit is <strong>6</strong> (≥5) → <strong>9,000,000</strong><br>
+        15,421,956 → hundred-thousands digit is <strong>4</strong> (&lt;5) → <strong>15,000,000</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROUNDING DRILLS -->
+  <div class="section" id="sec-rounding">
+    <div class="mode-bar">
+      <button class="mode-btn active" id="rnd-btn-mc"   onclick="setRndMode('mc')">Multiple Choice</button>
+      <button class="mode-btn"        id="rnd-btn-fill" onclick="setRndMode('fill')">Fill in the Blank</button>
+    </div>
+    <div id="rnd-area"></div>
+  </div>
+
+  <!-- ORDERING DRILLS -->
+  <div class="section" id="sec-ordering">
+    <div class="mode-bar">
+      <button class="mode-btn active" id="ord-btn-asc"   onclick="setOrdMode('asc')">&#8679; Ascending</button>
+      <button class="mode-btn"        id="ord-btn-desc"  onclick="setOrdMode('desc')">&#8681; Descending</button>
+      <button class="mode-btn"        id="ord-btn-mixed" onclick="setOrdMode('mixed')">&#8646; Mixed Challenge</button>
+    </div>
+    <div id="ord-area"></div>
+  </div>
+
+</div>
+
+<script>
+/* ─────────────────────────────────────────
+   NAVIGATION
+───────────────────────────────────────── */
+var rndStarted = false, ordStarted = false;
+
+function showMain(id) {
+  ['summary','rounding','ordering'].forEach(function(s) {
+    document.getElementById('sec-' + s).classList.toggle('on', s === id);
+  });
+  document.querySelectorAll('.main-tab').forEach(function(t, i) {
+    t.classList.toggle('active', ['summary','rounding','ordering'][i] === id);
+  });
+  if (id === 'rounding' && !rndStarted) { rndStarted = true; startRounding(); }
+  if (id === 'ordering' && !ordStarted) { ordStarted = true; startOrdering(); }
+}
+
+/* ─────────────────────────────────────────
+   UTILITY
+───────────────────────────────────────── */
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+function fmt(n) { return n.toLocaleString(); }
+
+/* ─────────────────────────────────────────
+   ROUNDING DRILLS
+───────────────────────────────────────── */
+var RND_BANK = [
+  { q:'Round 26,785 to the nearest tens.',               sub:'Look at the ones digit (5).',              choices:['26,780','26,790','26,800','27,000'],           ans:1, hint:'Ones digit is 5. Since 5 is equal to 5, round UP! Answer: 26,790.' },
+  { q:'Round 452,652 to the nearest hundreds.',          sub:'Look at the tens digit (5).',              choices:['452,600','452,700','452,650','453,000'],         ans:1, hint:'Tens digit is 5. Since 5 is equal to 5, round UP! Answer: 452,700.' },
+  { q:'Round 452,652 to the nearest thousands.',         sub:'Look at the hundreds digit (6).',          choices:['452,000','453,000','450,000','460,000'],          ans:1, hint:'Hundreds digit is 6. Since 6 is more than 5, add 1 to thousands. Answer: 453,000.' },
+  { q:'Round 729,652 to the nearest ten-thousands.',     sub:'Look at the thousands digit (9).',         choices:['720,000','730,000','700,000','740,000'],          ans:1, hint:'Thousands digit is 9. Since 9 is more than 5, add 1 to ten-thousands. Answer: 730,000.' },
+  { q:'Round 452,867 to the nearest ten-thousands.',     sub:'Look at the thousands digit (2).',         choices:['450,000','460,000','440,000','400,000'],          ans:0, hint:'Thousands digit is 2. Since 2 is less than 5, round down. Answer: 450,000.' },
+  { q:'Round 5,679,758 to the nearest hundred-thousands.', sub:'Look at the ten-thousands digit (7).',  choices:['5,600,000','5,700,000','5,000,000','6,000,000'], ans:1, hint:'Ten-thousands digit is 7. Since 7 is more than 5, add 1. Answer: 5,700,000.' },
+  { q:'Round 6,423,650 to the nearest hundred-thousands.', sub:'Look at the ten-thousands digit (2).',  choices:['6,400,000','6,500,000','6,000,000','6,300,000'], ans:0, hint:'Ten-thousands digit is 2. Since 2 is less than 5, round down. Answer: 6,400,000.' },
+  { q:'Round 8,697,623 to the nearest millions.',        sub:'Look at the hundred-thousands digit (6).', choices:['8,000,000','9,000,000','8,700,000','8,600,000'], ans:1, hint:'Hundred-thousands digit is 6. Since 6 is more than 5, add 1. Answer: 9,000,000.' },
+  { q:'Round 15,421,956 to the nearest millions.',       sub:'Look at the hundred-thousands digit (4).', choices:['15,000,000','16,000,000','14,000,000','15,500,000'], ans:0, hint:'Hundred-thousands digit is 4. Since 4 is less than 5, round down. Answer: 15,000,000.' },
+  { q:'Round 83,449 to the nearest thousands.',          sub:'Look at the hundreds digit (4).',          choices:['83,000','84,000','83,500','80,000'],              ans:0, hint:'Hundreds digit is 4. Since 4 is less than 5, round down. Answer: 83,000.' },
+  { q:'Round 567,812 to the nearest ten-thousands.',     sub:'Look at the thousands digit (7).',         choices:['560,000','570,000','600,000','500,000'],          ans:1, hint:'Thousands digit is 7. Since 7 is more than 5, add 1. Answer: 570,000.' },
+  { q:'Round 3,250,000 to the nearest millions.',        sub:'Look at the hundred-thousands digit (2).', choices:['3,000,000','4,000,000','3,500,000','3,200,000'], ans:0, hint:'Hundred-thousands digit is 2. Since 2 is less than 5, round down. Answer: 3,000,000.' },
+  { q:'Round 74,560 to the nearest hundreds.',           sub:'Look at the tens digit (6).',              choices:['74,500','74,600','75,000','74,000'],              ans:1, hint:'Tens digit is 6. Since 6 is more than 5, round UP! Answer: 74,600.' },
+  { q:'Round 1,850,200 to the nearest millions.',        sub:'Look at the hundred-thousands digit (8).', choices:['1,000,000','2,000,000','1,800,000','1,900,000'], ans:1, hint:'Hundred-thousands digit is 8. Since 8 is more than 5, add 1. Answer: 2,000,000.' },
+];
+
+var rndMode = 'mc';
+var rndQs = [], rndCurrent = 0, rndScore = 0, rndAnswered = false;
+
+function setRndMode(m) {
+  rndMode = m;
+  document.getElementById('rnd-btn-mc').classList.toggle('active', m === 'mc');
+  document.getElementById('rnd-btn-fill').classList.toggle('active', m === 'fill');
+  startRounding();
+}
+
+function startRounding() {
+  rndQs = shuffle(RND_BANK).slice(0, 8);
+  rndCurrent = 0;
+  rndScore = 0;
+  rndAnswered = false;
+  renderRnd();
+}
+
+function renderRnd() {
+  if (rndCurrent >= rndQs.length) { renderRndResult(); return; }
+  var q = rndQs[rndCurrent];
+  var pct = Math.round(rndCurrent / rndQs.length * 100);
+  var labels = ['A','B','C','D'];
+
+  var html = '<div class="q-header">'
+    + '<span class="q-counter">Question ' + (rndCurrent + 1) + ' of ' + rndQs.length + '</span>'
+    + '<span class="score-pill">Score: ' + rndScore + '</span>'
+    + '</div>'
+    + '<div class="pbar"><div class="pfill" style="width:' + pct + '%"></div></div>'
+    + '<div class="qcard">'
+    + '<span class="q-tag tag-rnd">Rounding off</span>'
+    + '<div class="qtext">' + q.q + '</div>'
+    + '<div class="qsub">' + q.sub + '</div>';
+
+  if (rndMode === 'mc') {
+    html += '<div class="choices">';
+    for (var i = 0; i < q.choices.length; i++) {
+      html += '<button class="choice" id="rnd-c' + i + '" data-idx="' + i + '">'
+            + '<span class="lbl">' + labels[i] + '</span>' + q.choices[i]
+            + '</button>';
+    }
+    html += '</div>';
+  } else {
+    html += '<input class="fill-input" id="rnd-fill" type="text" placeholder="Type your answer (e.g. 26,790)" />'
+          + '<button class="btn-check" id="rnd-check-btn">Check my answer</button>';
+  }
+
+  html += '<div class="fb" id="rnd-fb"></div>'
+        + '<button class="btn-next" id="rnd-next">Next question &rarr;</button>'
+        + '</div>';
+
+  document.getElementById('rnd-area').innerHTML = html;
+  rndAnswered = false;
+
+  // Attach events AFTER inserting HTML
+  if (rndMode === 'mc') {
+    for (var j = 0; j < q.choices.length; j++) {
+      (function(idx) {
+        document.getElementById('rnd-c' + idx).addEventListener('click', function() {
+          checkRndMC(idx);
+        });
+      })(j);
+    }
+  } else {
+    document.getElementById('rnd-check-btn').addEventListener('click', checkRndFill);
+    document.getElementById('rnd-fill').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') checkRndFill();
+    });
+  }
+
+  document.getElementById('rnd-next').addEventListener('click', function() {
+    rndCurrent++;
+    renderRnd();
+  });
+}
+
+function checkRndMC(idx) {
+  if (rndAnswered) return;
+  rndAnswered = true;
+  var q = rndQs[rndCurrent];
+  var btns = document.querySelectorAll('.choice');
+  btns.forEach(function(b) { b.disabled = true; });
+  document.getElementById('rnd-c' + idx).classList.add(idx === q.ans ? 'correct' : 'wrong');
+  if (idx !== q.ans) document.getElementById('rnd-c' + q.ans).classList.add('correct');
+  showRndFeedback(idx === q.ans, q.hint);
+}
+
+function checkRndFill() {
+  if (rndAnswered) return;
+  var input = document.getElementById('rnd-fill');
+  var val = input.value.trim();
+  if (!val) return;
+  rndAnswered = true;
+  input.disabled = true;
+  document.getElementById('rnd-check-btn').disabled = true;
+  var q = rndQs[rndCurrent];
+  var correct = q.choices[q.ans].replace(/[,\s]/g, '');
+  var given   = val.replace(/[,\s]/g, '');
+  showRndFeedback(given === correct, 'Correct answer: ' + q.choices[q.ans] + '. ' + q.hint);
+}
+
+function showRndFeedback(ok, hintText) {
+  if (ok) rndScore++;
+  var msgs = ['Great job! 🎉','You got it! ⭐','Excellent! 💪','Perfect! 🌟'];
+  var fb = document.getElementById('rnd-fb');
+  fb.className = 'fb show ' + (ok ? 'good' : 'bad');
+  fb.textContent = ok ? msgs[Math.floor(Math.random() * msgs.length)] : 'Almost! ' + hintText;
+  var nb = document.getElementById('rnd-next');
+  nb.classList.add('show');
+}
+
+function renderRndResult() {
+  var pct = Math.round(rndScore / rndQs.length * 100);
+  var emoji, msg;
+  if      (pct >= 90) { emoji = '🏆'; msg = 'Amazing! You are a rounding champion!'; }
+  else if (pct >= 70) { emoji = '😊'; msg = 'Great job! A little more practice and you will be perfect!'; }
+  else if (pct >= 50) { emoji = '👍'; msg = 'Good try! Review the summary and try again!'; }
+  else                { emoji = '💡'; msg = 'Keep going! You can do it!'; }
+
+  document.getElementById('rnd-area').innerHTML =
+    '<div class="result-card">'
+    + '<div class="result-emoji">' + emoji + '</div>'
+    + '<div class="result-score">' + rndScore + '/' + rndQs.length + '</div>'
+    + '<div class="result-total">' + pct + '% correct</div>'
+    + '<div class="result-msg">' + msg + '</div>'
+    + '<button class="btn-restart" id="rnd-again">Try again</button>'
+    + '<button class="btn-secondary" id="rnd-summary">Review summary</button>'
+    + '</div>';
+
+  document.getElementById('rnd-again').addEventListener('click', startRounding);
+  document.getElementById('rnd-summary').addEventListener('click', function() { showMain('summary'); });
+}
+
+/* ─────────────────────────────────────────
+   ORDERING DRILLS
+───────────────────────────────────────── */
+var ORD_BANK = {
+  asc: [
+    [12365,32782,45785,98059],
+    [1117771,1171117,1711777,1771117],
+    [23450,8920,56130,41780,99200],
+    [305000,103500,530000,350000,13500],
+    [2456789,1234567,3456789,987654,2000000],
+    [88050,22300,65700,44100,77800],
+    [4500000,2300000,6700000,1100000,5600000],
+    [789321,456123,321789,654000,123456],
+    [67890,12340,89010,34560,56780],
+    [3210000,1050000,8760000,5430000,2100000]
+  ],
+  desc: [
+    [75956,65759,56784,32845],
+    [998899,998889,898898,888998],
+    [520000,350000,410000,280000,90000],
+    [7654321,6543210,5432109,8765432,4321098],
+    [345600,123400,456700,234500,567800],
+    [9000000,7500000,8250000,6000000,8750000],
+    [450890,980230,320560,670410,110780],
+    [3210000,5670000,1230000,4560000,2340000],
+    [84320,19650,73210,46780,95340],
+    [6540000,2100000,8900000,4320000,7650000]
+  ]
+};
+
+var ordMode = 'asc';
+var ordQs = [], ordCurrent = 0, ordScore = 0;
+var dragSrc = null, dragFrom = null;
+var srcTiles = [], ansTiles = [];
+
+function setOrdMode(m) {
+  ordMode = m;
+  document.getElementById('ord-btn-asc').classList.toggle('active',   m === 'asc');
+  document.getElementById('ord-btn-desc').classList.toggle('active',  m === 'desc');
+  document.getElementById('ord-btn-mixed').classList.toggle('active', m === 'mixed');
+  startOrdering();
+}
+
+function buildMixed() {
+  var pool = [];
+  shuffle(ORD_BANK.asc).slice(0,4).forEach(function(nums) { pool.push({ nums: nums, type: 'asc' }); });
+  shuffle(ORD_BANK.desc).slice(0,4).forEach(function(nums) { pool.push({ nums: nums, type: 'desc' }); });
+  return shuffle(pool);
+}
+
+function startOrdering() {
+  if (ordMode === 'mixed') {
+    ordQs = buildMixed();
+  } else {
+    ordQs = shuffle(ORD_BANK[ordMode]).slice(0, 8).map(function(nums) {
+      return { nums: nums, type: ordMode };
+    });
+  }
+  ordCurrent = 0;
+  ordScore = 0;
+  renderOrd();
+}
+
+function renderOrd() {
+  if (ordCurrent >= ordQs.length) { renderOrdResult(); return; }
+
+  var q      = ordQs[ordCurrent];
+  var isAsc  = q.type === 'asc';
+  var pct    = Math.round(ordCurrent / ordQs.length * 100);
+  var correct = q.nums.slice().sort(function(a,b) { return isAsc ? a-b : b-a; });
+
+  srcTiles = shuffle(q.nums);
+  ansTiles = [];
+
+  var tagClass  = isAsc ? 'tag-asc' : 'tag-desc';
+  var tagText   = isAsc ? '&#8679; Ascending order' : '&#8681; Descending order';
+  var arrowText = isAsc ? 'Smallest &#8594; Biggest (left to right)' : 'Biggest &#8594; Smallest (left to right)';
+
+  document.getElementById('ord-area').innerHTML =
+    '<div class="q-header">'
+    + '<span class="q-counter">Question ' + (ordCurrent + 1) + ' of ' + ordQs.length + '</span>'
+    + '<span class="score-pill">Score: ' + ordScore + '</span>'
+    + '</div>'
+    + '<div class="pbar"><div class="pfill" style="width:' + pct + '%"></div></div>'
+    + '<div class="qcard">'
+    + '<span class="q-tag ' + tagClass + '">' + tagText + '</span>'
+    + '<div class="qtext">Put these numbers in the correct order.</div>'
+    + '<div class="arrow-box">' + arrowText + '</div>'
+    + '<div class="zone-label">Numbers to order — drag from here:</div>'
+    + '<div class="drag-zone" id="src-zone"></div>'
+    + '<div class="zone-label" style="margin-top:12px;">Your answer — drop here (position 1 to last):</div>'
+    + '<div class="drag-zone answer-zone" id="ans-zone"></div>'
+    + '<div class="fb" id="ord-fb"></div>'
+    + '<button class="btn-check" id="ord-check">Check my answer</button>'
+    + '<button class="btn-next" id="ord-next">Next question &rarr;</button>'
+    + '</div>';
+
+  renderOrdTiles();
+  setupOrdZones();
+
+  document.getElementById('ord-check').addEventListener('click', function() {
+    checkOrd(correct);
+  });
+  document.getElementById('ord-next').addEventListener('click', function() {
+    ordCurrent++;
+    renderOrd();
+  });
+}
+
+function renderOrdTiles() {
+  var sz = document.getElementById('src-zone');
+  var az = document.getElementById('ans-zone');
+  if (!sz || !az) return;
+  sz.innerHTML = '';
+  az.innerHTML = '';
+  srcTiles.forEach(function(n, i) { sz.appendChild(makeTile(n, 'src')); });
+  ansTiles.forEach(function(n, i) { az.appendChild(makeTile(n, 'ans')); });
+  if (!ansTiles.length) az.innerHTML = '<span style="font-size:13px;color:#94a3b8;">Drop numbers here in order...</span>';
+  if (!srcTiles.length) sz.innerHTML = '<span style="font-size:13px;color:#94a3b8;">(All moved ✓)</span>';
+}
+
+function makeTile(n, zone) {
+  var t = document.createElement('div');
+  t.className = 'num-tile';
+  t.textContent = fmt(n);
+  t.draggable = true;
+
+  t.addEventListener('dragstart', function(e) {
+    dragSrc = n;
+    dragFrom = zone;
+    setTimeout(function() { t.classList.add('dragging'); }, 0);
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  t.addEventListener('dragend', function() { t.classList.remove('dragging'); });
+
+  // Touch support
+  var touchClone = null;
+  t.addEventListener('touchstart', function(e) {
+    dragSrc = n;
+    dragFrom = zone;
+    touchClone = t.cloneNode(true);
+    touchClone.style.cssText = 'position:fixed;opacity:0.85;pointer-events:none;z-index:9999;'
+      + 'padding:9px 16px;background:#eff6ff;border:1.5px solid #2563eb;'
+      + 'color:#1e40af;border-radius:8px;font-weight:700;font-size:14px;';
+    document.body.appendChild(touchClone);
+    t.classList.add('dragging');
+  }, { passive: true });
+
+  t.addEventListener('touchmove', function(e) {
+    var touch = e.touches[0];
+    if (touchClone) {
+      touchClone.style.left = (touch.clientX - 40) + 'px';
+      touchClone.style.top  = (touch.clientY - 22) + 'px';
+    }
+    e.preventDefault();
+  }, { passive: false });
+
+  t.addEventListener('touchend', function(e) {
+    t.classList.remove('dragging');
+    if (touchClone) { touchClone.remove(); touchClone = null; }
+    var touch  = e.changedTouches[0];
+    var el     = document.elementFromPoint(touch.clientX, touch.clientY);
+    var toZone = null;
+    if (el) {
+      if (el.id === 'ans-zone' || el.closest('#ans-zone')) toZone = 'ans';
+      else if (el.id === 'src-zone' || el.closest('#src-zone')) toZone = 'src';
+    }
+    if (toZone && toZone !== dragFrom) moveTile(dragSrc, dragFrom, toZone);
+    dragSrc = null; dragFrom = null;
+  });
+
+  return t;
+}
+
+function setupOrdZones() {
+  ['src-zone','ans-zone'].forEach(function(id) {
+    var z = document.getElementById(id);
+    if (!z) return;
+    var toZone = (id === 'ans-zone') ? 'ans' : 'src';
+    z.addEventListener('dragover',  function(e) { e.preventDefault(); z.classList.add('drag-over'); });
+    z.addEventListener('dragleave', function()  { z.classList.remove('drag-over'); });
+    z.addEventListener('drop',      function(e) {
+      e.preventDefault();
+      z.classList.remove('drag-over');
+      if (dragSrc !== null && dragFrom !== toZone) moveTile(dragSrc, dragFrom, toZone);
+      dragSrc = null; dragFrom = null;
+    });
+  });
+}
+
+function moveTile(val, from, to) {
+  val = Number(val);
+  if (from === 'src' && to === 'ans') {
+    var i = srcTiles.indexOf(val);
+    if (i !== -1) { srcTiles.splice(i, 1); ansTiles.push(val); }
+  } else if (from === 'ans' && to === 'src') {
+    var j = ansTiles.indexOf(val);
+    if (j !== -1) { ansTiles.splice(j, 1); srcTiles.push(val); }
+  }
+  renderOrdTiles();
+  setupOrdZones();
+}
+
+function checkOrd(correct) {
+  var q = ordQs[ordCurrent];
+  var fb = document.getElementById('ord-fb');
+
+  if (ansTiles.length < q.nums.length) {
+    fb.className = 'fb show bad';
+    fb.textContent = 'Move ALL numbers to the answer zone first!';
+    return;
+  }
+
+  var ok = ansTiles.every(function(v, i) { return v === correct[i]; });
+  if (ok) ordScore++;
+
+  var az = document.getElementById('ans-zone');
+  var tiles = az.querySelectorAll('.num-tile');
+  tiles.forEach(function(t, i) {
+    t.draggable = false;
+    t.classList.add(ansTiles[i] === correct[i] ? 'correct-tile' : 'wrong-tile');
+  });
+
+  var msgs = ['Great job! 🎉','You got it! ⭐','Excellent! 💪','Perfect! 🌟'];
+  fb.className = 'fb show ' + (ok ? 'good' : 'bad');
+  fb.textContent = ok
+    ? msgs[Math.floor(Math.random() * msgs.length)]
+    : 'Good try! Correct order: ' + correct.map(fmt).join(' → ');
+
+  document.getElementById('ord-check').style.display = 'none';
+  document.getElementById('ord-next').classList.add('show');
+}
+
+function renderOrdResult() {
+  var pct = Math.round(ordScore / ordQs.length * 100);
+  var emoji, msg;
+  if      (pct >= 90) { emoji = '🏆'; msg = 'Amazing! You are an ordering champion!'; }
+  else if (pct >= 70) { emoji = '😊'; msg = 'Great job! Almost perfect!'; }
+  else if (pct >= 50) { emoji = '👍'; msg = 'Good try! Practice makes perfect!'; }
+  else                { emoji = '💡'; msg = 'Keep going! You can do it!'; }
+
+  document.getElementById('ord-area').innerHTML =
+    '<div class="result-card">'
+    + '<div class="result-emoji">' + emoji + '</div>'
+    + '<div class="result-score">' + ordScore + '/' + ordQs.length + '</div>'
+    + '<div class="result-total">' + pct + '% correct</div>'
+    + '<div class="result-msg">' + msg + '</div>'
+    + '<button class="btn-restart" id="ord-again">Try again</button>'
+    + '<button class="btn-secondary" id="ord-mixed">Mixed challenge</button>'
+    + '</div>';
+
+  document.getElementById('ord-again').addEventListener('click', startOrdering);
+  document.getElementById('ord-mixed').addEventListener('click', function() { setOrdMode('mixed'); });
+}
+</script>
+</body>
+</html>

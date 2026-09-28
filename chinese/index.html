@@ -1,1 +1,616 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ติวจีนปลายภาค</title>
+<style>
+  :root{
+    --bg:#fff7ef; --card:#ffffff; --ink:#2c2436; --muted:#7a7088;
+    --brand:#e8564f; --brand2:#ff8a3d; --accent:#2fa8a0; --accent2:#5b8def;
+    --gold:#f6b93b; --good:#28a465; --bad:#e05656; --line:#efe4d8;
+    --shadow:0 8px 26px rgba(120,70,40,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#1c1826; --card:#272235; --ink:#f2ecf7; --muted:#a99fbb;
+      --line:#37304a; --shadow:0 8px 26px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#1c1826; --card:#272235; --ink:#f2ecf7; --muted:#a99fbb;
+    --line:#37304a; --shadow:0 8px 26px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Sarabun","Noto Sans Thai",system-ui,sans-serif;
+    -webkit-text-size-adjust:100%; line-height:1.5;
+    padding:0 16px calc(28px + env(safe-area-inset-bottom));
+  }
+  .zh{font-family:"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif;}
+  .wrap{max-width:680px;margin:0 auto}
+  header.top{
+    text-align:center;padding:22px 0 8px;position:sticky;top:0;z-index:5;
+    background:linear-gradient(var(--bg) 78%,transparent);
+  }
+  .logo{font-size:34px;font-weight:800;letter-spacing:.5px}
+  .logo .zh{color:var(--brand)}
+  .sub{color:var(--muted);font-size:14px;margin-top:2px}
 
+  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px;margin:14px 0}
+  h2{margin:.2em 0 .5em;font-size:20px}
+  p.lead{color:var(--muted);margin:.2em 0 1em}
+
+  /* Home menu */
+  .menu{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media (max-width:460px){.menu{grid-template-columns:1fr}}
+  .tile{
+    border:1px solid var(--line);background:var(--card);border-radius:18px;padding:16px;
+    cursor:pointer;text-align:left;transition:transform .12s,box-shadow .12s;color:inherit;
+    display:flex;gap:12px;align-items:center;box-shadow:var(--shadow)
+  }
+  .tile:active{transform:scale(.98)}
+  .tile .emo{font-size:30px;line-height:1;flex:0 0 auto}
+  .tile b{display:block;font-size:16px}
+  .tile span{color:var(--muted);font-size:13px}
+  .tile .cnt{margin-left:auto;font-size:12px;color:var(--muted);background:var(--bg);border-radius:20px;padding:3px 9px;border:1px solid var(--line)}
+
+  .btn{
+    -webkit-appearance:none;appearance:none;border:none;border-radius:14px;padding:14px 18px;
+    font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;
+    background:var(--brand);color:#fff;box-shadow:var(--shadow);transition:transform .1s,filter .1s
+  }
+  .btn:active{transform:scale(.97)}
+  .btn.sec{background:var(--card);color:var(--ink);border:1px solid var(--line);box-shadow:none}
+  .btn.ghost{background:transparent;color:var(--muted);box-shadow:none;border:none;padding:10px}
+  .btn.wide{width:100%}
+  .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+
+  /* Progress + dots */
+  .bar{height:10px;border-radius:20px;background:var(--line);overflow:hidden;margin:6px 0 12px}
+  .bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand2),var(--brand));transition:width .3s}
+  .metarow{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;margin-bottom:2px}
+  .dots{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px;justify-content:center}
+  .dot{width:24px;height:24px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .dot.done{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .dot.wrong{background:var(--bad);color:#fff;border-color:var(--bad)}
+  .dot.cur{outline:3px solid var(--gold);outline-offset:1px}
+
+  /* Question */
+  .qbig{font-size:15px;color:var(--muted)}
+  .prompt{font-size:34px;font-weight:800;text-align:center;margin:14px 0 4px}
+  .prompt.small{font-size:24px;font-weight:700;line-height:1.4}
+  .hintline{text-align:center;color:var(--muted);font-size:15px;margin-bottom:8px}
+  .opts{display:grid;gap:10px;margin-top:8px}
+  .opt{
+    text-align:left;border:2px solid var(--line);background:var(--card);color:inherit;border-radius:14px;
+    padding:14px 16px;font-size:18px;cursor:pointer;font-family:inherit;transition:border-color .1s,background .1s;
+    display:flex;align-items:center;gap:12px
+  }
+  .opt .k{width:26px;height:26px;flex:0 0 auto;border-radius:8px;background:var(--bg);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--muted)}
+  .opt:active{transform:scale(.99)}
+  .opt.correct{border-color:var(--good);background:rgba(40,164,101,.12)}
+  .opt.correct .k{background:var(--good);color:#fff;border-color:var(--good)}
+  .opt.wrong{border-color:var(--bad);background:rgba(224,86,86,.1)}
+  .opt.wrong .k{background:var(--bad);color:#fff;border-color:var(--bad)}
+  .opt.lock{pointer-events:none;opacity:.9}
+  .fb{margin-top:12px;padding:12px 14px;border-radius:12px;font-size:15px;display:none}
+  .fb.show{display:block}
+  .fb.ok{background:rgba(40,164,101,.12);color:var(--good)}
+  .fb.no{background:rgba(224,86,86,.1);color:var(--bad)}
+  .fb b{color:inherit}
+  .nav{display:flex;gap:10px;margin-top:16px;align-items:center}
+  .nav .btn{flex:1}
+  .timer{font-variant-numeric:tabular-nums;font-weight:700;color:var(--brand)}
+
+  /* Flashcards */
+  .fcard{perspective:1200px;margin-top:10px}
+  .fcard .inner{position:relative;min-height:230px;transition:transform .5s;transform-style:preserve-3d;cursor:pointer}
+  .fcard.flip .inner{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--line);border-radius:18px;background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px;text-align:center}
+  .face.back{transform:rotateY(180deg);background:linear-gradient(160deg,#fff,rgba(47,168,160,.08))}
+  :root[data-theme="dark"] .face.back,:root:not([data-theme="light"]) .face.back{background:linear-gradient(160deg,var(--card),rgba(47,168,160,.14))}
+  .face .big{font-size:52px;font-weight:800}
+  .face .py{font-size:24px;color:var(--accent);font-weight:700;margin-top:6px}
+  .face .th{font-size:22px;margin-top:4px}
+  .face .tap{position:absolute;bottom:10px;font-size:12px;color:var(--muted)}
+
+  /* Reading */
+  .passage{background:linear-gradient(160deg,rgba(255,138,61,.10),rgba(232,86,79,.06));border-radius:16px;padding:18px;font-size:21px;line-height:2.1;letter-spacing:.5px}
+  .passage .t{font-weight:800;text-align:center;font-size:23px;margin-bottom:10px}
+
+  /* Results */
+  .score{text-align:center;padding:8px 0}
+  .score .num{font-size:56px;font-weight:800;color:var(--brand)}
+  .score .lbl{color:var(--muted)}
+  .medal{font-size:64px}
+  table.rev{width:100%;border-collapse:collapse;margin-top:10px;font-size:14px}
+  table.rev td{border-top:1px solid var(--line);padding:8px 6px;vertical-align:top}
+  table.rev .zh{font-size:17px}
+  .tag{display:inline-block;font-size:12px;border-radius:8px;padding:1px 7px}
+  .tag.ok{background:rgba(40,164,101,.15);color:var(--good)}
+  .tag.no{background:rgba(224,86,86,.13);color:var(--bad)}
+
+  .back{position:sticky;top:14px}
+  .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}
+  .hide{display:none!important}
+  .chip{display:inline-block;background:var(--bg);border:1px solid var(--line);border-radius:20px;padding:4px 12px;font-size:13px;color:var(--muted);margin:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><span class="zh">🀄 中文</span> ติวปลายภาค</div>
+    <div class="sub" id="subline">แบบฝึกทบทวน • ป.5–6 EP</div>
+  </header>
+
+  <!-- HOME -->
+  <section id="home">
+    <div class="card">
+      <h2>เลือกส่วนที่อยากฝึก 👇</h2>
+      <p class="lead">แต่ละส่วนมีการเดินทีละข้อ ให้คะแนน และทำใหม่ได้ ครบทุกเนื้อหาที่จะออกสอบ</p>
+      <div class="menu" id="menu"></div>
+    </div>
+    <div class="card">
+      <h2>📊 ผลล่าสุดของหนู</h2>
+      <div id="scoreboard" class="lead">ยังไม่มีคะแนน เริ่มฝึกกันเลย! 💪</div>
+      <div class="btnrow"><button class="btn sec" onclick="resetScores()">ล้างคะแนน</button>
+      <button class="btn ghost" id="themeBtn" onclick="toggleTheme()">🌙 สลับโหมดสว่าง/มืด</button></div>
+    </div>
+  </section>
+
+  <!-- FLASHCARDS -->
+  <section id="flash" class="hide">
+    <button class="btn ghost back" onclick="go('home')">← กลับหน้าหลัก</button>
+    <div class="card">
+      <div class="metarow"><span id="fcMeta"></span><span id="fcName"></span></div>
+      <div class="bar"><i id="fcBar"></i></div>
+      <div class="fcard" id="fcard" onclick="flipCard()">
+        <div class="inner">
+          <div class="face front"><div class="big zh" id="fcFront"></div><div class="tap">แตะเพื่อดูคำแปล 👆</div></div>
+          <div class="face back">
+            <div class="py" id="fcPy"></div>
+            <div class="big zh" id="fcBack" style="font-size:38px"></div>
+            <div class="th" id="fcTh"></div>
+            <div class="tap">แตะเพื่อพลิกกลับ 👆</div>
+          </div>
+        </div>
+      </div>
+      <div class="nav">
+        <button class="btn sec" onclick="fcPrev()">← ก่อนหน้า</button>
+        <button class="btn" onclick="fcNext()">ถัดไป →</button>
+      </div>
+      <div class="btnrow"><button class="btn ghost wide" onclick="shuffleFlash()">🔀 สลับลำดับการ์ด</button></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="hide">
+    <button class="btn ghost back" onclick="quitQuiz()">← ออก</button>
+    <div class="card">
+      <div class="metarow">
+        <span id="qName"></span>
+        <span>ข้อ <b id="qPos">1</b>/<b id="qTot">10</b> <span id="qTimer" class="timer"></span></span>
+      </div>
+      <div class="bar"><i id="qBar"></i></div>
+
+      <div id="qReading" class="passage hide"></div>
+      <div class="qbig" id="qStem"></div>
+      <div class="prompt zh" id="qPrompt"></div>
+      <div class="hintline" id="qHint"></div>
+      <div class="opts" id="qOpts"></div>
+      <div class="fb" id="qFb"></div>
+
+      <div class="nav">
+        <button class="btn sec" id="qPrev" onclick="qPrev()">←</button>
+        <button class="btn" id="qNext" onclick="qNext()">ถัดไป →</button>
+      </div>
+      <div class="dots" id="qDots"></div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="result" class="hide">
+    <div class="card">
+      <div class="score">
+        <div class="medal" id="rMedal">🎉</div>
+        <div class="num"><span id="rScore">0</span>/<span id="rTot">0</span></div>
+        <div class="lbl" id="rMsg"></div>
+      </div>
+      <div class="btnrow" style="justify-content:center">
+        <button class="btn" onclick="retryQuiz()">🔁 ทำใหม่</button>
+        <button class="btn sec" onclick="retryWrong()" id="rWrongBtn">✍️ ฝึกเฉพาะข้อผิด</button>
+        <button class="btn sec" onclick="go('home')">🏠 หน้าหลัก</button>
+      </div>
+      <h2 style="margin-top:18px">📋 เฉลย</h2>
+      <table class="rev" id="rTable"></table>
+    </div>
+  </section>
+
+  <div class="foot">สร้างสำหรับติวสอบ • ปรับแก้ได้ตามต้องการ 🀄</div>
+</div>
+
+<script>
+/* ============ DATA ============ */
+// Section 1: pinyin vocabulary
+const V1 = [
+  ["帮忙","bāngmáng","ช่วยเหลือ"],
+  ["白菜","báicài","ผักกาดขาว"],
+  ["主人","zhǔrén","เจ้าของ"],
+  ["商场","shāngchǎng","ห้างสรรพสินค้า"],
+  ["保护","bǎohù","ปกป้อง / คุ้มครอง"],
+  ["空调","kōngtiáo","เครื่องปรับอากาศ (แอร์)"],
+  ["沙发","shāfā","โซฟา"],
+  ["肩膀","jiānbǎng","ไหล่ / บ่า"],
+  ["白兔","báitù","กระต่ายขาว"],
+  ["感激","gǎnjī","ซาบซึ้งใจ"]
+];
+// Section 2: vocabulary grid
+const V2 = [
+  ["象棋","xiàngqí","หมากรุกจีน"],
+  ["礼物","lǐwù","ของขวัญ"],
+  ["毛衣","máoyī","เสื้อไหมพรม"],
+  ["排队","páiduì","เข้าแถว / ต่อคิว"],
+  ["钱包","qiánbāo","กระเป๋าสตางค์"],
+  ["羡慕","xiànmù","อิจฉา / ชื่นชม"],
+  ["样式","yàngshì","แบบ / ดีไซน์"],
+  ["花园","huāyuán","สวนดอกไม้"],
+  ["工整","gōngzhěng","(เขียน) เรียบร้อยเป็นระเบียบ"],
+  ["不错","búcuò","ดีทีเดียว / ไม่เลว"],
+  ["椅子","yǐzi","เก้าอี้"],
+  ["桌子","zhuōzi","โต๊ะ"],
+  ["流利","liúlì","คล่องแคล่ว (พูด)"],
+  ["安静","ānjìng","เงียบสงบ"],
+  ["仔细","zǐxì","ละเอียดรอบคอบ"],
+  ["伤心","shāngxīn","เสียใจ"],
+  ["厉害","lìhài","เก่ง / ร้ายกาจ"],
+  ["年轻","niánqīng","อายุน้อย / หนุ่มสาว"],
+  ["本子","běnzi","สมุด"],
+  ["书包","shūbāo","กระเป๋านักเรียน"]
+];
+const ALLVOC = V1.concat(V2);
+
+// Section 5: measure words
+const MW = [
+  ["本","书","shū","หนังสือ","一本书"],
+  ["只","兔子","tùzi","กระต่าย","一只兔子"],
+  ["车","白菜","báicài","ผักกาดขาว (เต็มคันรถ)","一车白菜"],
+  ["件","礼物","lǐwù","ของขวัญ","一件礼物"],
+  ["个","书包","shūbāo","กระเป๋านักเรียน","一个书包"],
+  ["个","汉字","hànzì","อักษรจีน","一个汉字"],
+  ["只","鸡","jī","ไก่","一只鸡"],
+  ["把","椅子","yǐzi","เก้าอี้","一把椅子"],
+  ["件","毛衣","máoyī","เสื้อไหมพรม","一件毛衣"],
+  ["张","明信片","míngxìnpiàn","โปสการ์ด","一张明信片"]
+];
+const MWSET = ["本","只","车","件","个","把","张"];
+
+// Section 3: reading passage
+const READING = {
+  title:"老山羊的礼物",
+  text:"秋天到了，老山羊在田里收白菜，小白兔和小灰兔来帮忙。老山羊很感激他们，收完白菜，他送给小灰兔一车白菜，也送给小白兔一车白菜。小白兔说：“谢谢您，老山羊，我不要白菜，您送给我一些菜子吧！”",
+  q:[
+    {p:"เรื่องนี้เกิดขึ้นในฤดูใด？",o:["秋天 (ฤดูใบไม้ร่วง)","夏天 (ฤดูร้อน)","冬天 (ฤดูหนาว)","春天 (ฤดูใบไม้ผลิ)"],a:0,e:"ประโยคแรก 秋天到了 = ฤดูใบไม้ร่วงมาถึงแล้ว"},
+    {p:"老山羊 กำลังทำอะไรอยู่ในนา？",o:["收白菜 (เก็บผักกาดขาว)","种花 (ปลูกดอกไม้)","看电视 (ดูทีวี)","买东西 (ซื้อของ)"],a:0,e:"老山羊在田里收白菜 = แพะแก่เก็บผักกาดขาวในนา"},
+    {p:"ใครมาช่วยแพะแก่？",o:["小白兔和小灰兔","老师和学生","妈妈和爸爸","小狗和小猫"],a:0,e:"小白兔和小灰兔来帮忙 = กระต่ายขาวและกระต่ายเทากันมาช่วย"},
+    {p:"แพะแก่รู้สึกอย่างไรต่อกระต่ายสองตัว？",o:["很感激 (ซาบซึ้งใจมาก)","很生气 (โกรธมาก)","很伤心 (เสียใจมาก)","很累 (เหนื่อยมาก)"],a:0,e:"老山羊很感激他们 = แพะแก่ซาบซึ้งใจพวกเขามาก"},
+    {p:"แพะแก่ให้ผักกาดขาวกระต่ายแต่ละตัวเท่าไร？",o:["一车 (หนึ่งคันรถ)","一本 (หนึ่งเล่ม)","一只 (หนึ่งตัว)","一件 (หนึ่งชิ้น)"],a:0,e:"送给…一车白菜 ใช้ลักษณนาม 车 = หนึ่งคันรถ"},
+    {p:"小白兔 ขออะไรแทนผักกาดขาว？",o:["菜子 (เมล็ดผัก)","毛衣 (เสื้อไหมพรม)","礼物 (ของขวัญ)","钱包 (กระเป๋าสตางค์)"],a:0,e:"我不要白菜，您送给我一些菜子吧 = ไม่เอาผักกาด ขอเมล็ดผักแทน (เพื่อนำไปปลูกเอง)"},
+    {p:"ทำไม 小白兔 ถึงขอเมล็ดผักแทน？ (คิดวิเคราะห์)",o:["อยากปลูกผักกินเองต่อไป","ไม่ชอบกินผักกาด","อยากขายเมล็ดผัก","เพราะผักกาดหนักเกินไป"],a:0,e:"การขอเมล็ดพันธุ์แสดงว่าอยากปลูกเอง = พึ่งพาตนเองในระยะยาว"}
+  ]
+};
+
+// Section 4: sentence bank (for reading/grammar questions)
+const SENT = [
+  {zh:"我们逛商场逛得很开心。",py:"wǒmen guàng shāngchǎng guàng de hěn kāixīn",th:"พวกเราเดินห้างกันอย่างสนุกสนาน"},
+  {zh:"屋子里太热了，快打开空调吧！",py:"wūzi lǐ tài rè le, kuài dǎkāi kōngtiáo ba",th:"ในห้องร้อนมาก รีบเปิดแอร์เถอะ!"},
+  {zh:"妈妈想给我买一件毛衣。",py:"māma xiǎng gěi wǒ mǎi yí jiàn máoyī",th:"แม่อยากซื้อเสื้อไหมพรมให้ฉันหนึ่งตัว"},
+  {zh:"每件毛衣的样式都很不错。",py:"měi jiàn máoyī de yàngshì dōu hěn búcuò",th:"เสื้อไหมพรมทุกตัวแบบสวยดีทั้งนั้น"},
+  {zh:"你的汉字写得真工整呀！",py:"nǐ de hànzì xiě de zhēn gōngzhěng ya",th:"อักษรจีนของเธอเขียนเป็นระเบียบจริง ๆ!"},
+  {zh:"小华坐在沙发上看电视。",py:"xiǎohuá zuò zài shāfā shàng kàn diànshì",th:"เสี่ยวหัวนั่งบนโซฟาดูทีวี"},
+  {zh:"这个问题你听懂了吗？",py:"zhège wèntí nǐ tīngdǒng le ma",th:"คำถามนี้เธอฟังเข้าใจไหม?"},
+  {zh:"小明学会写汉字了。",py:"xiǎomíng xuéhuì xiě hànzì le",th:"เสี่ยวหมิงเขียนอักษรจีนเป็นแล้ว"},
+  {zh:"我们买了一件绿色的毛衣。",py:"wǒmen mǎi le yí jiàn lǜsè de máoyī",th:"พวกเราซื้อเสื้อไหมพรมสีเขียวหนึ่งตัว"},
+  {zh:"老师站在黑板前。",py:"lǎoshī zhàn zài hēibǎn qián",th:"คุณครูยืนอยู่หน้ากระดานดำ"},
+  {zh:"请同学们合上书。",py:"qǐng tóngxuémen hé shàng shū",th:"ขอให้นักเรียนปิดหนังสือ"},
+  {zh:"风太大了关上门吧！",py:"fēng tài dà le guān shàng mén ba",th:"ลมแรงมาก ปิดประตูเถอะ!"}
+];
+
+/* ============ QUIZ BUILDERS ============ */
+const shuffle = a => {const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[b[i],b[j]]=[b[j],b[i]]}return b};
+const sample = (a,n,notThis)=>shuffle(a.filter(x=>x!==notThis)).slice(0,n);
+
+function mcQuestion(stem, prompt, correct, distractors, expl, hint){
+  const opts = shuffle([correct, ...distractors]);
+  return {stem, prompt, hint:hint||"", opts, a:opts.indexOf(correct), e:expl};
+}
+
+// pinyin: show hanzi -> pick pinyin
+function buildPinyin(list){
+  return shuffle(list).map(v=>{
+    const wrong = sample(list.map(x=>x[1]), 3, v[1]);
+    return mcQuestion("เลือกพินอินที่ถูกต้อง", v[0], v[1], wrong,
+      `${v[0]} = ${v[1]} (${v[2]})`, v[2]);
+  });
+}
+// meaning: hanzi+pinyin -> pick Thai
+function buildMeaning(list){
+  return shuffle(list).map(v=>{
+    const wrong = sample(list.map(x=>x[2]), 3, v[2]);
+    return mcQuestion("คำนี้แปลว่าอะไร", v[0], v[2], wrong,
+      `${v[0]} (${v[1]}) = ${v[2]}`, v[1]);
+  });
+}
+// reverse: Thai -> pick hanzi
+function buildThai2Han(list){
+  return shuffle(list).map(v=>{
+    const wrong = sample(list.map(x=>x[0]), 3, v[0]);
+    const q = mcQuestion("เลือกอักษรจีนให้ตรงกับคำแปล", v[2], v[0], wrong,
+      `${v[2]} = ${v[0]} (${v[1]})`, "");
+    q.promptSmall = true; return q;
+  });
+}
+// measure words
+function buildMW(){
+  return shuffle(MW).map(m=>{
+    const wrong = sample(MWSET, 3, m[0]);
+    const q = mcQuestion("เติมลักษณนาม (量词) ให้ถูก", `一 __ ${m[1]}`, m[0], wrong,
+      `${m[4]} (${m[2]}) = ${m[3]}`, m[3]);
+    q.promptSmall = true; return q;
+  });
+}
+// reading
+function buildReading(){
+  const qs = READING.q.map(x=>{
+    const opts = shuffle(x.o);
+    return {stem:"อ่านเรื่องแล้วตอบคำถาม", prompt:x.p, promptSmall:true, hint:"",
+      opts, a:opts.indexOf(x.o[x.a]), e:x.e, reading:true};
+  });
+  return qs;
+}
+// sentences: mix of Thai-meaning and fill-blank
+function buildSentences(){
+  const qs = [];
+  const pool = shuffle(SENT);
+  pool.forEach((s,i)=>{
+    if(i%2===0){
+      // meaning question
+      const wrong = sample(SENT.map(x=>x.th), 3, s.th);
+      const q = mcQuestion("ประโยคนี้แปลว่าอะไร", s.zh, s.th, wrong, `${s.zh}\n${s.py}\n= ${s.th}`, s.py);
+      q.promptSmall = true; qs.push(q);
+    } else {
+      // fill blank: remove a key vocab word, ask which word fits
+      const targets = ["空调","毛衣","沙发","汉字","商场","黑板","书"];
+      let hit=null;
+      for(const t of targets){ if(s.zh.includes(t)){hit=t;break} }
+      if(hit){
+        const blanked = s.zh.replace(hit,"____");
+        const wrong = sample(["空调","毛衣","沙发","汉字","商场","黑板","礼物","书包"],3,hit);
+        const q = mcQuestion("เติมคำในช่องว่างให้ได้ใจความ", blanked, hit, wrong, `${s.zh}\n= ${s.th}`, s.th);
+        q.promptSmall = true; qs.push(q);
+      } else {
+        const wrong = sample(SENT.map(x=>x.th), 3, s.th);
+        const q = mcQuestion("ประโยคนี้แปลว่าอะไร", s.zh, s.th, wrong, `${s.zh}\n= ${s.th}`, s.py);
+        q.promptSmall = true; qs.push(q);
+      }
+    }
+  });
+  return qs;
+}
+// mixed final test
+function buildMixed(){
+  const pack = shuffle([
+    ...buildPinyin(V1).slice(0,4),
+    ...buildMeaning(V2).slice(0,5),
+    ...buildThai2Han(ALLVOC).slice(0,3),
+    ...buildMW().slice(0,4),
+    ...buildReading().slice(0,2),
+    ...buildSentences().slice(0,4)
+  ]);
+  return pack;
+}
+
+/* ============ MENU CONFIG ============ */
+const SECTIONS = {
+  pinyin:{emo:"🔤",name:"คำศัพท์ + พินอิน",desc:"เลือกพินอินให้ถูก",build:()=>buildPinyin(ALLVOC),timed:false},
+  meaning:{emo:"📖",name:"คำศัพท์ + ความหมาย",desc:"จีน → ไทย",build:()=>buildMeaning(ALLVOC),timed:false},
+  writing:{emo:"✍️",name:"ไทย → อักษรจีน",desc:"เลือกตัวอักษรให้ตรง",build:()=>buildThai2Han(ALLVOC),timed:false},
+  mw:{emo:"🧮",name:"量词 ลักษณนาม",desc:"本 / 只 / 车 / 件 / 个 / 把",build:buildMW,timed:false},
+  reading:{emo:"🐐",name:"บทอ่าน 老山羊的礼物",desc:"อ่านจับใจความ",build:buildReading,timed:false},
+  sentence:{emo:"💬",name:"ประโยค 23 ประโยค",desc:"แปล + เติมคำ",build:buildSentences,timed:false},
+  mixed:{emo:"🏆",name:"แบบทดสอบรวม (จับเวลา)",desc:"22 ข้อจากทุกส่วน",build:buildMixed,timed:true}
+};
+
+/* ============ STATE ============ */
+let Q=[], idx=0, answers=[], curSection=null, timerId=null, elapsed=0;
+
+/* ============ NAV ============ */
+function go(id){
+  ["home","flash","quiz","result"].forEach(s=>document.getElementById(s).classList.add("hide"));
+  document.getElementById(id).classList.remove("hide");
+  window.scrollTo(0,0);
+}
+
+/* ============ HOME ============ */
+function buildMenu(){
+  const m=document.getElementById("menu"); m.innerHTML="";
+  // flashcards tile first
+  const fc=document.createElement("button"); fc.className="tile";
+  fc.innerHTML=`<span class="emo">🃏</span><span><b>บัตรคำ (Flashcards)</b><span>ท่องศัพท์ทั้งหมด</span></span><span class="cnt">${ALLVOC.length} คำ</span>`;
+  fc.onclick=()=>startFlash();
+  m.appendChild(fc);
+  Object.entries(SECTIONS).forEach(([k,s])=>{
+    const b=document.createElement("button"); b.className="tile";
+    let cnt = s.build().length;
+    b.innerHTML=`<span class="emo">${s.emo}</span><span><b>${s.name}</b><span>${s.desc}</span></span><span class="cnt">${cnt} ข้อ</span>`;
+    b.onclick=()=>startQuiz(k);
+    m.appendChild(b);
+  });
+}
+function renderScoreboard(){
+  const el=document.getElementById("scoreboard");
+  let sc={}; try{sc=JSON.parse(localStorage.getItem("cnScores")||"{}")}catch(e){}
+  const keys=Object.keys(sc);
+  if(!keys.length){el.innerHTML="ยังไม่มีคะแนน เริ่มฝึกกันเลย! 💪";return}
+  el.innerHTML = keys.map(k=>{
+    const nm = k==="_flash"?"บัตรคำ":(SECTIONS[k]?SECTIONS[k].name:k);
+    if(k==="_flash") return "";
+    const pct = Math.round(sc[k].best/sc[k].tot*100);
+    return `<span class="chip">${SECTIONS[k]?SECTIONS[k].emo:"•"} ${nm}: <b>${sc[k].best}/${sc[k].tot}</b> (${pct}%)</span>`;
+  }).join("");
+}
+function saveScore(k,score,tot){
+  let sc={}; try{sc=JSON.parse(localStorage.getItem("cnScores")||"{}")}catch(e){}
+  if(!sc[k]||score>sc[k].best) sc[k]={best:score,tot:tot};
+  try{localStorage.setItem("cnScores",JSON.stringify(sc))}catch(e){}
+}
+function resetScores(){try{localStorage.removeItem("cnScores")}catch(e){}; renderScoreboard()}
+
+/* ============ THEME ============ */
+function toggleTheme(){
+  const cur=document.documentElement.getAttribute("data-theme");
+  const dark = cur? cur==="dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  document.documentElement.setAttribute("data-theme", dark?"light":"dark");
+  try{localStorage.setItem("cnTheme",dark?"light":"dark")}catch(e){}
+}
+try{const t=localStorage.getItem("cnTheme"); if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}
+
+/* ============ FLASHCARDS ============ */
+let FC=[], fi=0, flipped=false;
+function startFlash(){FC=ALLVOC.slice(); fi=0; renderFC(); go("flash")}
+function renderFC(){
+  flipped=false; document.getElementById("fcard").classList.remove("flip");
+  const v=FC[fi];
+  document.getElementById("fcFront").textContent=v[0];
+  document.getElementById("fcPy").textContent=v[1];
+  document.getElementById("fcBack").textContent=v[0];
+  document.getElementById("fcTh").textContent=v[2];
+  document.getElementById("fcMeta").textContent=`การ์ด ${fi+1}/${FC.length}`;
+  document.getElementById("fcName").textContent="🃏 บัตรคำ";
+  document.getElementById("fcBar").style.width=((fi+1)/FC.length*100)+"%";
+}
+function flipCard(){flipped=!flipped; document.getElementById("fcard").classList.toggle("flip",flipped)}
+function fcNext(){fi=(fi+1)%FC.length; renderFC()}
+function fcPrev(){fi=(fi-1+FC.length)%FC.length; renderFC()}
+function shuffleFlash(){FC=shuffle(FC); fi=0; renderFC()}
+
+/* ============ QUIZ ENGINE ============ */
+function startQuiz(key){
+  curSection=key; const s=SECTIONS[key];
+  Q=s.build(); idx=0; answers=new Array(Q.length).fill(null);
+  elapsed=0; if(timerId)clearInterval(timerId);
+  const tEl=document.getElementById("qTimer");
+  if(s.timed){tEl.classList.remove("hide"); timerId=setInterval(()=>{elapsed++; tEl.textContent="⏱ "+fmt(elapsed)},1000); tEl.textContent="⏱ 0:00"}
+  else{tEl.textContent=""; tEl.classList.add("hide")}
+  document.getElementById("qName").textContent=s.emo+" "+s.name;
+  document.getElementById("qTot").textContent=Q.length;
+  buildDots(); renderQ(); go("quiz");
+}
+function fmt(s){return Math.floor(s/60)+":"+String(s%60).padStart(2,"0")}
+function buildDots(){
+  const d=document.getElementById("qDots"); d.innerHTML="";
+  Q.forEach((q,i)=>{const b=document.createElement("div"); b.className="dot"; b.textContent=i+1; b.onclick=()=>{idx=i;renderQ()}; d.appendChild(b)});
+}
+function updateDots(){
+  [...document.getElementById("qDots").children].forEach((b,i)=>{
+    b.className="dot"+(answers[i]!=null?(answers[i].ok?" done":" wrong"):"")+(i===idx?" cur":"");
+  });
+}
+function renderQ(){
+  const q=Q[idx];
+  document.getElementById("qPos").textContent=idx+1;
+  document.getElementById("qBar").style.width=((idx+1)/Q.length*100)+"%";
+  // reading passage
+  const rd=document.getElementById("qReading");
+  if(q.reading){rd.classList.remove("hide"); rd.innerHTML=`<div class="t zh">${READING.title}</div><div class="zh">${READING.text}</div>`}
+  else rd.classList.add("hide");
+  document.getElementById("qStem").textContent=q.stem;
+  const pr=document.getElementById("qPrompt");
+  pr.textContent=q.prompt; pr.className="prompt zh"+(q.promptSmall?" small":"");
+  document.getElementById("qHint").textContent = answers[idx]==null && q.hint ? "💡 "+q.hint : "";
+  // options
+  const o=document.getElementById("qOpts"); o.innerHTML="";
+  const letters=["ก","ข","ค","ง"];
+  q.opts.forEach((txt,i)=>{
+    const b=document.createElement("button"); b.className="opt";
+    b.innerHTML=`<span class="k">${letters[i]}</span><span>${txt}</span>`;
+    b.onclick=()=>pick(i);
+    o.appendChild(b);
+  });
+  const fb=document.getElementById("qFb"); fb.className="fb"; fb.textContent="";
+  if(answers[idx]!=null) lockView();
+  document.getElementById("qPrev").style.visibility = idx===0?"hidden":"visible";
+  document.getElementById("qNext").textContent = idx===Q.length-1?"ดูผล ✅":"ถัดไป →";
+  updateDots();
+}
+function pick(i){
+  if(answers[idx]!=null) return;
+  const q=Q[idx]; const ok=i===q.a;
+  answers[idx]={choice:i,ok};
+  lockView(); updateDots();
+  document.getElementById("qHint").textContent="";
+}
+function lockView(){
+  const q=Q[idx]; const ans=answers[idx];
+  const opts=[...document.getElementById("qOpts").children];
+  opts.forEach((b,i)=>{
+    b.classList.add("lock");
+    if(i===q.a) b.classList.add("correct");
+    if(ans && i===ans.choice && !ans.ok) b.classList.add("wrong");
+  });
+  const fb=document.getElementById("qFb");
+  if(ans.ok){fb.className="fb show ok"; fb.innerHTML="✅ <b>ถูกต้อง!</b> "+esc(q.e).replace(/\n/g,"<br>")}
+  else{fb.className="fb show no"; fb.innerHTML="❌ <b>ยังไม่ใช่</b><br>"+esc(q.e).replace(/\n/g,"<br>")}
+}
+function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function qNext(){ if(idx===Q.length-1){ if(answers.includes(null)){ const go1=confirm("ยังตอบไม่ครบทุกข้อ ดูผลเลยไหม?"); if(!go1)return } finish() } else {idx++; renderQ()} }
+function qPrev(){ if(idx>0){idx--; renderQ()} }
+function quitQuiz(){ if(timerId)clearInterval(timerId); go("home") }
+
+/* ============ RESULTS ============ */
+function finish(){
+  if(timerId)clearInterval(timerId);
+  const score=answers.filter(a=>a&&a.ok).length, tot=Q.length;
+  saveScore(curSection,score,tot); renderScoreboard();
+  document.getElementById("rScore").textContent=score;
+  document.getElementById("rTot").textContent=tot;
+  const pct=score/tot;
+  const medal = pct===1?"🏆":pct>=.8?"🌟":pct>=.6?"👍":"💪";
+  const msg = pct===1?"เต็ม! เก่งมากกก 🎉":pct>=.8?"เยี่ยมมาก! เกือบเต็มแล้ว":pct>=.6?"ดีแล้ว ฝึกอีกนิดนะ":"สู้ ๆ ลองทำใหม่อีกรอบ!";
+  document.getElementById("rMedal").textContent=medal;
+  document.getElementById("rMsg").textContent = curSection && SECTIONS[curSection].timed ? msg+" • ใช้เวลา "+fmt(elapsed) : msg;
+  const t=document.getElementById("rTable"); t.innerHTML="";
+  Q.forEach((q,i)=>{
+    const a=answers[i]; const ok=a&&a.ok;
+    const chosen = a? q.opts[a.choice] : "—";
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${i+1}</td>
+      <td><span class="zh">${esc(q.prompt)}</span><br>
+      <span class="tag ${ok?'ok':'no'}">${ok?'ถูก':'ตอบ: '+esc(chosen)}</span>
+      ${ok?'':' <span style="color:var(--good)">เฉลย: '+esc(q.opts[q.a])+'</span>'}</td>`;
+    t.appendChild(tr);
+  });
+  document.getElementById("rWrongBtn").style.display = answers.some(a=>a&&!a.ok)?"":"none";
+  go("result");
+}
+function retryQuiz(){ startQuiz(curSection) }
+function retryWrong(){
+  const wrongQ = Q.filter((q,i)=>answers[i]&&!answers[i].ok);
+  if(!wrongQ.length){go("home");return}
+  // reshuffle options while keeping the correct answer tracked
+  Q=wrongQ.map(q=>{const c=q.opts[q.a]; const no=shuffle(q.opts.slice()); return {...q,opts:no,a:no.indexOf(c)}});
+  idx=0; answers=new Array(Q.length).fill(null);
+  document.getElementById("qTot").textContent=Q.length;
+  document.getElementById("qName").textContent="✍️ ฝึกเฉพาะข้อที่ผิด";
+  const tEl=document.getElementById("qTimer"); tEl.textContent=""; tEl.classList.add("hide");
+  if(timerId)clearInterval(timerId);
+  buildDots(); renderQ(); go("quiz");
+}
+
+/* init */
+buildMenu(); renderScoreboard();
+</script>
+</body>
+</html>

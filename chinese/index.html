@@ -133,6 +133,17 @@
   .tag.ok{background:rgba(40,164,101,.15);color:var(--good)}
   .tag.no{background:rgba(224,86,86,.13);color:var(--bad)}
 
+  /* Sentence ordering */
+  .tray{min-height:56px;border:2px dashed var(--line);border-radius:14px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:22px;background:var(--bg)}
+  .trayhint{color:var(--muted);font-size:14px;font-family:inherit}
+  .banklabel{color:var(--muted);font-size:13px;margin:14px 0 6px}
+  .bank{display:flex;flex-wrap:wrap;gap:8px}
+  .chip2{font-size:23px;padding:10px 16px;border-radius:12px;border:2px solid var(--accent);background:rgba(47,168,160,.12);color:inherit;cursor:pointer;font-family:inherit;transition:transform .08s}
+  .chip2:active{transform:scale(.95)}
+  .chip2.alt{border-color:var(--accent2);background:rgba(91,141,239,.12)}
+  .chip2.lock{pointer-events:none;border-color:var(--line);background:var(--bg)}
+  .pri{border-color:var(--gold)!important;box-shadow:0 0 0 2px rgba(246,185,59,.25)}
+
   .back{position:sticky;top:14px}
   .foot{text-align:center;color:var(--muted);font-size:12px;margin-top:22px}
   .hide{display:none!important}
@@ -318,6 +329,64 @@ const SENT = [
   {zh:"风太大了关上门吧！",py:"fēng tài dà le guān shàng mén ba",th:"ลมแรงมาก ปิดประตูเถอะ!"}
 ];
 
+// Priority: 选择正确答案 (teacher-emphasised A/B/C comprehension)
+const ABC = [
+  {q:"他汉语说得怎么样？",py:"tā hànyǔ shuō de zěnmeyàng?",th:"เขาพูดภาษาจีนเป็นอย่างไร?",lesson:"บทที่ 4",
+   o:["很流利 (คล่องมาก)","很工整 (เป็นระเบียบ)","很努力 (ขยันมาก)"],a:0,
+   e:"ถามถึงการ “พูด” จึงตอบ 很流利 (คล่อง) — 工整 ใช้กับการเขียน, 努力 = ขยัน"},
+  {q:"姐姐找到了什么东西？",py:"jiějie zhǎodào le shénme dōngxi?",th:"พี่สาวหาอะไรเจอ?",lesson:"บทที่ 6",
+   o:["钱包 (กระเป๋าสตางค์)","课文 (บทเรียน)","练习 (แบบฝึกหัด)"],a:0,
+   e:"找到钱包 = หากระเป๋าสตางค์เจอ"},
+  {q:"小鸟在花园里做什么？",py:"xiǎo niǎo zài huāyuán lǐ zuò shénme?",th:"นกน้อยทำอะไรในสวน?",lesson:"บทที่ 6",
+   o:["飞来飞去 (บินไปบินมา)","蹦来蹦去 (กระโดดไปมา)","坐在树上 (นั่งบนต้นไม้)"],a:0,
+   e:"นก “บิน” จึงใช้ 飞来飞去 — 蹦来蹦去 ใช้กับกระต่าย"},
+  {q:"这篇文章你看懂了吗？",py:"zhè piān wénzhāng nǐ kàndǒng le ma?",th:"บทความนี้เธออ่านเข้าใจไหม?",
+   o:["看懂了 (ดู/อ่านเข้าใจ)","读懂了 (อ่านออกเสียงเข้าใจ)","听懂了 (ฟังเข้าใจ)"],a:0,
+   e:"คำถามใช้ 看 (ดู/อ่าน) จึงตอบ 看懂了"},
+  {q:"小明学会写汉字了吗？",py:"xiǎomíng xuéhuì xiě hànzì le ma?",th:"เสี่ยวหมิงเขียนอักษรจีนเป็นหรือยัง?",
+   o:["学会了 (เรียนจนทำเป็นแล้ว)","写完了 (เขียนเสร็จแล้ว)","做好了 (ทำเสร็จแล้ว)"],a:0,
+   e:"学会 = เรียนจนทำได้ ตรงกับคำถาม 学会…了吗"},
+  {q:"妈妈早上几点起床？",py:"māma zǎoshang jǐ diǎn qǐchuáng?",th:"แม่ตื่นนอนตอนเช้ากี่โมง?",
+   o:["六点洗澡 (หกโมงอาบน้ำ)","六点吃饭 (หกโมงกินข้าว)","六点起床 (หกโมงตื่นนอน)"],a:2,
+   e:"คำถามถาม 起床 (ตื่นนอน) จึงต้องตอบ 六点起床"},
+  {q:"爸爸喜欢吃什么水果？",py:"bàba xǐhuan chī shénme shuǐguǒ?",th:"พ่อชอบกินผลไม้อะไร?",
+   o:["苹果 (แอปเปิ้ล)","蓝色 (สีน้ำเงิน)","面包 (ขนมปัง)"],a:0,
+   e:"苹果 เป็นผลไม้ — 蓝色 คือสี, 面包 คือขนมปัง"},
+  {q:"你是哪儿国人？",py:"nǐ shì nǎr guó rén?",th:"เธอเป็นคนประเทศอะไร?",
+   o:["不是人 (ไม่ใช่คน)","泰国人 (คนไทย)","很多人 (คนเยอะ)"],a:1,
+   e:"ถามสัญชาติ จึงตอบ 泰国人 (คนไทย)"},
+  {q:"你喜欢什么颜色？",py:"nǐ xǐhuan shénme yánsè?",th:"เธอชอบสีอะไร?",
+   o:["毛笔 (พู่กัน)","钱包 (กระเป๋าสตางค์)","红色 (สีแดง)"],a:2,
+   e:"红色 เป็นสี — 毛笔 คือพู่กัน, 钱包 คือกระเป๋า"}
+];
+
+// 排正句子 (arrange into correct sentence)
+const ORDER = [
+  {words:["他","没","找到","钱包"], answer:"他没找到钱包", th:"เขาหากระเป๋าสตางค์ไม่เจอ"},
+  {words:["那件","衣服的","样式","不错"], answer:"那件衣服的样式不错", th:"เสื้อผ้าตัวนั้นแบบสวยดี"},
+  {words:["同学们","学习","都","很刻苦"], answer:"同学们学习都很刻苦", th:"เพื่อน ๆ ตั้งใจเรียนกันมาก"},
+  {words:["老山羊","在","田里","收白菜"], answer:"老山羊在田里收白菜", th:"แพะแก่เก็บผักกาดขาวในนา"},
+  {words:["老师","站在","黑板","前"], answer:"老师站在黑板前", th:"คุณครูยืนอยู่หน้ากระดานดำ"}
+];
+
+// 选正确答案 (choose the grammatically correct sentence, A vs B)
+const PICKSENT = [
+  {correct:"我们买了一件绿色的毛衣。", wrong:"我们买了一件毛衣绿色的。", e:"คำขยายสี 绿色的 ต้องอยู่หน้าคำนาม 毛衣 → 绿色的毛衣"},
+  {correct:"王老师相声说得很有意思。", wrong:"王老师说得很意思相声。", e:"เรียงเป็น 相声说得很有意思 (แสดงเซียงเซิงได้น่าสนใจมาก)"},
+  {correct:"每个学期我们都发新课本。", wrong:"我们都发新课本每个学期。", e:"คำบอกเวลา 每个学期 วางไว้ต้นประโยค"},
+  {correct:"小兔子在草地上蹦来蹦去。", wrong:"小兔子蹦来蹦去在草地上。", e:"บอกสถานที่ 在草地上 ต้องอยู่หน้าคำกริยา 蹦来蹦去"},
+  {correct:"您送给我一些菜子吧！", wrong:"您送给我菜子一些吧！", e:"คำบอกจำนวน 一些 ต้องอยู่หน้าคำนาม 菜子"}
+];
+
+// 选词填空 (fill the blank, choose A or B)
+const CLOZE = [
+  {zh:"你的汉字写得真____呀。", o:["工整","工作"], a:0, th:"อักษรจีนของเธอเขียน____จริง ๆ", e:"工整 = เป็นระเบียบ (ใช้กับการเขียน) — 工作 = งาน"},
+  {zh:"小华坐在____上看电视。", o:["沙发","头发"], a:0, th:"เสี่ยวหัวนั่งบน____ดูทีวี", e:"沙发 = โซฟา — 头发 = เส้นผม"},
+  {zh:"风太大了，____门吧。", o:["关上","打开"], a:0, th:"ลมแรงมาก ____ประตูเถอะ", e:"ลมแรง จึง 关上 (ปิด) — 打开 = เปิด"},
+  {zh:"老山羊很____他们。", o:["感激","伤心"], a:0, th:"แพะแก่____พวกเขามาก", e:"感激 = ซาบซึ้ง (เพราะมาช่วย) — 伤心 = เสียใจ"},
+  {zh:"屋子里太热了，快打开____吧。", o:["空调","电视"], a:0, th:"ในห้องร้อนมาก รีบเปิด____เถอะ", e:"ร้อน จึงเปิด 空调 (แอร์) — 电视 = ทีวี"}
+];
+
 /* ============ QUIZ BUILDERS ============ */
 const shuffle = a => {const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[b[i],b[j]]=[b[j],b[i]]}return b};
 const sample = (a,n,notThis)=>shuffle(a.filter(x=>x!==notThis)).slice(0,n);
@@ -399,22 +468,57 @@ function buildSentences(){
   });
   return qs;
 }
+// A/B/C comprehension (teacher priority)
+function buildABC(){
+  return shuffle(ABC).map(x=>{
+    const opts=shuffle(x.o);
+    const stem = x.lesson? "เลือกคำตอบที่ถูก ("+x.lesson+")" : "เลือกคำตอบที่ถูก";
+    return {stem, prompt:x.q, promptSmall:true, hint:x.py, opts, a:opts.indexOf(x.o[x.a]),
+      e:(x.th?x.th+"\n":"")+x.e};
+  });
+}
+// sentence ordering
+function buildOrder(){
+  return shuffle(ORDER).map(x=>({type:'order', words:x.words, answerZh:x.answer, th:x.th, prompt:x.answer}));
+}
+// choose the correct sentence
+function buildPickSent(){
+  return shuffle(PICKSENT).map(x=>{
+    const opts=shuffle([x.correct,x.wrong]);
+    return {stem:"เลือกประโยคที่ถูกต้อง (选正确答案)", prompt:"", opts, a:opts.indexOf(x.correct), e:x.e};
+  });
+}
+// fill in the blank
+function buildCloze(){
+  return shuffle(CLOZE).map(x=>{
+    const opts=shuffle(x.o);
+    return {stem:"เติมคำในช่องว่าง (选词填空)", prompt:x.zh, promptSmall:true, hint:x.th, opts, a:opts.indexOf(x.o[x.a]), e:x.e};
+  });
+}
 // mixed final test
 function buildMixed(){
   const pack = shuffle([
-    ...buildPinyin(V1).slice(0,4),
-    ...buildMeaning(V2).slice(0,5),
-    ...buildThai2Han(ALLVOC).slice(0,3),
-    ...buildMW().slice(0,4),
+    ...buildABC().slice(0,4),
+    ...buildPickSent().slice(0,2),
+    ...buildCloze().slice(0,3),
+    ...buildOrder().slice(0,2),
+    ...buildPinyin(V1).slice(0,2),
+    ...buildMeaning(V2).slice(0,3),
+    ...buildThai2Han(ALLVOC).slice(0,2),
+    ...buildMW().slice(0,2),
     ...buildReading().slice(0,2),
-    ...buildSentences().slice(0,4)
+    ...buildSentences().slice(0,2)
   ]);
   return pack;
 }
 
 /* ============ MENU CONFIG ============ */
 const SECTIONS = {
-  pinyin:{emo:"🔤",name:"คำศัพท์ + พินอิน",desc:"เลือกพินอินให้ถูก",build:()=>buildPinyin(ALLVOC),timed:false},
+  abc:{emo:"⭐",name:"เลือกคำตอบ A/B/C",desc:"ครูเน้น! 选择正确答案",build:buildABC,timed:false},
+  pick:{emo:"✅",name:"เลือกประโยคที่ถูก",desc:"选正确答案 A/B ไวยากรณ์",build:buildPickSent,timed:false},
+  cloze:{emo:"📝",name:"เติมคำในช่องว่าง",desc:"选词填空 A/B เลือกคำ",build:buildCloze,timed:false},
+  order:{emo:"🔀",name:"เรียงประโยค",desc:"排正句子 แตะคำมาต่อกัน",build:buildOrder,timed:false},
+  pinyin:{emo:"🔤",name:"คำศัพท์ + พินอิน",desc:"填空声母 เลือกพินอินให้ถูก",build:()=>buildPinyin(ALLVOC),timed:false},
   meaning:{emo:"📖",name:"คำศัพท์ + ความหมาย",desc:"จีน → ไทย",build:()=>buildMeaning(ALLVOC),timed:false},
   writing:{emo:"✍️",name:"ไทย → อักษรจีน",desc:"เลือกตัวอักษรให้ตรง",build:()=>buildThai2Han(ALLVOC),timed:false},
   mw:{emo:"🧮",name:"量词 ลักษณนาม",desc:"本 / 只 / 车 / 件 / 个 / 把",build:buildMW,timed:false},
@@ -522,6 +626,10 @@ function renderQ(){
   const q=Q[idx];
   document.getElementById("qPos").textContent=idx+1;
   document.getElementById("qBar").style.width=((idx+1)/Q.length*100)+"%";
+  document.getElementById("qPrev").style.visibility = idx===0?"hidden":"visible";
+  document.getElementById("qNext").textContent = idx===Q.length-1?"ดูผล ✅":"ถัดไป →";
+  const fb0=document.getElementById("qFb"); fb0.className="fb"; fb0.textContent="";
+  if(q.type==='order'){ renderOrder(q); updateDots(); return; }
   // reading passage
   const rd=document.getElementById("qReading");
   if(q.reading){rd.classList.remove("hide"); rd.innerHTML=`<div class="t zh">${READING.title}</div><div class="zh">${READING.text}</div>`}
@@ -565,6 +673,59 @@ function lockView(){
   else{fb.className="fb show no"; fb.innerHTML="❌ <b>ยังไม่ใช่</b><br>"+esc(q.e).replace(/\n/g,"<br>")}
 }
 function esc(s){return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+
+/* ---- sentence ordering ---- */
+let orderState=null;
+function renderOrder(q){
+  document.getElementById("qReading").classList.add("hide");
+  document.getElementById("qStem").textContent="🔀 เรียงคำให้เป็นประโยคที่ถูกต้อง";
+  const pr=document.getElementById("qPrompt"); pr.textContent=""; pr.className="prompt";
+  const ans=answers[idx];
+  document.getElementById("qHint").textContent = ans==null && q.th ? "💡 ความหมาย: "+q.th : "";
+  if(ans!=null){
+    drawOrder(q, ans.built, [], true);
+    const fb=document.getElementById("qFb");
+    if(ans.ok){fb.className="fb show ok"; fb.innerHTML='✅ <b>ถูกต้อง!</b><br><span class="zh">'+esc(q.answerZh)+'</span><br>'+esc(q.th)}
+    else{fb.className="fb show no"; fb.innerHTML='❌ <b>ยังไม่ใช่</b><br>คำตอบที่ถูก: <span class="zh">'+esc(q.answerZh)+'</span><br>'+esc(q.th)}
+  } else {
+    orderState={built:[], bank:shuffle(q.words.slice())};
+    drawOrder(q, orderState.built, orderState.bank, false);
+  }
+}
+function drawOrder(q, built, bank, locked){
+  const o=document.getElementById("qOpts"); o.innerHTML="";
+  const tray=document.createElement("div"); tray.className="tray zh";
+  if(!built.length) tray.innerHTML='<span class="trayhint">— แตะคำจากคลังด้านล่าง —</span>';
+  built.forEach((w,i)=>{
+    const c=document.createElement("button"); c.className="chip2 zh"+(locked?" lock":"");
+    c.textContent=w;
+    if(!locked) c.onclick=()=>{orderState.bank.push(w); orderState.built.splice(i,1); drawOrder(q,orderState.built,orderState.bank,false)};
+    tray.appendChild(c);
+  });
+  o.appendChild(tray);
+  if(locked) return;
+  const lbl=document.createElement("div"); lbl.className="banklabel"; lbl.textContent="คลังคำ 👇 (แตะเพื่อวาง / แตะคำด้านบนเพื่อเอาออก)";
+  o.appendChild(lbl);
+  const bk=document.createElement("div"); bk.className="bank";
+  bank.forEach((w,i)=>{
+    const c=document.createElement("button"); c.className="chip2 zh alt"; c.textContent=w;
+    c.onclick=()=>{orderState.built.push(w); orderState.bank.splice(i,1); drawOrder(q,orderState.built,orderState.bank,false)};
+    bk.appendChild(c);
+  });
+  o.appendChild(bk);
+  const chk=document.createElement("button"); chk.className="btn wide"; chk.style.marginTop="14px";
+  chk.textContent="✅ ตรวจคำตอบ";
+  const ready=orderState.bank.length===0;
+  chk.disabled=!ready; chk.style.opacity=ready?"1":".45";
+  chk.onclick=()=>checkOrder(q);
+  o.appendChild(chk);
+}
+function checkOrder(q){
+  const built=orderState.built.slice();
+  answers[idx]={ok: built.join("")===q.answerZh, built};
+  renderQ();
+}
+
 function qNext(){ if(idx===Q.length-1){ if(answers.includes(null)){ const go1=confirm("ยังตอบไม่ครบทุกข้อ ดูผลเลยไหม?"); if(!go1)return } finish() } else {idx++; renderQ()} }
 function qPrev(){ if(idx>0){idx--; renderQ()} }
 function quitQuiz(){ if(timerId)clearInterval(timerId); go("home") }
@@ -584,12 +745,14 @@ function finish(){
   const t=document.getElementById("rTable"); t.innerHTML="";
   Q.forEach((q,i)=>{
     const a=answers[i]; const ok=a&&a.ok;
-    const chosen = a? q.opts[a.choice] : "—";
+    let promptText, chosen, correct;
+    if(q.type==='order'){ promptText=q.answerZh; chosen=a? a.built.join(""):"—"; correct=q.answerZh; }
+    else { promptText=q.prompt; chosen=a? q.opts[a.choice]:"—"; correct=q.opts[q.a]; }
     const tr=document.createElement("tr");
     tr.innerHTML=`<td>${i+1}</td>
-      <td><span class="zh">${esc(q.prompt)}</span><br>
+      <td><span class="zh">${esc(promptText)}</span><br>
       <span class="tag ${ok?'ok':'no'}">${ok?'ถูก':'ตอบ: '+esc(chosen)}</span>
-      ${ok?'':' <span style="color:var(--good)">เฉลย: '+esc(q.opts[q.a])+'</span>'}</td>`;
+      ${ok?'':' <span style="color:var(--good)">เฉลย: '+esc(correct)+'</span>'}</td>`;
     t.appendChild(tr);
   });
   document.getElementById("rWrongBtn").style.display = answers.some(a=>a&&!a.ok)?"":"none";
@@ -599,8 +762,8 @@ function retryQuiz(){ startQuiz(curSection) }
 function retryWrong(){
   const wrongQ = Q.filter((q,i)=>answers[i]&&!answers[i].ok);
   if(!wrongQ.length){go("home");return}
-  // reshuffle options while keeping the correct answer tracked
-  Q=wrongQ.map(q=>{const c=q.opts[q.a]; const no=shuffle(q.opts.slice()); return {...q,opts:no,a:no.indexOf(c)}});
+  // reshuffle options while keeping the correct answer tracked (order-type kept as-is)
+  Q=wrongQ.map(q=>{ if(q.type==='order') return {...q}; const c=q.opts[q.a]; const no=shuffle(q.opts.slice()); return {...q,opts:no,a:no.indexOf(c)}});
   idx=0; answers=new Array(Q.length).fill(null);
   document.getElementById("qTot").textContent=Q.length;
   document.getElementById("qName").textContent="✍️ ฝึกเฉพาะข้อที่ผิด";

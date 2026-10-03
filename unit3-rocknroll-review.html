@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 3 Final Review</title>
+<style>
+:root{
+  --bg:#fff8ef; --card:#ffffff; --ink:#2b2340; --muted:#6f6888;
+  --brand:#e8445a; --brand2:#7b4dff; --gold:#ffb703; --ok:#1f9d55; --okbg:#e3f7ea;
+  --bad:#d64545; --badbg:#fde8e8; --line:#ece3d6; --soft:#f6f0ff;
+  --radius:16px; --shadow:0 4px 14px rgba(43,35,64,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Sarabun","Noto Sans Thai",Roboto,sans-serif;
+  font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+header{background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;padding:18px 16px 14px}
+.hwrap{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+header h1{margin:0;font-size:1.35rem;line-height:1.25}
+header p{margin:2px 0 0;opacity:.9;font-size:.9rem}
+.accent{display:flex;gap:6px;background:rgba(255,255,255,.18);padding:4px;border-radius:999px}
+.accent button{border:0;background:transparent;color:#fff;padding:6px 12px;border-radius:999px;font-size:.9rem}
+.accent button.on{background:#fff;color:var(--brand2);font-weight:700}
+nav{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.tabs{max-width:980px;margin:0 auto;display:flex;overflow-x:auto;gap:4px;padding:8px 12px}
+.tabs button{flex:0 0 auto;border:0;background:transparent;padding:10px 14px;border-radius:12px;color:var(--muted);font-weight:600}
+.tabs button.on{background:var(--soft);color:var(--brand2)}
+main{max-width:980px;margin:0 auto;padding:18px 16px 60px}
+section.tab{display:none} section.tab.on{display:block}
+h2{font-size:1.35rem;margin:6px 0 12px}
+h3{font-size:1.1rem;margin:0 0 8px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+.note{background:#fff4d6;border-left:5px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.95rem}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.menu-btn{display:block;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+.menu-btn:hover{border-color:var(--brand2)}
+.menu-btn b{display:block;font-size:1.1rem}
+.menu-btn span{color:var(--muted);font-size:.92rem}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--soft);color:var(--brand2)}
+.tbl{overflow-x:auto}
+.say{border:0;background:var(--soft);color:var(--brand2);border-radius:999px;padding:3px 9px;font-size:.9rem;margin-left:4px;white-space:nowrap}
+.say:active{transform:scale(.95)}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.8rem;font-weight:700}
+.p-go{background:#ffe3e8;color:var(--brand)} .p-will{background:#e8e0ff;color:var(--brand2)}
+.bad-s{color:var(--bad);text-decoration:line-through} .good-s{color:var(--ok);font-weight:600}
+/* vocab */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-weight:600;color:var(--muted)}
+.chip.on{border-color:var(--brand2);color:var(--brand2);background:var(--soft)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.vcard{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;border-top:5px solid var(--brand2);display:flex;flex-direction:column;gap:6px}
+.vword{font-size:1.3rem;font-weight:800}
+.vthai{color:var(--brand);font-weight:600}
+.vex{color:var(--muted);font-size:.92rem}
+.vbtns{display:flex;gap:6px;flex-wrap:wrap}
+.vbtns button{border:0;border-radius:10px;padding:8px 12px;font-weight:700}
+.b-say{background:var(--brand2);color:#fff} .b-slow{background:#efe9ff;color:var(--brand2)} .b-ex{background:#fff1f3;color:var(--brand)}
+.gtag{font-size:.75rem;color:var(--muted)}
+/* phonics */
+.ph-word{font-size:2.4rem;font-weight:800;text-align:center;margin:8px 0}
+.ph-word u{text-decoration-color:var(--brand);text-decoration-thickness:4px;text-underline-offset:6px}
+.big-say{display:flex;gap:10px;justify-content:center;margin:6px 0 14px}
+.big-say button{border:0;border-radius:14px;padding:12px 18px;font-weight:700;font-size:1.05rem}
+.ph-choice{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ph-choice button{border:3px solid var(--line);background:#fff;border-radius:18px;padding:18px 8px;font-size:1.25rem;font-weight:800}
+.ph-choice button small{display:block;font-size:.85rem;color:var(--muted);font-weight:500}
+.ph-choice button.right{border-color:var(--ok);background:var(--okbg)}
+.ph-choice button.wrong{border-color:var(--bad);background:var(--badbg)}
+.sortbox{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.sortbox div{background:#fff;border-radius:14px;padding:10px;min-height:60px;border:2px dashed var(--line);font-size:.95rem}
+/* quiz */
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.timer{font-variant-numeric:tabular-nums;background:#fff;border-radius:999px;padding:4px 12px;box-shadow:var(--shadow);font-weight:700}
+.bar{height:10px;background:#eee4f8;border-radius:999px;overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .3s}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.dots button{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:#fff;font-size:.8rem;font-weight:700;color:var(--muted);padding:0}
+.dots button.cur{border-color:var(--brand2);color:var(--brand2)}
+.dots button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.dots button.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.qsec{font-size:.85rem;color:var(--muted);font-weight:600}
+.qtext{font-size:1.2rem;font-weight:600;margin:6px 0 14px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font-size:1.05rem}
+.opt .L{flex:0 0 30px;height:30px;border-radius:50%;background:var(--soft);color:var(--brand2);display:flex;align-items:center;justify-content:center;font-weight:800}
+.opt.right{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt:disabled{cursor:default;color:var(--ink)}
+.fb{margin-top:14px;border-radius:14px;padding:12px 14px;font-size:1rem}
+.fb.ok{background:var(--okbg);color:#14663a} .fb.no{background:var(--badbg);color:#8f2525}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:14px}
+.tiles.built{background:var(--soft);border:2px dashed #cbb9ff;margin-bottom:10px}
+.tile{border:0;background:#fff;border-radius:10px;padding:8px 12px;font-weight:700;box-shadow:var(--shadow)}
+.tiles.built .tile{background:var(--brand2);color:#fff}
+.qnav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700}
+.btn.pri{background:var(--brand2);color:#fff} .btn.sec{background:#fff;color:var(--brand2);box-shadow:var(--shadow)}
+.btn.hot{background:var(--brand);color:#fff}
+.btn:disabled{opacity:.4;cursor:default}
+.res-big{font-size:2.6rem;font-weight:800;text-align:center;margin:4px 0}
+.res-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.stars{text-align:center;font-size:1.8rem}
+@media (max-width:520px){header h1{font-size:1.15rem} .qtext{font-size:1.08rem} .ph-word{font-size:2rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <div>
+      <h1>🎸 Unit 3: The Rock 'n' Roll Show</h1>
+      <p>Final Exam Review · Grammar: going to &amp; will · Vocabulary · Super Minds 5</p>
+    </div>
+    <div class="accent" role="group" aria-label="Accent">
+      <button id="acc-gb" class="on" onclick="setAccent('en-GB')">🇬🇧 UK</button>
+      <button id="acc-us" onclick="setAccent('en-US')">🇺🇸 US</button>
+    </div>
+  </div>
+</header>
+
+<nav><div class="tabs" id="tabs">
+  <button data-tab="home" class="on">🏠 Start</button>
+  <button data-tab="grammar">📖 Grammar</button>
+  <button data-tab="vocab">🔤 Vocabulary</button>
+  <button data-tab="phonics">🧦 Phonics</button>
+  <button data-tab="test">🧪 Test Me</button>
+</div></nav>
+
+<main>
+
+<!-- HOME -->
+<section class="tab on" id="tab-home">
+  <h2>Hello! 👋 I'm Buddy!</h2>
+  <div class="note">🔊 <b>Turn on the sound!</b> Check that your iPad is <b>not on silent mode</b> and the volume is up.<br>
+  เปิดเสียง iPad ก่อนนะ (ปิดโหมดเงียบ และเพิ่มเสียง) แล้วกดปุ่มด้านล่างเพื่อทดสอบ 😊
+  <div style="margin-top:8px"><button class="btn pri" onclick="speak('Hello! Let\'s get ready for the test. You can do it!')">🔊 Test sound</button></div></div>
+  <div class="grid2">
+    <button class="menu-btn" onclick="goTab('grammar')"><b>📖 Grammar</b><span>Learn <i>going to</i> and <i>will</i> with examples you can listen to.</span></button>
+    <button class="menu-btn" onclick="goTab('vocab')"><b>🔤 Vocabulary</b><span>Listen and learn 39 words from Unit 3. Tap 🐢 to hear it slowly.</span></button>
+    <button class="menu-btn" onclick="goTab('phonics')"><b>🧦 Phonics</b><span>Sock or coat? Listen and choose the <i>o</i> sound.</span></button>
+    <button class="menu-btn" onclick="startQuiz('o10')"><b>🧩 Word Order</b><span>Tap the words to make sentences. 22 sentences to practise!</span></button>
+    <button class="menu-btn" onclick="goTab('test')"><b>🧪 Test Me</b><span>Grammar · Vocabulary · Word Order · Full Mock Test</span></button>
+  </div>
+</section>
+
+<!-- GRAMMAR -->
+<section class="tab" id="tab-grammar">
+  <h2>📖 Talking about the future</h2>
+
+  <div class="card">
+    <h3><span class="pill p-go">BE + GOING TO + V1</span></h3>
+    <p><b>Use it for:</b></p>
+    <p>① <b>Plans</b> you decided before (แผนที่ตัดสินใจไว้แล้ว)<br>
+    <i>I'm going to visit my grandma on Sunday.</i> <button class="say" data-say="I'm going to visit my grandma on Sunday.">🔊</button></p>
+    <p>② <b>Predictions you can see</b> (ทำนายจากสิ่งที่เห็นตรงหน้า)<br>
+    <i>Look at those dark clouds! It's going to rain.</i> <button class="say" data-say="Look at those dark clouds! It's going to rain.">🔊</button></p>
+    <div class="tbl"><table>
+      <tr><th>Sentence</th><th>Pattern</th><th>Example</th></tr>
+      <tr><td>✅ ประโยคบอกเล่า</td><td>S + am/is/are + going to + V1</td><td>Pleng <b>is going to</b> sing at the concert. <button class="say" data-say="Pleng is going to sing at the concert.">🔊</button></td></tr>
+      <tr><td>❌ ประโยคปฏิเสธ</td><td>S + am/is/are + <b>not</b> + going to + V1</td><td>We <b>aren't going to</b> play football. <button class="say" data-say="We aren't going to play football.">🔊</button></td></tr>
+      <tr><td>❓ ประโยคคำถาม (Yes/No)</td><td>Am/Is/Are + S + going to + V1?</td><td><b>Are</b> you <b>going to</b> give a concert in London? <button class="say" data-say="Are you going to give a concert in London?">🔊</button></td></tr>
+      <tr><td>❓ ประโยคคำถาม (Wh-)</td><td>Wh- + am/is/are + S + going to + V1?</td><td><b>What are</b> you <b>going to</b> call your new album? <button class="say" data-say="What are you going to call your new album?">🔊</button></td></tr>
+    </table></div>
+    <p class="vex">💡 Word order tip: <b>Wh-</b> → <b>am/is/are</b> → <b>who</b> → <b>going to</b> → <b>verb</b> → the rest</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-will">WILL + V1</span></h3>
+    <p><b>Use it for:</b></p>
+    <p>① <b>Quick decisions</b> – you decide now (ตัดสินใจทันทีขณะพูด)<br>
+    <i>The phone is ringing. I'll answer it!</i> <button class="say" data-say="The phone is ringing. I'll answer it!">🔊</button></p>
+    <p>② <b>Offers and promises</b> (เสนอความช่วยเหลือ / สัญญา)<br>
+    <i>I'll send you the photos.</i> <button class="say" data-say="I'll send you the photos.">🔊</button></p>
+    <p>③ <b>Opinions about the future</b> – often with <i>I think</i>, <i>maybe</i> (คาดเดาตามความคิดเห็น)<br>
+    <i>I think the fans will love this song.</i> <button class="say" data-say="I think the fans will love this song.">🔊</button></p>
+    <div class="tbl"><table>
+      <tr><th>Sentence</th><th>Pattern</th><th>Example</th></tr>
+      <tr><td>✅ ประโยคบอกเล่า</td><td>S + will ('ll) + V1</td><td>Teacher Dan <b>will</b> help you. <button class="say" data-say="Teacher Dan will help you.">🔊</button></td></tr>
+      <tr><td>❌ ประโยคปฏิเสธ</td><td>S + will not (<b>won't</b>) + V1</td><td>I <b>won't</b> be late. <button class="say" data-say="I won't be late.">🔊</button></td></tr>
+      <tr><td>❓ ประโยคคำถาม</td><td>Will + S + V1?</td><td><b>Will</b> you come to my party? <button class="say" data-say="Will you come to my party?">🔊</button></td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>🤔 going to or will?</h3>
+    <div class="tbl"><table>
+      <tr><th>Situation</th><th>Use</th><th>Example</th></tr>
+      <tr><td>I have tickets. It's my plan.</td><td><span class="pill p-go">going to</span></td><td>I'm going to see the band on Friday. <button class="say" data-say="I've got the tickets. I'm going to see the band on Friday.">🔊</button></td></tr>
+      <tr><td>I decide right now.</td><td><span class="pill p-will">will</span></td><td>"I can't carry this guitar." – "I'll help you!" <button class="say" data-say="I can't carry this guitar. I'll help you!">🔊</button></td></tr>
+      <tr><td>I can see it will happen.</td><td><span class="pill p-go">going to</span></td><td>Look! The singer is going to fall! <button class="say" data-say="Look! The singer is going to fall!">🔊</button></td></tr>
+      <tr><td>It's my opinion.</td><td><span class="pill p-will">will</span></td><td>I think Plearn will win the contest. <button class="say" data-say="I think Plearn will win the contest.">🔊</button></td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ Watch out! Common mistakes</h3>
+    <div class="tbl"><table>
+      <tr><th>❌ Wrong</th><th>✅ Right</th><th>Why?</th></tr>
+      <tr><td class="bad-s">I going to dance.</td><td class="good-s">I'm going to dance.</td><td>Don't forget am/is/are (ลืม verb to be)</td></tr>
+      <tr><td class="bad-s">She is going to sings.</td><td class="good-s">She is going to sing.</td><td>After <i>going to</i> → V1</td></tr>
+      <tr><td class="bad-s">He wills go.</td><td class="good-s">He will go.</td><td><i>will</i> never takes -s</td></tr>
+      <tr><td class="bad-s">I will to go.</td><td class="good-s">I will go.</td><td>No <i>to</i> after <i>will</i></td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>💡 Exam tips</h3>
+    <p>✅ <b>plan / tickets / already decided</b> → going to<br>
+    ✅ <b>Look! / Listen!</b> + you can see it → going to<br>
+    ✅ <b>I think / maybe / offer / promise / decide now</b> → will<br>
+    ✅ After <b>going to</b> and <b>will</b> → always <b>V1</b></p>
+    <button class="btn hot" onclick="startQuiz('g')">🧪 Practise grammar now</button>
+    <button class="btn pri" onclick="startQuiz('o10')">🧩 Word order practice</button>
+  </div>
+</section>
+
+<!-- VOCAB -->
+<section class="tab" id="tab-vocab">
+  <h2>🔤 Unit 3 Vocabulary</h2>
+  <div class="note">Tap <b>🔊</b> to listen · <b>🐢</b> to listen slowly · <b>💬</b> to hear the example sentence. Say each word out loud 3 times! 🗣️</div>
+  <div class="chips" id="vchips"></div>
+  <div class="vgrid" id="vgrid"></div>
+</section>
+
+<!-- PHONICS -->
+<section class="tab" id="tab-phonics">
+  <h2>🧦 Sock or 🧥 Coat?</h2>
+  <div class="note"><b>Phonics tip:</b> <b>s<u>o</u>ck</b> has a <b>short</b> <i>o</i> sound. <b>c<u>oa</u>t</b> has a <b>long</b> <i>o</i> sound.
+    <button class="say" data-say="sock. rock.">🔊 sock</button> <button class="say" data-say="coat. roll.">🔊 coat</button><br>
+    Listen to the word, then choose the sound of the underlined letter. (ฟังคำ แล้วเลือกเสียงของตัวที่ขีดเส้นใต้)</div>
+  <div class="card" id="phbox"></div>
+</section>
+
+<!-- TEST -->
+<section class="tab" id="tab-test">
+  <div id="qmenu">
+    <h2>🧪 Test Me!</h2>
+    <p>Choose a test. Answer one question at a time. Good luck! 🍀</p>
+    <div class="grid2">
+      <button class="menu-btn" onclick="startQuiz('g')"><b>📖 Grammar</b><span>12 questions · going to &amp; will</span></button>
+      <button class="menu-btn" onclick="startQuiz('v')"><b>🔤 Vocabulary</b><span>12 questions · includes 🎧 listening</span></button>
+      <button class="menu-btn" onclick="startQuiz('o10')"><b>🧩 Word Order – Quick</b><span>10 random sentences · going to &amp; will</span></button>
+      <button class="menu-btn" onclick="startQuiz('o')"><b>🧩 Word Order – All</b><span>22 sentences · WB p.35 + extra practice</span></button>
+      <button class="menu-btn" onclick="startQuiz('all')"><b>🏆 Full Mock Test</b><span>30 questions · Grammar + Vocabulary + Word Order</span></button>
+    </div>
+  </div>
+  <div id="qplay" style="display:none"></div>
+</section>
+
+</main>
+
+<script>
+/* ================= SPEECH ================= */
+let accent='en-GB', voices=[];
+const hasTTS='speechSynthesis' in window;
+function loadVoices(){ if(hasTTS) voices=speechSynthesis.getVoices(); }
+if(hasTTS){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+function pickVoice(){
+  const norm=v=>v.lang.replace('_','-').toLowerCase();
+  let list=voices.filter(v=>norm(v)===accent.toLowerCase());
+  if(!list.length) list=voices.filter(v=>norm(v).startsWith('en'));
+  return list.find(v=>v.localService)||list[0]||null;
+}
+function speak(text,rate){
+  if(!hasTTS){ alert('Sorry! This browser cannot read aloud. Please try Safari or Chrome.'); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=accent; const v=pickVoice(); if(v) u.voice=v;
+  u.rate=rate||0.9; u.pitch=1;
+  speechSynthesis.speak(u);
+}
+function setAccent(a){
+  accent=a;
+  document.getElementById('acc-gb').classList.toggle('on',a==='en-GB');
+  document.getElementById('acc-us').classList.toggle('on',a==='en-US');
+  speak(a==='en-GB'?'British English':'American English');
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-say]');
+  if(b){ speak(b.dataset.say, b.dataset.slow?0.55:0.9); }
+});
+
+/* ================= TABS ================= */
+function goTab(t){
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  document.querySelectorAll('section.tab').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));
+  window.scrollTo(0,0);
+}
+document.getElementById('tabs').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(b) goTab(b.dataset.tab);
+});
+
+/* ================= VOCAB DATA ================= */
+// [word, Thai, example, (optional) text to speak]
+const VOCAB=[
+ {id:'band',name:'🎸 Band & Show',ref:'WB p.34, 45',words:[
+  ['lead singer','นักร้องนำ','Miss D is the lead singer of the band.'],
+  ['backing singers','นักร้องประสานเสียง','Lola and Cher are the backing singers.'],
+  ['electric guitar','กีตาร์ไฟฟ้า','Davy Dee plays the electric guitar.'],
+  ['bass (guitar)','กีตาร์เบส','Tony Scoot plays the bass guitar.','bass guitar'],
+  ['drums','กลอง','Richie Fuzz plays the drums.'],
+  ['dancers','นักเต้น','Grace and Ruby are the dancers.'],
+  ['bodyguard','บอดี้การ์ด / ผู้คุ้มกัน','The bodyguard held the fans back.'],
+  ['fans','แฟนเพลง','The fans were screaming.'],
+  ['stage','เวที','The singer came onto the stage.'],
+  ['speakers','ลำโพง','We were too close to the speakers.'],
+  ['spotlights','ไฟสปอตไลท์','All the spotlights were on Elvis.'],
+  ['concert','คอนเสิร์ต','Dad and I went to a rock concert.'],
+  ['album','อัลบั้มเพลง','What are you going to call your new album?'],
+  ['jukebox','ตู้เพลง','Grandpa got a jukebox for his birthday.']
+ ]},
+ {id:'music',name:'🎵 Music',ref:'WB p.42, 45',words:[
+  ['rhythm','จังหวะ','I can\'t follow the rhythm of the music.'],
+  ['clap','ปรบมือ','Clap your hands to the rhythm.'],
+  ['silences','ช่วงเงียบ','Rhythm is made of sounds and silences.'],
+  ['quieter','เบากว่า','Sounds can be louder or quieter.'],
+  ['crotchet','โน้ตตัวดำ ♩','Two quavers make a crotchet.'],
+  ['quaver','โน้ตเขบ็ตหนึ่งชั้น ♪','A quaver is shorter than a crotchet.']
+ ]},
+ {id:'story',name:'📖 Story Words',ref:'WB p.38–41',words:[
+  ['dressing room','ห้องแต่งตัว','We had a chat in the dressing room.'],
+  ['wig','วิกผม','Alex put on a long coat, glasses and a wig.'],
+  ['disguise','การปลอมตัว','Alex took off his disguise.'],
+  ['screaming','กรีดร้อง','I can hear the fans screaming.'],
+  ['confused','สับสน / งง','Elvis was very confused.'],
+  ['autograph','ลายเซ็น (ของคนดัง)','Can I have your autograph?'],
+  ['introduce','แนะนำ (ตัว)','A man came up to her and introduced himself.'],
+  ['join','เข้าร่วม','I would really like to join the band.'],
+  ['arrange','นัดหมาย / จัดเตรียม','Misha arranged to meet her friend.'],
+  ['come true','เป็นจริง','A dream came true for Misha.'],
+  ['give up','ยอมแพ้','Don\'t give up on your dreams!'],
+  ['loud','เสียงดัง','The concert was really loud.']
+ ]},
+ {id:'coll',name:'🔗 Word Partners',ref:'WB p.34',words:[
+  ['go shopping','ไปซื้อของ','Mum is going to go shopping.'],
+  ['do your homework','ทำการบ้าน','Pleng is going to do her homework.'],
+  ['wear boots','สวมรองเท้าบูต','I\'m going to wear boots in the rain.'],
+  ['walk for an hour','เดินเป็นเวลาหนึ่งชั่วโมง','We walked for an hour in the park.'],
+  ['swing on a creeper','โหนเถาวัลย์','The monkey can swing on a creeper.'],
+  ['cut down a tree','ตัดต้นไม้','Please don\'t cut down a tree!'],
+  ['ask for help','ขอความช่วยเหลือ','You can ask Teacher Dan for help.']
+ ]}
+];
+let vFilter='all';
+function esc(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+function renderVocab(){
+  const chips=document.getElementById('vchips');
+  const total=VOCAB.reduce((n,g)=>n+g.words.length,0);
+  chips.innerHTML=`<button class="chip ${vFilter==='all'?'on':''}" data-f="all">⭐ All (${total})</button>`+
+    VOCAB.map(g=>`<button class="chip ${vFilter===g.id?'on':''}" data-f="${g.id}">${g.name} (${g.words.length})</button>`).join('');
+  const grid=document.getElementById('vgrid'); let h='';
+  VOCAB.forEach(g=>{ if(vFilter!=='all'&&vFilter!==g.id) return;
+    g.words.forEach(w=>{ const say=esc(w[3]||w[0]);
+      h+=`<div class="vcard"><div class="gtag">${g.name} · ${g.ref}</div>
+        <div class="vword">${w[0]}</div><div class="vthai">${w[1]}</div>
+        <div class="vex">“${w[2]}”</div>
+        <div class="vbtns"><button class="b-say" data-say="${say}">🔊 Listen</button>
+        <button class="b-slow" data-say="${say}" data-slow="1">🐢 Slow</button>
+        <button class="b-ex" data-say="${esc(w[2])}">💬 Sentence</button></div></div>`;});
+  });
+  grid.innerHTML=h;
+}
+document.getElementById('vchips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip'); if(c){vFilter=c.dataset.f; renderVocab();}
+});
+renderVocab();
+
+/* ================= PHONICS ================= */
+const PH_SRC=[
+ ['r<u>o</u>ck','rock','s'],['dr<u>o</u>p','drop','s'],['h<u>o</u>t dog','hot dog','s'],['l<u>o</u>ng','long','s'],
+ ['l<u>o</u>st','lost','s'],['b<u>o</u>ttle','bottle','s'],['s<u>o</u>rry','sorry','s'],['f<u>o</u>rest','forest','s'],
+ ['r<u>o</u>ll','roll','c'],['w<u>o</u>n\'t','won\'t','c'],['<u>o</u>ld','old','c'],['gl<u>o</u>w','glow','c'],
+ ['c<u>o</u>ld','cold','c'],['ag<u>o</u>','ago','c'],['expl<u>o</u>sion','explosion','c']
+];
+let ph={};
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function phStart(){ ph={list:shuffle(PH_SRC),i:0,score:0,sock:[],coat:[],done:false}; phRender(); }
+function phRender(){
+  const box=document.getElementById('phbox');
+  if(ph.i>=ph.list.length){
+    const n=ph.list.length, pct=ph.score/n;
+    box.innerHTML=`<div class="res-big">${ph.score} / ${n}</div>
+      <div class="stars">${pct>=.9?'⭐⭐⭐':pct>=.6?'⭐⭐':'⭐'}</div>
+      <p style="text-align:center">${pct>=.9?'Excellent! 🎉 Great listening!':pct>=.6?'Great job! 💪 Keep practising!':'Good try! 😊 Listen again and you\'ll get better!'}</p>
+      <div class="sortbox"><div><b>🧦 sock (short)</b><br>${ph.sock.join(', ')}</div><div><b>🧥 coat (long)</b><br>${ph.coat.join(', ')}</div></div>
+      <div style="text-align:center;margin-top:14px"><button class="btn pri" onclick="phStart()">🔁 Play again</button></div>`;
+    return;
+  }
+  const w=ph.list[ph.i];
+  box.innerHTML=`<div class="qtop"><span class="qsec">Word ${ph.i+1} of ${ph.list.length}</span><span class="timer">⭐ ${ph.score}</span></div>
+    <div class="bar"><i style="width:${ph.i/ph.list.length*100}%"></i></div>
+    <div class="ph-word">${w[0]}</div>
+    <div class="big-say"><button class="b-say" data-say="${esc(w[1])}">🔊 Listen</button><button class="b-slow" data-say="${esc(w[1])}" data-slow="1">🐢 Slow</button></div>
+    <div class="ph-choice"><button id="phS" onclick="phAns('s')">🧦 sock<small>short o</small></button><button id="phC" onclick="phAns('c')">🧥 coat<small>long o</small></button></div>
+    <div id="phfb"></div>
+    <div class="sortbox"><div><b>🧦 sock</b><br>${ph.sock.join(', ')||'…'}</div><div><b>🧥 coat</b><br>${ph.coat.join(', ')||'…'}</div></div>`;
+  setTimeout(()=>speak(w[1]),250);
+}
+function phAns(c){
+  const w=ph.list[ph.i]; if(ph.locked) return; ph.locked=true;
+  const ok=c===w[2]; if(ok) ph.score++;
+  (w[2]==='s'?ph.sock:ph.coat).push(w[1]);
+  document.getElementById(w[2]==='s'?'phS':'phC').classList.add('right');
+  if(!ok) document.getElementById(c==='s'?'phS':'phC').classList.add('wrong');
+  document.getElementById('phfb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?praise():'Almost! 😊 '}<b>${w[1]}</b> has the <b>${w[2]==='s'?'short o – like sock 🧦':'long o – like coat 🧥'}</b> sound.</div>
+    <div style="text-align:right;margin-top:10px"><button class="btn pri" onclick="ph.i++;ph.locked=false;phRender()">Next ➡️</button></div>`;
+}
+phStart();
+
+/* ================= QUIZ DATA ================= */
+// type: mcq | order | listen
+const QG=[
+ {t:'mcq',q:'Look at the dark clouds! It ______ rain.',o:['will','is going to','going to','wills'],a:1,ex:'We can SEE the clouds → prediction from evidence → <b>is going to</b>.'},
+ {t:'mcq',q:'“I\'m thirsty.” – “Wait. I ______ get you some water.”',o:['\'ll','\'m going to','going','am will'],a:0,ex:'A quick decision/offer made now → <b>will (\'ll)</b>.'},
+ {t:'mcq',q:'Alex ______ going to buy a new guitar next month.',o:['am','are','is','be'],a:2,ex:'Alex = he → <b>is</b> going to.'},
+ {t:'mcq',q:'We don\'t have tickets. We ______ to the concert.',o:['aren\'t going to go','not going to go','won\'t to go','aren\'t going go'],a:0,ex:'ประโยคปฏิเสธ: S + <b>aren\'t going to</b> + V1.'},
+ {t:'mcq',q:'I think the fans ______ love the new album.',o:['are going','will','is going to','going to'],a:1,ex:'<b>I think</b> = opinion → <b>will</b>.'},
+ {t:'order',q:'Put the words in order to make a question.',w:['What','are','you','going','to','do','?'],ex:'Wh- → are → you → going to → do?'},
+ {t:'mcq',q:'Change to a negative sentence (ประโยคปฏิเสธ):<br><i>Pleng is going to dance.</i>',o:['Pleng isn\'t going to dance.','Pleng doesn\'t going to dance.','Pleng is going not to dance.','Pleng not is going to dance.'],a:0,ex:'Put <b>not</b> after is → <b>isn\'t going to</b>.'},
+ {t:'mcq',q:'Change to a question (ประโยคคำถาม):<br><i>They are going to visit Vanichnukul School.</i>',o:['Do they going to visit Vanichnukul School?','Are they going to visit Vanichnukul School?','They are going to visit Vanichnukul School?','Are they going visit Vanichnukul School?'],a:1,ex:'Move <b>are</b> to the front: <b>Are they going to</b> visit…?'},
+ {t:'mcq',q:'Find the mistake:<br><i>She is going to <u>sings</u> at the party.</i><br>What is the correct word?',o:['sang','singing','sing','sings'],a:2,ex:'After <b>going to</b> → V1 → <b>sing</b>.'},
+ {t:'mcq',q:'“Can you send me the photos?” – “Sure! I ______ send them tonight.”',o:['\'ll','am going','going to','wills'],a:0,ex:'A promise → <b>will (\'ll)</b>.'},
+ {t:'order',q:'Put the words in order. (from the rock star interview)',w:['When','is','it','going','to come','out','?'],ex:'When → is → it → going → to come → out?'},
+ {t:'mcq',q:'Look! The singer ______ fall off the stage!',o:['will','is going to','wills','are going to'],a:1,ex:'<b>Look!</b> We can see it → <b>is going to</b>.'}
+];
+const QV=[
+ {t:'mcq',q:'A person who protects a famous star is a ______.',o:['fan','bodyguard','dancer','singer'],a:1,ex:'<b>bodyguard</b> = ผู้คุ้มกัน'},
+ {t:'mcq',q:'We were too close to the ______, so the music was very loud.',o:['speakers','wig','album','rhythm'],a:0,ex:'<b>speakers</b> = ลำโพง'},
+ {t:'mcq',q:'Two quavers make a ______.',o:['rhythm','crotchet','jukebox','silence'],a:1,ex:'♪ + ♪ = ♩ → <b>crotchet</b>'},
+ {t:'listen',say:'rhythm',q:'🎧 Listen. Choose the correct spelling.',o:['rythm','rhytm','rhythm','rhithm'],a:2,ex:'r-h-y-t-h-m → <b>rhythm</b> = จังหวะ'},
+ {t:'mcq',q:'Alex put on a long coat, glasses and a ______.',o:['stage','wig','drum','bass'],a:1,ex:'<b>wig</b> = วิกผม'},
+ {t:'mcq',q:'The ______ were screaming and wanted to climb on the stage.',o:['bodyguards','speakers','fans','spotlights'],a:2,ex:'<b>fans</b> = แฟนเพลง'},
+ {t:'listen',say:'spotlights',q:'🎧 Listen. What does the word mean?',o:['ลำโพง','เวที','ไฟสปอตไลท์','กลอง'],a:2,ex:'<b>spotlights</b> = ไฟสปอตไลท์'},
+ {t:'mcq',q:'Which word goes with: ______ on a creeper?',o:['go','swing','wear','cut down'],a:1,ex:'<b>swing on a creeper</b> = โหนเถาวัลย์'},
+ {t:'mcq',q:'Which word has the <b>coat</b> sound (long o)?',o:['lost','bottle','cold','forest'],a:2,ex:'<b>cold</b> = long o, like c<u>oa</u>t 🧥'},
+ {t:'mcq',q:'A dream came ______ for Misha when she played her first concert.',o:['true','loud','well','join'],a:0,ex:'<b>come true</b> = เป็นจริง'},
+ {t:'listen',say:'autograph',q:'🎧 Listen. Choose the correct spelling.',o:['autograf','autograph','otograph','autogragh'],a:1,ex:'<b>autograph</b> = ลายเซ็นของคนดัง'},
+ {t:'mcq',q:'“Can I have your ______?” – “Yes, of course! Where do you want me to write it?”',o:['album','autograph','wig','stage'],a:1,ex:'You ask a star to <b>write</b> an <b>autograph</b>.'}
+];
+
+
+/* ===== WORD ORDER BANK (WB p.35 + extra) ===== */
+const QO=[
+ {w:['What','are','you','going','to call','your','new album','?'],tag:'going to',ex:'Wh- → are → you → going to → call…? (WB p.35)'},
+ {w:['When','is','it','going','to come','out','?'],tag:'going to',ex:'When → is → it → going to → come out? (WB p.35)'},
+ {w:['Are','you','going','to give','a concert','in London','?'],tag:'going to',ex:'Yes/No question: Are → you → going to…? (WB p.35)'},
+ {w:['Are','you','going','to have','a holiday','after','the concert','?'],tag:'going to',ex:'Are → you → going to → have… (WB p.35)'},
+ {w:['Where','are','you','going','to spend','your','holidays','?'],tag:'going to',ex:'Where → are → you → going to → spend…? (WB p.35)'},
+ {w:['Who','are','you','going','to take','with','you','?'],tag:'going to',ex:'Who → are → you → going to → take with you? (WB p.35)'},
+ {w:['Pleng','is','going','to sing','at','the concert','.'],tag:'going to',ex:'ประโยคบอกเล่า: S + is + going to + V1.'},
+ {w:['We','aren\'t','going','to play','football','today','.'],tag:'going to',ex:'ประโยคปฏิเสธ: S + aren\'t + going to + V1.'},
+ {w:['Is','Alex','going','to buy','a new','guitar','?'],tag:'going to',ex:'Yes/No question: Is → Alex → going to → buy…?'},
+ {w:['My sister','is','going','to buy','a new','camera','.'],tag:'going to',ex:'My sister → is going to → buy… (WB p.44)'},
+ {w:['Look!','It\'s','going','to rain','.'],tag:'going to',ex:'Look! = we can see it → going to.'},
+ {w:['What time','is','the show','going','to start','?'],tag:'going to',ex:'What time → is → the show → going to → start?'},
+ {w:['The bodyguard','is','going','to open','the door','.'],tag:'going to',ex:'S + is + going to + V1.'},
+ {w:['Is','Harry','going','to be','in','your team','?'],tag:'going to',ex:'Is → Harry → going to → be…? (WB p.44)'},
+ {w:['I\'m','not','going','to watch','TV','tonight','.'],tag:'going to',ex:'ประโยคปฏิเสธ: I\'m not + going to + V1.'},
+ {w:['I\'ll','help','you','with','your','homework','.'],tag:'will',ex:'Offer → I\'ll + V1.'},
+ {w:['I think','the fans','will','love','this','song','.'],tag:'will',ex:'I think → will + V1.'},
+ {w:['Will','you','come','to','my','birthday party','?'],tag:'will',ex:'Question: Will → you → come…?'},
+ {w:['I','won\'t','be','late','for','school','.'],tag:'will',ex:'ประโยคปฏิเสธ: won\'t + V1.'},
+ {w:['Teacher Dan','will','send','you','the photos','.'],tag:'will',ex:'Promise → will + V1.'},
+ {w:['Maybe','Plearn','will','win','the contest','.'],tag:'will',ex:'Maybe → will + V1 (opinion).'},
+ {w:['Who','will','play','the drums','?'],tag:'will',ex:'Who → will → play…?'}
+].map(o=>({t:'order',q:'🧩 Put the words in order. <span class="pill '+(o.tag==='will'?'p-will':'p-go')+'">'+o.tag+'</span>',w:o.w,ex:o.ex}));
+
+/* ================= QUIZ ENGINE ================= */
+const ICON={Grammar:'📖',Vocabulary:'🔤','Word Order':'🧩'};
+let Q=null, timerId=null;
+const LET=['A','B','C','D'];
+function praise(){const p=['Great job! 🎉 ','You got it! ⭐ ','Excellent! 💪 ','Super! 🌟 '];return p[Math.floor(Math.random()*p.length)];}
+function startQuiz(kind){
+  goTab('test');
+  let qs=[];
+  if(kind==='o') qs=shuffle(QO).map(q=>({...q,sec:'Word Order'}));
+  else if(kind==='o10') qs=shuffle(QO).slice(0,10).map(q=>({...q,sec:'Word Order'}));
+  else {
+  if(kind!=='v') qs=qs.concat(QG.map(q=>({...q,sec:'Grammar'})));
+  if(kind!=='g') qs=qs.concat(QV.map(q=>({...q,sec:'Vocabulary'})));
+  if(kind==='all') qs=qs.concat(shuffle(QO).slice(0,6).map(q=>({...q,sec:'Word Order'})));
+  }
+  qs.forEach(q=>{ if(q.t==='order') q.pool=shuffleUntilDifferent(q.w); });
+  Q={kind,qs,i:0,ans:qs.map(()=>({done:false})),start:Date.now(),end:null};
+  document.getElementById('qmenu').style.display='none';
+  document.getElementById('qplay').style.display='block';
+  clearInterval(timerId); timerId=setInterval(tick,1000);
+  renderQ();
+}
+function shuffleUntilDifferent(w){let s;let n=0;do{s=shuffle(w);n++;}while(s.join()===w.join()&&n<10);return s;}
+function fmt(ms){const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function tick(){const el=document.getElementById('qtimer'); if(el&&Q&&!Q.end) el.textContent='⏱️ '+fmt(Date.now()-Q.start);}
+function renderQ(){
+  const q=Q.qs[Q.i], A=Q.ans[Q.i], n=Q.qs.length;
+  const doneCount=Q.ans.filter(a=>a.done).length;
+  let h=`<div class="qtop"><button class="btn sec" onclick="quitQuiz()">✖ Exit</button>
+    <span class="timer" id="qtimer">⏱️ ${fmt((Q.end||Date.now())-Q.start)}</span></div>
+    <div class="bar"><i style="width:${doneCount/n*100}%"></i></div>
+    <div class="dots">${Q.qs.map((x,k)=>`<button class="${k===Q.i?'cur ':''}${Q.ans[k].done?(Q.ans[k].ok?'ok':'no'):''}" onclick="Q.i=${k};renderQ()">${k+1}</button>`).join('')}</div>
+    <div class="card"><div class="qsec">${ICON[q.sec]} ${q.sec} · Q${Q.i+1} of ${n}</div>
+    <div class="qtext">${q.q}</div>`;
+  if(q.t==='listen'){
+    h+=`<div class="big-say" style="justify-content:flex-start"><button class="b-say" data-say="${esc(q.say)}">🔊 Listen</button><button class="b-slow" data-say="${esc(q.say)}" data-slow="1">🐢 Slow</button></div>`;
+  }
+  if(q.t==='mcq'||q.t==='listen'){
+    h+='<div class="opts">'+q.o.map((o,k)=>{
+      let c=''; if(A.done){ if(k===q.a) c='right'; else if(k===A.pick) c='wrong'; }
+      return `<button class="opt ${c}" ${A.done?'disabled':''} onclick="pickOpt(${k})"><span class="L">${LET[k]}</span><span>${o}</span></button>`;
+    }).join('')+'</div>';
+  } else {
+    if(!A.built) A.built=[];
+    const used=A.built;
+    h+=`<div class="tiles built">${used.length?used.map((t,k)=>`<button class="tile" ${A.done?'disabled':''} onclick="unTile(${k})">${t.w}</button>`).join(''):'<span class="vex">Tap the words below ⬇️</span>'}</div>
+      <div class="tiles">${q.pool.map((w,k)=>used.some(u=>u.k===k)?'':`<button class="tile" ${A.done?'disabled':''} onclick="addTile(${k})">${w}</button>`).join('')}</div>`;
+    if(!A.done) h+=`<button class="btn pri" ${used.length===q.w.length?'':'disabled'} onclick="checkOrder()">✅ Check</button>`;
+  }
+  if(A.done){
+    const right=q.t==='order'?sentence(q.w):(q.o[q.a]);
+    h+=`<div class="fb ${A.ok?'ok':'no'}">${A.ok?praise():'Almost! 😊 The answer is <b>'+right+'</b>.<br>'}${q.ex}${q.t==='order'?` <button class="say" data-say="${esc(right)}">🔊 Listen</button>`:''}</div>`;
+  }
+  h+=`</div><div class="qnav"><button class="btn sec" ${Q.i===0?'disabled':''} onclick="Q.i--;renderQ()">⬅️ Back</button>`;
+  h+= Q.i<n-1 ? `<button class="btn pri" onclick="Q.i++;renderQ()">Next ➡️</button>` : `<button class="btn hot" onclick="finishQuiz()">🏁 See my score</button>`;
+  h+='</div>';
+  document.getElementById('qplay').innerHTML=h;
+  if(q.t==='listen'&&!A.done&&!A.played){A.played=true;setTimeout(()=>speak(q.say),300);}
+}
+function sentence(arr){return arr.join(' ').replace(/ ([?.])$/,'$1');}
+function pickOpt(k){const q=Q.qs[Q.i],A=Q.ans[Q.i]; if(A.done) return; A.pick=k;A.done=true;A.ok=k===q.a; renderQ();}
+function addTile(k){const q=Q.qs[Q.i],A=Q.ans[Q.i]; A.built.push({w:q.pool[k],k}); renderQ();}
+function unTile(k){Q.ans[Q.i].built.splice(k,1); renderQ();}
+function checkOrder(){const q=Q.qs[Q.i],A=Q.ans[Q.i]; A.done=true; A.ok=A.built.map(t=>t.w).join('|')===q.w.join('|'); renderQ();}
+function quitQuiz(){ if(confirm('Exit the test? Your answers will be lost.')){clearInterval(timerId);Q=null;showMenu();} }
+function showMenu(){document.getElementById('qplay').style.display='none';document.getElementById('qmenu').style.display='block';}
+function finishQuiz(){
+  const left=Q.ans.filter(a=>!a.done).length;
+  if(left && !confirm(`You have ${left} question(s) without an answer. Finish anyway?`)) return;
+  Q.end=Date.now(); clearInterval(timerId);
+  const secs={};
+  Q.qs.forEach((q,k)=>{secs[q.sec]=secs[q.sec]||{ok:0,n:0}; secs[q.sec].n++; if(Q.ans[k].ok) secs[q.sec].ok++;});
+  const tot=Q.ans.filter(a=>a.ok).length, n=Q.qs.length, pct=tot/n;
+  let h=`<div class="card"><h2 style="text-align:center">🏆 Your Score</h2>
+    <div class="res-big">${tot} / ${n}</div>
+    <div class="stars">${pct>=.9?'⭐⭐⭐':pct>=.7?'⭐⭐':'⭐'}</div>
+    <p style="text-align:center">${pct>=.9?'Excellent! 🎉 You are ready for the test!':pct>=.7?'Great work! 💪 Review the red ones and try again.':'Good try! 😊 Learning takes time. Let\'s review and try again!'}</p>`;
+  Object.keys(secs).forEach(s=>{h+=`<div class="res-row"><span>${ICON[s]} ${s}</span><b>${secs[s].ok} / ${secs[s].n}</b></div>`;});
+  h+=`<div class="res-row"><span>⏱️ Time</span><b>${fmt(Q.end-Q.start)}</b></div>
+    <div class="qnav" style="flex-wrap:wrap">
+      <button class="btn sec" onclick="Q.i=0;reviewMode()">🔍 Review answers</button>
+      <button class="btn pri" onclick="startQuiz('${Q.kind}')">🔁 Try again</button>
+      <button class="btn sec" onclick="Q=null;showMenu()">🏠 Menu</button></div></div>`;
+  document.getElementById('qplay').innerHTML=h;
+}
+function reviewMode(){
+  Q.ans.forEach(a=>{ if(!a.done){a.done=true;a.ok=false;a.pick=-1;} });
+  renderQ();
+}
+</script>
+</body>
+</html>

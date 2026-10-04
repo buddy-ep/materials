@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unit 4 Final Review</title>
+<style>
+:root{
+  --bg:#f3f5ff; --card:#ffffff; --ink:#1d2147; --muted:#646a8f;
+  --brand:#ff7a1a; --brand2:#3f51d8; --gold:#ffb703; --ok:#1f9d55; --okbg:#e3f7ea;
+  --bad:#d64545; --badbg:#fde8e8; --line:#dfe3f5; --soft:#eceffe;
+  --radius:16px; --shadow:0 4px 14px rgba(29,33,71,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Sarabun","Noto Sans Thai",Roboto,sans-serif;
+  font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%}
+button{font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+header{background:linear-gradient(120deg,#151a4a,var(--brand2) 60%,#7b4dff);color:#fff;padding:18px 16px 14px}
+.hwrap{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+header h1{margin:0;font-size:1.35rem;line-height:1.25}
+header p{margin:2px 0 0;opacity:.9;font-size:.9rem}
+.accent{display:flex;gap:6px;background:rgba(255,255,255,.18);padding:4px;border-radius:999px}
+.accent button{border:0;background:transparent;color:#fff;padding:6px 12px;border-radius:999px;font-size:.9rem}
+.accent button.on{background:#fff;color:var(--brand2);font-weight:700}
+nav{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.tabs{max-width:980px;margin:0 auto;display:flex;overflow-x:auto;gap:4px;padding:8px 12px}
+.tabs button{flex:0 0 auto;border:0;background:transparent;padding:10px 14px;border-radius:12px;color:var(--muted);font-weight:600}
+.tabs button.on{background:var(--soft);color:var(--brand2)}
+main{max-width:980px;margin:0 auto;padding:18px 16px 60px}
+section.tab{display:none} section.tab.on{display:block}
+h2{font-size:1.35rem;margin:6px 0 12px}
+h3{font-size:1.1rem;margin:0 0 8px}
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+.note{background:#fff4d6;border-left:5px solid var(--gold);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:.95rem}
+.formula{background:var(--soft);border-radius:12px;padding:12px 14px;font-weight:700;font-size:1.05rem;margin:8px 0 12px;text-align:center}
+.formula .a{color:var(--brand)} .formula .b{color:var(--brand2)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.menu-btn{display:block;width:100%;text-align:left;border:2px solid var(--line);background:#fff;border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);color:var(--ink)}
+.menu-btn:hover{border-color:var(--brand2)}
+.menu-btn b{display:block;font-size:1.1rem}
+.menu-btn span{color:var(--muted);font-size:.92rem}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--soft);color:var(--brand2)}
+.tbl{overflow-x:auto}
+.say{border:0;background:var(--soft);color:var(--brand2);border-radius:999px;padding:3px 9px;font-size:.9rem;margin-left:4px;white-space:nowrap}
+.say:active{transform:scale(.95)}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:.8rem;font-weight:700}
+.p-fact{background:#ffe9d9;color:#c0560a} .p-tip{background:#e3e7ff;color:var(--brand2)} .p-mid{background:#e3f7ea;color:#14663a} .p-q{background:#fde8f4;color:#a12a72}
+.bad-s{color:var(--bad);text-decoration:line-through} .good-s{color:var(--ok);font-weight:600}
+.hl{color:var(--brand);font-weight:800}
+/* vocab */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:6px 14px;font-weight:600;color:var(--muted)}
+.chip.on{border-color:var(--brand2);color:var(--brand2);background:var(--soft)}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.vcard{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:14px;border-top:5px solid var(--brand2);display:flex;flex-direction:column;gap:6px}
+.vword{font-size:1.3rem;font-weight:800}
+.vthai{color:var(--brand);font-weight:600}
+.vex{color:var(--muted);font-size:.92rem}
+.vbtns{display:flex;gap:6px;flex-wrap:wrap}
+.vbtns button{border:0;border-radius:10px;padding:8px 12px;font-weight:700}
+.b-say{background:var(--brand2);color:#fff} .b-slow{background:#e3e7ff;color:var(--brand2)} .b-ex{background:#fff0e5;color:#c0560a}
+.gtag{font-size:.75rem;color:var(--muted)}
+/* sort games */
+.ph-word{font-size:2.4rem;font-weight:800;text-align:center;margin:8px 0}
+.ph-word u{text-decoration-color:var(--brand);text-decoration-thickness:4px;text-underline-offset:6px}
+.big-say{display:flex;gap:10px;justify-content:center;margin:6px 0 14px}
+.big-say button{border:0;border-radius:14px;padding:12px 18px;font-weight:700;font-size:1.05rem}
+.ph-choice{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.ph-choice button{border:3px solid var(--line);background:#fff;border-radius:18px;padding:16px 8px;font-size:1.15rem;font-weight:800;color:var(--ink)}
+.ph-choice button small{display:block;font-size:.85rem;color:var(--muted);font-weight:500}
+.ph-choice button.right{border-color:var(--ok);background:var(--okbg)}
+.ph-choice button.wrong{border-color:var(--bad);background:var(--badbg)}
+.sortbox{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:14px}
+.sortbox div{background:#fff;border-radius:14px;padding:10px;min-height:60px;border:2px dashed var(--line);font-size:.95rem}
+/* quiz */
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.timer{font-variant-numeric:tabular-nums;background:#fff;border-radius:999px;padding:4px 12px;box-shadow:var(--shadow);font-weight:700}
+.bar{height:10px;background:#e1e5fb;border-radius:999px;overflow:hidden;margin-bottom:10px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--brand),var(--brand2));transition:width .3s}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.dots button{width:32px;height:32px;border-radius:50%;border:2px solid var(--line);background:#fff;font-size:.8rem;font-weight:700;color:var(--muted);padding:0}
+.dots button.cur{border-color:var(--brand2);color:var(--brand2)}
+.dots button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.dots button.no{background:var(--bad);border-color:var(--bad);color:#fff}
+.qsec{font-size:.85rem;color:var(--muted);font-weight:600}
+.qtext{font-size:1.2rem;font-weight:600;margin:6px 0 14px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;font-size:1.05rem;color:var(--ink)}
+.opt .L{flex:0 0 30px;height:30px;border-radius:50%;background:var(--soft);color:var(--brand2);display:flex;align-items:center;justify-content:center;font-weight:800}
+.opt.right{border-color:var(--ok);background:var(--okbg)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)}
+.opt:disabled{cursor:default;color:var(--ink)}
+.fb{margin-top:14px;border-radius:14px;padding:12px 14px;font-size:1rem}
+.fb.ok{background:var(--okbg);color:#14663a} .fb.no{background:var(--badbg);color:#8f2525}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:14px}
+.tiles.built{background:var(--soft);border:2px dashed #b9c2f5;margin-bottom:10px}
+.tile{border:0;background:#fff;border-radius:10px;padding:8px 12px;font-weight:700;box-shadow:var(--shadow);color:var(--ink)}
+.tiles.built .tile{background:var(--brand2);color:#fff}
+.qnav{display:flex;justify-content:space-between;gap:10px;margin-top:18px}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700}
+.btn.pri{background:var(--brand2);color:#fff} .btn.sec{background:#fff;color:var(--brand2);box-shadow:var(--shadow)}
+.btn.hot{background:var(--brand);color:#fff}
+.btn:disabled{opacity:.4;cursor:default}
+.res-big{font-size:2.6rem;font-weight:800;text-align:center;margin:4px 0}
+.res-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+.stars{text-align:center;font-size:1.8rem}
+@media (max-width:520px){header h1{font-size:1.15rem} .qtext{font-size:1.08rem} .ph-word{font-size:2rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hwrap">
+    <div>
+      <h1>🚀 Unit 4: Space Restaurant</h1>
+      <p>Final Exam Review · Grammar: Zero Conditional · Vocabulary · Super Minds 5</p>
+    </div>
+    <div class="accent" role="group" aria-label="Accent">
+      <button id="acc-gb" class="on" onclick="setAccent('en-GB')">🇬🇧 UK</button>
+      <button id="acc-us" onclick="setAccent('en-US')">🇺🇸 US</button>
+    </div>
+  </div>
+</header>
+
+<nav><div class="tabs" id="tabs">
+  <button data-tab="home" class="on">🏠 Start</button>
+  <button data-tab="grammar">📖 Grammar</button>
+  <button data-tab="vocab">🔤 Vocabulary</button>
+  <button data-tab="games">🎮 Games</button>
+  <button data-tab="test">🧪 Test Me</button>
+</div></nav>
+
+<main>
+
+<!-- HOME -->
+<section class="tab on" id="tab-home">
+  <h2>Hello! 👋 I'm Buddy!</h2>
+  <div class="note">🔊 <b>Turn on the sound!</b> Check that your iPad is <b>not on silent mode</b> and the volume is up.<br>
+  เปิดเสียง iPad ก่อนนะ (ปิดโหมดเงียบ และเพิ่มเสียง) แล้วกดปุ่มด้านล่างเพื่อทดสอบ 😊
+  <div style="margin-top:8px"><button class="btn pri" onclick="speak('Hello! Welcome to the space restaurant. Let us get ready for the test!')">🔊 Test sound</button></div></div>
+  <div class="grid2">
+    <button class="menu-btn" onclick="goTab('grammar')"><b>📖 Grammar</b><span>Learn the <i>zero conditional</i>: If you heat ice, it melts.</span></button>
+    <button class="menu-btn" onclick="goTab('vocab')"><b>🔤 Vocabulary</b><span>Listen and learn words from Unit 4. Tap 🐢 to hear them slowly.</span></button>
+    <button class="menu-btn" onclick="goTab('games')"><b>🎮 Games</b><span>S or K? · Food Groups sorting game</span></button>
+    <button class="menu-btn" onclick="startQuiz('o10')"><b>🧩 Word Order</b><span>Tap the words to make sentences. 25 sentences to practise!</span></button>
+    <button class="menu-btn" onclick="goTab('test')"><b>🧪 Test Me</b><span>Grammar · Vocabulary · Word Order · Full Mock Test</span></button>
+  </div>
+</section>
+
+<!-- GRAMMAR -->
+<section class="tab" id="tab-grammar">
+  <h2>📖 Zero Conditional</h2>
+
+  <div class="card">
+    <h3><span class="pill p-fact">① FACTS – it always happens</span></h3>
+    <p>Use it for things that are <b>always true</b>: science facts and habits. (สิ่งที่เป็นจริงเสมอ / เกิดขึ้นทุกครั้ง)</p>
+    <div class="formula"><span class="a">If + subject + V1(s/es)</span> , <span class="b">subject + V1(s/es)</span></div>
+    <div class="tbl"><table>
+      <tr><th>Sentence</th><th>Example</th></tr>
+      <tr><td>✅ ประโยคบอกเล่า</td><td>If you heat water to 100 degrees, it <b>boils</b>. <button class="say" data-say="If you heat water to 100 degrees, it boils.">🔊</button></td></tr>
+      <tr><td>✅ ประโยคบอกเล่า</td><td>If you put soft chocolate in the freezer, it <b>gets</b> hard. <button class="say" data-say="If you put soft chocolate in the freezer, it gets hard.">🔊</button></td></tr>
+      <tr><td>❌ ประโยคปฏิเสธ</td><td>If there is no rain, the grass <b>doesn't grow</b>. <button class="say" data-say="If there is no rain, the grass doesn't grow.">🔊</button></td></tr>
+      <tr><td>❌ ประโยคปฏิเสธ</td><td>If plants have no light, they <b>can't</b> grow. <button class="say" data-say="If plants have no light, they can't grow.">🔊</button></td></tr>
+      <tr><td>❓ ประโยคคำถาม</td><td><b>What happens</b> if you eat too much chocolate? – You <b>feel</b> sick. <button class="say" data-say="What happens if you eat too much chocolate? You feel sick.">🔊</button></td></tr>
+    </table></div>
+    <p class="vex">💡 Both parts use the <b>Present Simple</b>. Don't use <i>will</i> here!</p>
+  </div>
+
+  <div class="card">
+    <h3><span class="pill p-tip">② ADVICE & INSTRUCTIONS</span></h3>
+    <p>The second part can tell someone <b>what to do</b>. (ให้คำแนะนำ / บอกให้ทำ)</p>
+    <div class="formula"><span class="a">If + subject + V1</span> , <span class="b">V1… / don't + V1… / you can… / you need to…</span></div>
+    <div class="tbl"><table>
+      <tr><th>Example (WB p.49)</th><th>Second part</th></tr>
+      <tr><td>If you want an apple, <b>take</b> one from the kitchen. <button class="say" data-say="If you want an apple, take one from the kitchen.">🔊</button></td><td>คำสั่ง</td></tr>
+      <tr><td>If you don't like the ice cream, <b>don't eat</b> it. <button class="say" data-say="If you don't like the ice cream, don't eat it.">🔊</button></td><td>คำสั่งปฏิเสธ</td></tr>
+      <tr><td>If you need help, please <b>phone</b> me. <button class="say" data-say="If you need help, please phone me.">🔊</button></td><td>คำสั่ง</td></tr>
+      <tr><td>If you don't have a first course, you <b>can</b> have a pudding. <button class="say" data-say="If you don't have a first course, you can have a pudding.">🔊</button></td><td>can + V1</td></tr>
+      <tr><td>If you want to learn the guitar, you <b>need to</b> practise every day. <button class="say" data-say="If you want to learn the guitar, you need to practise every day.">🔊</button></td><td>need to + V1</td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>✏️ The comma rule (กฎเครื่องหมาย ,)</h3>
+    <div class="tbl"><table>
+      <tr><th>Where is <i>if</i>?</th><th>Comma?</th><th>Example</th></tr>
+      <tr><td><b>At the start</b></td><td>✅ Yes</td><td><span class="hl">If</span> it rains<span class="hl">,</span> I take my umbrella. <button class="say" data-say="If it rains, I take my umbrella.">🔊</button></td></tr>
+      <tr><td><b>In the middle</b></td><td>❌ No</td><td>I take my umbrella <span class="hl">if</span> it rains. <button class="say" data-say="I take my umbrella if it rains.">🔊</button></td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>⚠️ Watch out! Common mistakes</h3>
+    <div class="tbl"><table>
+      <tr><th>❌ Wrong</th><th>✅ Right</th><th>Why?</th></tr>
+      <tr><td class="bad-s">If you heat ice, it will melt.</td><td class="good-s">If you heat ice, it melts.</td><td>Facts → Present Simple, not <i>will</i></td></tr>
+      <tr><td class="bad-s">If it rain, I take my umbrella.</td><td class="good-s">If it rains, …</td><td><i>it / he / she</i> → add <b>-s</b></td></tr>
+      <tr><td class="bad-s">If you eats too much, …</td><td class="good-s">If you eat too much, …</td><td><i>you</i> → no <b>-s</b></td></tr>
+      <tr><td class="bad-s">If you need help please phone me.</td><td class="good-s">If you need help, please phone me.</td><td>Don't forget the comma</td></tr>
+      <tr><td class="bad-s">If you need help, phones me.</td><td class="good-s">If you need help, phone me.</td><td>Instructions → V1 (no -s)</td></tr>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h3>💡 Exam tips</h3>
+    <p>✅ Always true / a fact → <b>If + Present Simple, Present Simple</b><br>
+    ✅ <b>it / he / she</b> → verb + <b>s/es</b> (it <b>boils</b>, it <b>melts</b>)<br>
+    ✅ <b>If</b> at the start → put a <b>comma ( , )</b><br>
+    ✅ Advice → <b>If…, + V1</b> (phone me, take one, don't eat it)</p>
+    <button class="btn hot" onclick="startQuiz('g')">🧪 Practise grammar now</button>
+    <button class="btn pri" onclick="startQuiz('o10')">🧩 Word order practice</button>
+  </div>
+</section>
+
+<!-- VOCAB -->
+<section class="tab" id="tab-vocab">
+  <h2>🔤 Unit 4 Vocabulary</h2>
+  <div class="note">Tap <b>🔊</b> to listen · <b>🐢</b> to listen slowly · <b>💬</b> to hear the example sentence. Say each word out loud 3 times! 🗣️</div>
+  <div class="chips" id="vchips"></div>
+  <div class="vgrid" id="vgrid"></div>
+</section>
+
+<!-- GAMES -->
+<section class="tab" id="tab-games">
+  <h2>🎮 Games</h2>
+  <div class="grid2" id="gmenu" style="margin-bottom:14px">
+    <button class="menu-btn" onclick="sortStart('c')"><b>🔊 S or K?</b><span>Does the letter <b>c</b> sound like <b>s</b> (city) or <b>k</b> (cool)?</span></button>
+    <button class="menu-btn" onclick="sortStart('food')"><b>🥦 Food Groups</b><span>Meat, fruit, vegetables or dairy products?</span></button>
+  </div>
+  <div class="note" id="gtip">👆 Choose a game. (เลือกเกมที่ต้องการ)</div>
+  <div class="card" id="sortbox" style="display:none"></div>
+</section>
+
+<!-- TEST -->
+<section class="tab" id="tab-test">
+  <div id="qmenu">
+    <h2>🧪 Test Me!</h2>
+    <p>Choose a test. Answer one question at a time. Good luck! 🍀</p>
+    <div class="grid2">
+      <button class="menu-btn" onclick="startQuiz('g')"><b>📖 Grammar</b><span>12 questions · zero conditional</span></button>
+      <button class="menu-btn" onclick="startQuiz('v')"><b>🔤 Vocabulary</b><span>12 questions · includes 🎧 listening</span></button>
+      <button class="menu-btn" onclick="startQuiz('o10')"><b>🧩 Word Order – Quick</b><span>10 random sentences</span></button>
+      <button class="menu-btn" onclick="startQuiz('o')"><b>🧩 Word Order – All</b><span>25 sentences · WB p.49, 56, 57 + extra</span></button>
+      <button class="menu-btn" onclick="startQuiz('all')"><b>🏆 Full Mock Test</b><span>32 questions · Grammar + Vocabulary + Word Order</span></button>
+    </div>
+  </div>
+  <div id="qplay" style="display:none"></div>
+</section>
+
+</main>
+
+<script>
+/* ================= SPEECH ================= */
+let accent='en-GB', voices=[];
+const hasTTS='speechSynthesis' in window;
+function loadVoices(){ if(hasTTS) voices=speechSynthesis.getVoices(); }
+if(hasTTS){ loadVoices(); speechSynthesis.onvoiceschanged=loadVoices; }
+function pickVoice(){
+  const norm=v=>v.lang.replace('_','-').toLowerCase();
+  let list=voices.filter(v=>norm(v)===accent.toLowerCase());
+  if(!list.length) list=voices.filter(v=>norm(v).startsWith('en'));
+  return list.find(v=>v.localService)||list[0]||null;
+}
+function speak(text,rate){
+  if(!hasTTS){ alert('Sorry! This browser cannot read aloud. Please try Safari or Chrome.'); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang=accent; const v=pickVoice(); if(v) u.voice=v;
+  u.rate=rate||0.9; u.pitch=1;
+  speechSynthesis.speak(u);
+}
+function setAccent(a){
+  accent=a;
+  document.getElementById('acc-gb').classList.toggle('on',a==='en-GB');
+  document.getElementById('acc-us').classList.toggle('on',a==='en-US');
+  speak(a==='en-GB'?'British English':'American English');
+}
+document.addEventListener('click',e=>{
+  const b=e.target.closest('[data-say]');
+  if(b){ speak(b.dataset.say, b.dataset.slow?0.55:0.9); }
+});
+
+/* ================= TABS ================= */
+function goTab(t){
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
+  document.querySelectorAll('section.tab').forEach(s=>s.classList.toggle('on',s.id==='tab-'+t));
+  window.scrollTo(0,0);
+}
+document.getElementById('tabs').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-tab]'); if(b) goTab(b.dataset.tab);
+});
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function praise(){const p=['Great job! 🎉 ','You got it! ⭐ ','Excellent! 💪 ','Super! 🌟 '];return p[Math.floor(Math.random()*p.length)];}
+
+/* ================= VOCAB DATA ================= */
+// [word, Thai, example, (optional) text to speak]
+const VOCAB=[
+ {id:'rest',name:'🍽️ In a Restaurant',ref:'WB p.46, 57',words:[
+  ["knife","มีด","You use a knife to cut your meat."],
+  ["fork","ส้อม","Hold the fork in your left hand."],
+  ["spoon","ช้อน","You eat soup with a spoon."],
+  ["chopsticks","ตะเกียบ","The children ate the soup with chopsticks."],
+  ["napkin","ผ้าเช็ดปาก","You wipe your mouth with a napkin."],
+  ["salt","เกลือ","You mustn't eat a lot of salt."],
+  ["pepper","พริกไทย","Don't put so much pepper in your soup."],
+  ["plate","จาน","The second course came on big plates."],
+  ["bowl","ชาม","The soup came in bowls."],
+  ["waiter","พนักงานเสิร์ฟ","The waiter asks you what you want to eat."],
+  ["menu","เมนูอาหาร","Can I see the menu, please?"],
+  ["bill","ใบเสร็จ / บิล","The waiter gave the children the bill."]
+ ]},
+ {id:'story',name:'🚀 Story Words',ref:'WB p.50–51',words:[
+  ["first course","อาหารจานแรก","The first course was orange soup."],
+  ["second course","อาหารจานที่สอง","The second course was very strange."],
+  ["dessert","ของหวาน","What's for dessert? Blueberry cake!"],
+  ["kitchen","ห้องครัว","The waiter took them to the kitchen."],
+  ["wash the dishes","ล้างจาน","They had to wash the dishes."],
+  ["guard","ยาม / ผู้เฝ้า","Luckily the guard appeared."],
+  ["spaceship","ยานอวกาศ","The cake was in the shape of a spaceship."],
+  ["price","ราคา","The price per person is ten goldstars."],
+  ["guest","แขก (ลูกค้า)","The guest showed the waiter a frog."],
+  ["serve","เสิร์ฟ","The waiter served the tomato soup."],
+  ["shout","ตะโกน","The guest shouted."]
+ ]},
+ {id:'taste',name:'😋 Taste Words',ref:'WB p.53',words:[
+  ["delicious","อร่อย","I love this ice cream. It's delicious."],
+  ["sweet","หวาน","This chocolate is very sweet."],
+  ["taste","รสชาติ / ชิม","Taste the soup. It's a new recipe."],
+  ["flavour","รสชาติ (เช่น วานิลลา)","What flavour do you like best? Vanilla."],
+  ["lick","เลีย","Look, the dog is licking your cake!"],
+  ["invent","ประดิษฐ์ / คิดค้น","I would like to invent a hat that made me invisible."],
+  ["recipe","สูตรอาหาร","It's a new recipe. What do you think?"]
+ ]},
+ {id:'food',name:'🥦 Food Groups',ref:'WB p.54–55',words:[
+  ["meat","เนื้อสัตว์","Beef, pork and chicken are meat."],
+  ["fruit","ผลไม้","Put a portion of fruit in your lunchbox."],
+  ["vegetables","ผัก","Eat lots of vegetables."],
+  ["dairy products","ผลิตภัณฑ์จากนม","Milk and cheese are dairy products."],
+  ["proteins","โปรตีน","Proteins are meat, fish, eggs and beans."],
+  ["energy","พลังงาน","Rice and pasta are good for your energy."],
+  ["healthy","ดีต่อสุขภาพ","Fruit and vegetables keep you healthy."],
+  ["lunchbox","กล่องอาหารกลางวัน","What's in your lunchbox?"],
+  ["wholegrain bread","ขนมปังโฮลเกรน","Use wholegrain bread if possible."],
+  ["beef","เนื้อวัว","Beef is a kind of meat."],
+  ["pork","เนื้อหมู","Pork is a kind of meat."],
+  ["turkey","ไก่งวง","Turkey is a kind of meat."],
+  ["spinach","ผักโขม","Spinach is a green vegetable."],
+  ["peas","ถั่วลันเตา","Peas are small and green."],
+  ["onions","หัวหอม","Onions can make you cry!"],
+  ["mangoes","มะม่วง","Mangoes are sweet fruit."],
+  ["grapes","องุ่น","Grapes can be green or purple."],
+  ["plums","ลูกพลัม","Plums are purple fruit."],
+  ["yoghurt","โยเกิร์ต","Yoghurt is a dairy product."],
+  ["butter","เนย","Butter is made from milk."]
+ ]},
+ {id:'date',name:'📅 Dates',ref:'WB p.47, 56',words:[
+  ["1st","ที่ 1","The 1st of October is a Saturday.","first. The first of October is a Saturday."],
+  ["2nd","ที่ 2","He is going to eat there on the 2nd of September.","second. The second of September."],
+  ["3rd","ที่ 3","My party is on the 3rd.","third. My party is on the third."],
+  ["11th","ที่ 11","Is your birthday on the 10th or the 11th?","eleventh. Is your birthday on the tenth or the eleventh?"],
+  ["12th","ที่ 12","The 12th of October is a Wednesday.","twelfth. The twelfth of October is a Wednesday."],
+  ["15th","ที่ 15","Tom's birthday is on the 15th of June.","fifteenth. Tom's birthday is on the fifteenth of June."],
+  ["20th","ที่ 20","My brother's birthday is on the 20th of June.","twentieth. My brother's birthday is on the twentieth of June."],
+  ["21st","ที่ 21","It's Pam's 21st birthday on Sunday.","twenty-first. It's Pam's twenty-first birthday on Sunday."],
+  ["22nd","ที่ 22","There's a new Mexican restaurant on the 22nd.","twenty-second. There's a new Mexican restaurant on the twenty-second."]
+ ]}
+];
+let vFilter='all';
+function renderVocab(){
+  const chips=document.getElementById('vchips');
+  const total=VOCAB.reduce((n,g)=>n+g.words.length,0);
+  chips.innerHTML=`<button class="chip ${vFilter==='all'?'on':''}" data-f="all">⭐ All (${total})</button>`+
+    VOCAB.map(g=>`<button class="chip ${vFilter===g.id?'on':''}" data-f="${g.id}">${g.name} (${g.words.length})</button>`).join('');
+  let h='';
+  VOCAB.forEach(g=>{ if(vFilter!=='all'&&vFilter!==g.id) return;
+    g.words.forEach(w=>{
+      const sayWord=esc(w[3]?w[3].split('.')[0]:w[0]);
+      const sayEx=esc(w[3]?w[3].split('. ').slice(1).join('. '):w[2]);
+      h+=`<div class="vcard"><div class="gtag">${g.name} · ${g.ref}</div>
+        <div class="vword">${w[0]}</div><div class="vthai">${w[1]}</div>
+        <div class="vex">“${w[2]}”</div>
+        <div class="vbtns"><button class="b-say" data-say="${sayWord}">🔊 Listen</button>
+        <button class="b-slow" data-say="${sayWord}" data-slow="1">🐢 Slow</button>
+        <button class="b-ex" data-say="${sayEx}">💬 Sentence</button></div></div>`;});
+  });
+  document.getElementById('vgrid').innerHTML=h;
+}
+document.getElementById('vchips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip'); if(c){vFilter=c.dataset.f; renderVocab();}
+});
+renderVocab();
+
+/* ================= SORT GAMES ================= */
+const GAMES={
+ c:{title:'🔊 S or K?',
+   tip:'<b>Phonics tip:</b> The letter <b>c</b> has the <b>s</b> sound before an <b>i</b> or an <b>e</b>! (c ที่ตามด้วย i หรือ e ออกเสียง s) <button class="say" data-say="city. centre.">🔊 city, centre</button> <button class="say" data-say="cool. cards.">🔊 cool, cards</button>',
+   ask:'Listen. How does the underlined <b>c</b> sound?',
+   cats:[['s','🐍 s sound','like city'],['k','🔑 k sound','like cool']],
+   items:[["<u>c</u>ity","city","s"],["<u>c</u>entre","centre","s"],["<u>C</u>elia","Celia","s"],["<u>c</u>elebrate","celebrate","s"],["spa<u>c</u>eship","spaceship","s"],["<u>c</u>inema","cinema","s"],["i<u>c</u>e cream","ice cream","s"],["ex<u>c</u>iting","exciting","s"],["<u>c</u>ircles","circles","s"],["ri<u>c</u>e","rice","s"],
+     ["<u>c</u>ool","cool","k"],["<u>c</u>ards","cards","k"],["<u>c</u>rop","crop","k"],["<u>c</u>limbed","climbed","k"],["<u>c</u>alled","called","k"],["<u>c</u>ake","cake","k"],["<u>c</u>arrots","carrots","k"],["<u>c</u>ourse","course","k"]]},
+ food:{title:'🥦 Food Groups',
+   tip:'Which group is it in? (อาหารนี้อยู่ในหมวดไหน) – WB p.54',
+   ask:'Listen. Which food group is it?',
+   cats:[['m','🍗 meat',''],['f','🍎 fruit',''],['v','🥕 vegetables',''],['d','🧀 dairy','dairy products']],
+   items:[["pork","pork","m"],["beef","beef","m"],["turkey","turkey","m"],["chicken","chicken","m"],
+     ["pineapples","pineapples","f"],["mangoes","mangoes","f"],["apples","apples","f"],["bananas","bananas","f"],["grapes","grapes","f"],["oranges","oranges","f"],["pears","pears","f"],["plums","plums","f"],
+     ["potatoes","potatoes","v"],["spinach","spinach","v"],["peas","peas","v"],["beans","beans","v"],["peppers","peppers","v"],["carrots","carrots","v"],["onions","onions","v"],
+     ["milk","milk","d"],["cream","cream","d"],["cheese","cheese","d"],["butter","butter","d"],["yoghurt","yoghurt","d"]]}
+};
+let G=null;
+function sortStart(k){
+  const g=GAMES[k];
+  G={k,g,list:shuffle(g.items),i:0,score:0,bins:{},locked:false};
+  g.cats.forEach(c=>G.bins[c[0]]=[]);
+  document.getElementById('gtip').innerHTML=g.tip;
+  document.getElementById('sortbox').style.display='block';
+  sortRender();
+}
+function binsHTML(){return '<div class="sortbox">'+G.g.cats.map(c=>`<div><b>${c[1]}</b><br>${G.bins[c[0]].join(', ')||'…'}</div>`).join('')+'</div>';}
+function sortRender(){
+  const box=document.getElementById('sortbox'), n=G.list.length;
+  if(G.i>=n){
+    const pct=G.score/n;
+    box.innerHTML=`<h3>${G.g.title}</h3><div class="res-big">${G.score} / ${n}</div>
+      <div class="stars">${pct>=.9?'⭐⭐⭐':pct>=.6?'⭐⭐':'⭐'}</div>
+      <p style="text-align:center">${pct>=.9?'Excellent! 🎉 Great work!':pct>=.6?'Great job! 💪 Keep practising!':'Good try! 😊 Play again and you\'ll get better!'}</p>
+      ${binsHTML()}<div style="text-align:center;margin-top:14px"><button class="btn pri" onclick="sortStart('${G.k}')">🔁 Play again</button></div>`;
+    return;
+  }
+  const w=G.list[G.i];
+  box.innerHTML=`<h3>${G.g.title}</h3><div class="qtop"><span class="qsec">Word ${G.i+1} of ${n} · ${G.g.ask}</span><span class="timer">⭐ ${G.score}</span></div>
+    <div class="bar"><i style="width:${G.i/n*100}%"></i></div>
+    <div class="ph-word">${w[0]}</div>
+    <div class="big-say"><button class="b-say" data-say="${esc(w[1])}">🔊 Listen</button><button class="b-slow" data-say="${esc(w[1])}" data-slow="1">🐢 Slow</button></div>
+    <div class="ph-choice">${G.g.cats.map(c=>`<button id="gc-${c[0]}" onclick="sortAns('${c[0]}')">${c[1]}${c[2]?'<small>'+c[2]+'</small>':''}</button>`).join('')}</div>
+    <div id="gfb"></div>${binsHTML()}`;
+  setTimeout(()=>speak(w[1]),250);
+}
+function sortAns(c){
+  if(G.locked) return; G.locked=true;
+  const w=G.list[G.i], ok=c===w[2]; if(ok) G.score++;
+  G.bins[w[2]].push(w[1]);
+  document.getElementById('gc-'+w[2]).classList.add('right');
+  if(!ok) document.getElementById('gc-'+c).classList.add('wrong');
+  const cat=G.g.cats.find(x=>x[0]===w[2]);
+  document.getElementById('gfb').innerHTML=`<div class="fb ${ok?'ok':'no'}">${ok?praise():'Almost! 😊 '}<b>${w[1]}</b> → <b>${cat[1]}</b></div>
+    <div style="text-align:right;margin-top:10px"><button class="btn pri" onclick="G.i++;G.locked=false;sortRender()">Next ➡️</button></div>`;
+}
+
+/* ================= QUIZ DATA ================= */
+const QG=[
+ {t:'mcq',q:'If you heat water to 100 degrees, it ______.',o:['boil','boils','will boiling','boiled'],a:1,ex:'A fact → Present Simple. <i>it</i> → <b>boils</b>.'},
+ {t:'mcq',q:'If you ______ ice in the sun, it melts.',o:['put','puts','putting','to put'],a:0,ex:'<i>you</i> → <b>put</b> (no -s).'},
+ {t:'mcq',q:'If plants have no light, ______.',o:['they grow','they can\'t grow','they growing','grows'],a:1,ex:'Plants need light → <b>they can\'t grow</b>.'},
+ {t:'mcq',q:'If it ______, I take my umbrella.',o:['rain','rains','raining','will rain'],a:1,ex:'<i>it</i> → <b>rains</b> (add -s).'},
+ {t:'mcq',q:'If you need help, ______ me.',o:['phones','phoned','phone','to phone'],a:2,ex:'Instruction → V1 → <b>phone</b> me.'},
+ {t:'mcq',q:'Find the mistake:<br><i>If you <u>eats</u> too much chocolate, you feel sick.</i><br>What is the correct word?',o:['ate','eat','eating','eats'],a:1,ex:'<i>you</i> → <b>eat</b> (no -s).'},
+ {t:'mcq',q:'If you don\'t like the soup, ______ it.',o:['don\'t eat','doesn\'t eat','not eat','no eat'],a:0,ex:'Negative instruction → <b>don\'t + V1</b>.'},
+ {t:'mcq',q:'Which sentence is correct?',o:['If you heat ice, it will melts.','If you heat ice, it melts.','If you heat ice, it melt.','If you heat ice, it melting.'],a:1,ex:'A fact → <b>it melts</b>.'},
+ {t:'mcq',q:'Which sentence is correct?',o:['If you need help phone me.','If, you need help phone me.','If you need help, phone me.','You need help, if phone me.'],a:2,ex:'<b>If</b> at the start → put a <b>comma</b> before the second part.'},
+ {t:'mcq',q:'What happens if you put soft chocolate in the freezer?',o:['It get hard.','It gets hard.','It getting hard.','It will gets hard.'],a:1,ex:'<i>it</i> → <b>gets</b> hard.'},
+ {t:'mcq',q:'If you ______ to learn the guitar, you need to practise every day.',o:['want','wants','wanting','wanted'],a:0,ex:'<i>you</i> → <b>want</b>.'},
+ {t:'mcq',q:'If you dial 999 in Britain, you ______ the emergency services.',o:['gets','get','got','getting'],a:1,ex:'<i>you</i> → <b>get</b>. (WB p.49)'}
+];
+const QV=[
+ {t:'mcq',q:'You use it to cut your meat.',o:['spoon','knife','napkin','bowl'],a:1,ex:'<b>knife</b> = มีด'},
+ {t:'mcq',q:'You wipe your mouth with it.',o:['spoon','napkin','plate','fork'],a:1,ex:'<b>napkin</b> = ผ้าเช็ดปาก'},
+ {t:'mcq',q:'This person asks you what you want to eat and drink.',o:['guest','guard','waiter','chef'],a:2,ex:'<b>waiter</b> = พนักงานเสิร์ฟ'},
+ {t:'mcq',q:'You eat soup with it.',o:['knife','chopsticks','spoon','fork'],a:2,ex:'<b>spoon</b> = ช้อน'},
+ {t:'listen',say:'chopsticks',q:'🎧 Listen. Choose the correct spelling.',o:['chopstiks','chopsticks','chobsticks','chopstix'],a:1,ex:'c-h-o-p-s-t-i-c-k-s → <b>chopsticks</b> = ตะเกียบ'},
+ {t:'mcq',q:'In which word does <b>c</b> have an <b>s</b> sound?',o:['cool','cards','city','crop'],a:2,ex:'<b>c + i</b> → s sound: <b>city</b>'},
+ {t:'mcq',q:'Which is a dairy product?',o:['beef','cheese','peas','plums'],a:1,ex:'<b>cheese</b> is made from milk.'},
+ {t:'mcq',q:'“What\'s for ______?” – “Blueberry cake.”',o:['flavour','dessert','taste','recipe'],a:1,ex:'<b>dessert</b> = ของหวาน'},
+ {t:'mcq',q:'I love this ice cream. It\'s really ______!',o:['delicious','invent','licking','flavour'],a:0,ex:'<b>delicious</b> = อร่อย'},
+ {t:'listen',say:'the twenty-second of September',q:'🎧 Listen. Which date do you hear?',o:['the 2nd of September','the 12th of September','the 20th of September','the 22nd of September'],a:3,ex:'<b>22nd</b> = twenty-second'},
+ {t:'mcq',q:'______ are very important because they give you energy.',o:['Napkins','Proteins','Waiters','Bowls'],a:1,ex:'<b>Proteins</b> = โปรตีน (WB p.57)'},
+ {t:'listen',say:'dessert',q:'🎧 Listen. Choose the correct spelling. (ของหวาน)',o:['desert','disert','dessert','desserd'],a:2,ex:'<b>dessert</b> (ss) = ของหวาน · <i>desert</i> (s) = ทะเลทราย'}
+];
+/* Word order: [tiles, tag, note]  tags: fact | tip | mid | q */
+const QO_SRC=[
+ [["If","you","heat","water","to 100 degrees",",","it","boils","."],"fact","If + you heat…, it boils."],
+ [["If","you","put","ice","in the sun",",","it","melts","."],"fact","If + you put…, it melts."],
+ [["If","plants","have","no light",",","they","can't","grow","."],"fact","WB p.56"],
+ [["If","you","eat","too much","chocolate",",","you","feel","sick","."],"fact","WB p.56"],
+ [["If","you","mix","red and yellow",",","you","get","orange","."],"fact","A fact about colours."],
+ [["If","there","is","no rain",",","the grass","doesn't","grow","."],"fact","WB p.49"],
+ [["If","you","put","a bottle of water","into the freezer",",","the bottle","breaks","."],"fact","WB p.56"],
+ [["If","you","pour","hot water","on ice",",","it","melts","."],"fact","WB p.56"],
+ [["If","it's","very cold",",","some animals","sleep","all winter","."],"fact","WB p.56"],
+ [["If","you","dial","999","in Britain",",","you","get","the emergency services","."],"fact","WB p.49"],
+ [["If","you","put","too much salt","in your soup",",","it","tastes","awful","."],"fact","WB p.56"],
+ [["If","everybody","speaks","at the same time",",","I","can't","understand","anyone","."],"fact","WB p.56"],
+ [["If","it","rains",",","you","don't","need","to water","the garden","."],"fact","WB p.56"],
+ [["I","take","my umbrella","if","it","rains","."],"mid","if in the middle → no comma."],
+ [["You","need","a coat","if","it's","very cold","."],"mid","if in the middle → no comma."],
+ [["I","can't","get to sleep","if","I","eat","too much","."],"mid","WB p.49 · no comma."],
+ [["If","you","need","help",",","please","phone","me","."],"tip","WB p.49 · instruction → phone me."],
+ [["If","you","want","an apple",",","take","one","from the kitchen","."],"tip","WB p.49 · instruction → take one."],
+ [["If","you","don't","like","the ice cream",",","don't","eat","it","."],"tip","WB p.49 · don't + V1."],
+ [["If","you","are","angry","with Jack",",","talk","to him","."],"tip","WB p.49 · instruction → talk to him."],
+ [["If","you","don't","have","a first course",",","you","can","have","a pudding","."],"tip","WB p.49 · you can + V1."],
+ [["If","you","want","to learn","the guitar",",","you","need","to practise","every day","."],"tip","WB p.49 · you need to + V1."],
+ [["What","happens","if","you","heat","ice","?"],"q","Question: What happens if…?"],
+ [["What","happens","if","you","eat","too much","chocolate","?"],"q","Question: What happens if…?"],
+ [["Can","you","ask","the waiter","for","a glass of water","?"],"q","WB p.57 · vocabulary sentence."]
+];
+const TAGS={fact:['p-fact','fact'],tip:['p-tip','advice'],mid:['p-mid','if in the middle'],q:['p-q','question']};
+const QO=QO_SRC.map(([w,tag,note])=>({t:'order',w,
+  q:'🧩 Put the words in order. <span class="pill '+TAGS[tag][0]+'">'+TAGS[tag][1]+'</span>',
+  ex:note+' Start with the capital letter. 😊'}));
+
+/* ================= QUIZ ENGINE ================= */
+let Q=null, timerId=null;
+const LET=['A','B','C','D'];
+const ICON={Grammar:'📖',Vocabulary:'🔤','Word Order':'🧩'};
+function startQuiz(kind){
+  goTab('test');
+  let qs=[];
+  if(kind==='o') qs=shuffle(QO).map(q=>({...q,sec:'Word Order'}));
+  else if(kind==='o10') qs=shuffle(QO).slice(0,10).map(q=>({...q,sec:'Word Order'}));
+  else {
+    if(kind!=='v') qs=qs.concat(QG.map(q=>({...q,sec:'Grammar'})));
+    if(kind!=='g') qs=qs.concat(QV.map(q=>({...q,sec:'Vocabulary'})));
+    if(kind==='all') qs=qs.concat(shuffle(QO).slice(0,8).map(q=>({...q,sec:'Word Order'})));
+  }
+  qs.forEach(q=>{ if(q.t==='order') q.pool=shuffleUntilDifferent(q.w); });
+  Q={kind,qs,i:0,ans:qs.map(()=>({done:false})),start:Date.now(),end:null};
+  document.getElementById('qmenu').style.display='none';
+  document.getElementById('qplay').style.display='block';
+  clearInterval(timerId); timerId=setInterval(tick,1000);
+  renderQ();
+}
+function shuffleUntilDifferent(w){let s,n=0;do{s=shuffle(w);n++;}while(s.join()===w.join()&&n<10);return s;}
+function fmt(ms){const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function tick(){const el=document.getElementById('qtimer'); if(el&&Q&&!Q.end) el.textContent='⏱️ '+fmt(Date.now()-Q.start);}
+function sentence(arr){return arr.join(' ').replace(/ ([,?.])/g,'$1');}
+function renderQ(){
+  const q=Q.qs[Q.i], A=Q.ans[Q.i], n=Q.qs.length;
+  const doneCount=Q.ans.filter(a=>a.done).length;
+  let h=`<div class="qtop"><button class="btn sec" onclick="quitQuiz()">✖ Exit</button>
+    <span class="timer" id="qtimer">⏱️ ${fmt((Q.end||Date.now())-Q.start)}</span></div>
+    <div class="bar"><i style="width:${doneCount/n*100}%"></i></div>
+    <div class="dots">${Q.qs.map((x,k)=>`<button class="${k===Q.i?'cur ':''}${Q.ans[k].done?(Q.ans[k].ok?'ok':'no'):''}" onclick="Q.i=${k};renderQ()">${k+1}</button>`).join('')}</div>
+    <div class="card"><div class="qsec">${ICON[q.sec]} ${q.sec} · Q${Q.i+1} of ${n}</div>
+    <div class="qtext">${q.q}</div>`;
+  if(q.t==='listen'){
+    h+=`<div class="big-say" style="justify-content:flex-start"><button class="b-say" data-say="${esc(q.say)}">🔊 Listen</button><button class="b-slow" data-say="${esc(q.say)}" data-slow="1">🐢 Slow</button></div>`;
+  }
+  if(q.t==='mcq'||q.t==='listen'){
+    h+='<div class="opts">'+q.o.map((o,k)=>{
+      let c=''; if(A.done){ if(k===q.a) c='right'; else if(k===A.pick) c='wrong'; }
+      return `<button class="opt ${c}" ${A.done?'disabled':''} onclick="pickOpt(${k})"><span class="L">${LET[k]}</span><span>${o}</span></button>`;
+    }).join('')+'</div>';
+  } else {
+    if(!A.built) A.built=[];
+    const used=A.built;
+    h+=`<div class="tiles built">${used.length?used.map((t,k)=>`<button class="tile" ${A.done?'disabled':''} onclick="unTile(${k})">${t.w}</button>`).join(''):'<span class="vex">Tap the words below ⬇️ (tap a word again to take it back)</span>'}</div>
+      <div class="tiles">${q.pool.map((w,k)=>used.some(u=>u.k===k)?'':`<button class="tile" ${A.done?'disabled':''} onclick="addTile(${k})">${w}</button>`).join('')}</div>`;
+    if(!A.done) h+=`<button class="btn pri" ${used.length===q.w.length?'':'disabled'} onclick="checkOrder()">✅ Check</button>`;
+  }
+  if(A.done){
+    const right=q.t==='order'?sentence(q.w):(q.o[q.a]);
+    h+=`<div class="fb ${A.ok?'ok':'no'}">${A.ok?praise():'Almost! 😊 The answer is <b>'+right+'</b><br>'}${q.ex}${q.t==='order'?` <button class="say" data-say="${esc(right)}">🔊 Listen</button>`:''}</div>`;
+  }
+  h+=`</div><div class="qnav"><button class="btn sec" ${Q.i===0?'disabled':''} onclick="Q.i--;renderQ()">⬅️ Back</button>`;
+  h+= Q.i<n-1 ? `<button class="btn pri" onclick="Q.i++;renderQ()">Next ➡️</button>` : `<button class="btn hot" onclick="finishQuiz()">🏁 See my score</button>`;
+  h+='</div>';
+  document.getElementById('qplay').innerHTML=h;
+  if(q.t==='listen'&&!A.done&&!A.played){A.played=true;setTimeout(()=>speak(q.say),300);}
+}
+function pickOpt(k){const q=Q.qs[Q.i],A=Q.ans[Q.i]; if(A.done) return; A.pick=k;A.done=true;A.ok=k===q.a; renderQ();}
+function addTile(k){const q=Q.qs[Q.i],A=Q.ans[Q.i]; A.built.push({w:q.pool[k],k}); renderQ();}
+function unTile(k){Q.ans[Q.i].built.splice(k,1); renderQ();}
+function checkOrder(){const q=Q.qs[Q.i],A=Q.ans[Q.i]; A.done=true; A.ok=A.built.map(t=>t.w).join('|')===q.w.join('|'); renderQ();}
+function quitQuiz(){ if(confirm('Exit the test? Your answers will be lost.')){clearInterval(timerId);Q=null;showMenu();} }
+function showMenu(){document.getElementById('qplay').style.display='none';document.getElementById('qmenu').style.display='block';}
+function finishQuiz(){
+  const left=Q.ans.filter(a=>!a.done).length;
+  if(left && !confirm(`You have ${left} question(s) without an answer. Finish anyway?`)) return;
+  Q.end=Date.now(); clearInterval(timerId);
+  const secs={};
+  Q.qs.forEach((q,k)=>{secs[q.sec]=secs[q.sec]||{ok:0,n:0}; secs[q.sec].n++; if(Q.ans[k].ok) secs[q.sec].ok++;});
+  const tot=Q.ans.filter(a=>a.ok).length, n=Q.qs.length, pct=tot/n;
+  let h=`<div class="card"><h2 style="text-align:center">🏆 Your Score</h2>
+    <div class="res-big">${tot} / ${n}</div>
+    <div class="stars">${pct>=.9?'⭐⭐⭐':pct>=.7?'⭐⭐':'⭐'}</div>
+    <p style="text-align:center">${pct>=.9?'Excellent! 🎉 You are ready for the test!':pct>=.7?'Great work! 💪 Review the red ones and try again.':'Good try! 😊 Learning takes time. Let\'s review and try again!'}</p>`;
+  Object.keys(secs).forEach(s=>{h+=`<div class="res-row"><span>${ICON[s]} ${s}</span><b>${secs[s].ok} / ${secs[s].n}</b></div>`;});
+  h+=`<div class="res-row"><span>⏱️ Time</span><b>${fmt(Q.end-Q.start)}</b></div>
+    <div class="qnav" style="flex-wrap:wrap">
+      <button class="btn sec" onclick="Q.i=0;reviewMode()">🔍 Review answers</button>
+      <button class="btn pri" onclick="startQuiz('${Q.kind}')">🔁 Try again</button>
+      <button class="btn sec" onclick="Q=null;showMenu()">🏠 Menu</button></div></div>`;
+  document.getElementById('qplay').innerHTML=h;
+}
+function reviewMode(){
+  Q.ans.forEach(a=>{ if(!a.done){a.done=true;a.ok=false;a.pick=-1;} });
+  renderQ();
+}
+</script>
+</body>
+</html>

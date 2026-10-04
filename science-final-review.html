@@ -13,6 +13,7 @@
   --paper:#f7f9fc; --grid:#e3e9f3; --ink:#1d2a44; --muted:#5a6781; --card:#ffffff; --line:#d5ddea;
   --sci:#1f8a4c;
   --l1:#2266c8; --l2:#0f8a7e; --l3:#d9651b; --l4:#7a4bc4; --l5:#0e7490; --l6:#4f5f86;
+  --k1:#2266c8; --k2:#7a4bc4; --k3:#0f8a7e; --k4:#d9651b; --k5:#0e7490; --k6:#b5476b; --k7:#8a6d00; --k8:#4f5f86;
   --hot:#d6452b; --cold:#2a7fd4;
   --ok:#1f8a4c; --okbg:#e7f5ec; --bad:#c0392b; --badbg:#fdecea; --note:#fff6db; --notefg:#6b5310;
   --sky:#dcecfb; --cloud:#ffffff; --storm:#5d6b82; --soil:#d9b98c; --rock:#b9bec7; --water:#3d8fe0; --sea:#1f5fa8; --land:#7fb069;
@@ -24,6 +25,7 @@
   --paper:#131a27; --grid:#1c2536; --ink:#e7ecf5; --muted:#9aa7bf; --card:#1a2334; --line:#2c384e;
   --sci:#5fd08e;
   --l1:#6a9ef0; --l2:#3cc2b3; --l3:#f28a45; --l4:#a986e8; --l5:#4cc3dd; --l6:#9fb0d8;
+  --k1:#6a9ef0; --k2:#a986e8; --k3:#3cc2b3; --k4:#f28a45; --k5:#4cc3dd; --k6:#ec85a6; --k7:#e0bf4a; --k8:#9fb0d8;
   --hot:#ff7a5c; --cold:#6fb2ff;
   --ok:#5fd08e; --okbg:#173325; --bad:#ff8a7a; --badbg:#3a1d1d; --note:#3a3118; --notefg:#f0d88a;
   --sky:#1d3350; --cloud:#e4eaf3; --storm:#8a96ab; --soil:#6b5236; --rock:#4a505b; --water:#4f9ff0; --sea:#2b6cb8; --land:#4f7d43;
@@ -32,6 +34,7 @@
   --paper:#131a27; --grid:#1c2536; --ink:#e7ecf5; --muted:#9aa7bf; --card:#1a2334; --line:#2c384e;
   --sci:#5fd08e;
   --l1:#6a9ef0; --l2:#3cc2b3; --l3:#f28a45; --l4:#a986e8; --l5:#4cc3dd; --l6:#9fb0d8;
+  --k1:#6a9ef0; --k2:#a986e8; --k3:#3cc2b3; --k4:#f28a45; --k5:#4cc3dd; --k6:#ec85a6; --k7:#e0bf4a; --k8:#9fb0d8;
   --hot:#ff7a5c; --cold:#6fb2ff;
   --ok:#5fd08e; --okbg:#173325; --bad:#ff8a7a; --badbg:#3a1d1d; --note:#3a3118; --notefg:#f0d88a;
   --sky:#1d3350; --cloud:#e4eaf3; --storm:#8a96ab; --soil:#6b5236; --rock:#4a505b; --water:#4f9ff0; --sea:#2b6cb8; --land:#4f7d43;
@@ -56,10 +59,11 @@ h1 em{font-style:normal;color:var(--sci)}
 .lede{max-width:64ch;color:var(--muted);margin:0}
 
 nav.modes{position:sticky;top:0;z-index:10;background:var(--paper);padding-block:10px;margin-bottom:18px;
-  border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 nav.modes button{border:2px solid var(--sci);background:var(--card);color:var(--sci);border-radius:12px;padding:8px 6px;
   font-weight:600;display:grid;line-height:1.25;text-align:center}
-nav.modes button small{font-family:var(--thai);font-weight:400;font-size:.8rem;opacity:.85}
+nav.modes button small{font-family:var(--thai);font-weight:400;font-size:.78rem;opacity:.85}
+@media (max-width:520px){nav.modes button{font-size:.82rem;padding:6px 2px}nav.modes button small{font-size:.7rem}}
 nav.modes button.on{background:var(--sci);color:var(--card)}
 .pane{display:none}.pane.on{display:block}
 
@@ -259,7 +263,46 @@ span.dot{cursor:default}
 .toggle{display:flex;gap:6px}
 .toggle button{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:3px 10px;font-size:.85rem}
 .toggle button.on{background:var(--ink);color:var(--card)}
-#practiceRun,#testRun{scroll-margin-top:80px}
+#practiceRun,#testRun,#skRun,#skTestRun{scroll-margin-top:80px}
+/* ---------- SKILLS ---------- */
+.skview{display:none}.skview.on{display:grid;gap:14px}
+.skgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.skc{border-top:5px solid var(--c)}
+.skh{display:flex;gap:10px;align-items:center}
+.skh .ico{font-size:1.9rem;line-height:1}
+.skh .th{display:block;font-size:.95rem}
+.frame{background:var(--paper);border:2px dashed var(--c);border-radius:10px;padding:8px 12px;font-size:.95rem}
+.frame b{display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--c)}
+.flip.ex{text-align:left;min-height:auto;align-content:start}
+.flip.ex .n{font-weight:500}
+.vars{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.var{border:2px solid var(--vc);border-radius:10px;padding:10px 12px;display:grid;gap:4px}
+.var h4{color:var(--vc);font-size:1rem}
+.var p{margin:0;font-size:.92rem}
+/* stimulus: charts, tables, pictures */
+.stim{display:grid;gap:8px;min-width:0}
+.chart{margin:0;border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper);display:grid;gap:4px}
+.chart figcaption{font-weight:600;font-size:.92rem}
+.chart svg{width:100%;max-width:520px;height:auto;display:block}
+.chart small{color:var(--muted)}
+.gl{stroke:var(--line);stroke-width:1}
+.ax{font-size:11px;fill:var(--muted);font-family:var(--body)}
+.vl{font-size:12px;font-weight:600;fill:var(--ink);font-family:var(--body)}
+.bx{fill:var(--c)} .ln{fill:none;stroke:var(--c);stroke-width:3;stroke-linejoin:round} .lp{fill:var(--c)}
+table.dt{font-size:.9rem}
+table.dt caption{text-align:left;font-weight:600;padding-bottom:4px}
+table.dt td,table.dt th{text-align:center}
+table.dt td:first-child,table.dt th:first-child{text-align:left}
+.pic{display:flex;gap:12px;align-items:center;border:1px dashed var(--line);border-radius:10px;padding:10px 12px;background:var(--paper)}
+.pic .pe{font-size:2rem;flex:0 0 auto;line-height:1.2}
+.pic ul{margin:0;padding-left:18px;font-size:.95rem}
+.stim.sm{font-size:.85rem}
+.tarea{font:inherit;font-size:1rem;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--paper);color:var(--ink);width:100%;resize:vertical;min-height:84px}
+.tarea:focus{outline:none;border-color:var(--c)}
+.model{background:var(--okbg);border-radius:10px;padding:10px 14px;display:grid;gap:4px}
+.model p{margin:0}
+.model ul{margin:0;padding-left:20px}
+.model b{color:var(--ok)}
 footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:40px}
 @media (max-width:520px){
   .eq{grid-template-columns:1fr;}
@@ -276,13 +319,14 @@ footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:40px}
   <a class="back" href="index.html">← Buddy EP home</a>
   <div class="eyebrow">Vanichnukul School · Science 5 · Final Exam Review</div>
   <h1>Changing State <em>&amp;</em> Water on Earth</h1>
-  <p class="lede">Unit 3 and Unit 4 in one place. Learn each lesson, practise, then take the final test and fix your mistakes. <span class="th">ทบทวนบทเรียน ฝึกทำโจทย์ แล้วทำแบบทดสอบ พร้อมแก้มือข้อที่ผิด</span></p>
+  <p class="lede">Unit 3 and Unit 4 in one place. Learn each lesson, practise, take the final test and fix your mistakes. Then train your <b>Skills &amp; Ability</b> with tables, graphs and experiments. <span class="th">ส่วน Knowledge และ Skills &amp; Ability พร้อมแก้มือข้อที่ผิด</span></p>
 </header>
 
 <nav class="modes" aria-label="Mode">
   <button data-mode="learn" class="on">📖 Learn<small>บทเรียน</small></button>
   <button data-mode="practice">🎯 Practice<small>แบบฝึกหัด</small></button>
   <button data-mode="test">🧪 Final Test<small>แบบทดสอบ</small></button>
+  <button data-mode="skills">🧠 Skills<small>ทักษะ &amp; การนำไปใช้</small></button>
 </nav>
 
 <!-- ======================= LEARN ======================= -->
@@ -698,6 +742,132 @@ footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:40px}
   <div id="testRun"></div>
 </section>
 
+<!-- ======================= SKILLS & ABILITY ======================= -->
+<section class="pane" id="skills">
+  <div class="lchips" id="skchips">
+    <button data-sk="learn" class="on" style="--c:var(--sci)">📖 The 8 skills</button>
+    <button data-sk="practice" style="--c:var(--sci)">🎯 Skill practice</button>
+    <button data-sk="test" style="--c:var(--sci)">🏆 Skills Challenge</button>
+  </div>
+
+  <!-- learn the skills -->
+  <div class="skview on" id="sk-learn">
+  <div class="box big" style="--c:var(--sci);">
+    <h3>🧠 Knowledge vs Skills &amp; Ability</h3>
+    <div class="cols">
+      <div class="mini"><h4>📚 Knowledge <span class="th">ความรู้</span></h4><p>What you <b>know</b>: words, facts and examples.</p><p class="th">“Solid → gas is called ______.”</p></div>
+      <div class="mini"><h4>🧠 Skills &amp; Ability <span class="th">ทักษะและการนำไปใช้</span></h4><p>What you can <b>do</b> with what you know: look at a picture, a table, a graph or an experiment and <b>think like a scientist</b>.</p><p class="th">“Look at the table. What happens when the water is hotter?”</p></div>
+    </div>
+    <div class="tip">💡 Skills questions often give you something new to look at. Read it carefully first, then use what you learned in Unit 3 and 4.</div>
+  </div>
+
+    <div class="skgrid">
+      <article class="box skc" style="--c:var(--k1)">
+        <div class="skh"><span class="ico">👀</span><div><h3>Observing</h3><span class="th">การสังเกต</span></div></div>
+        <p>Use your senses to say what is <b>really there</b>: see, hear, touch, smell. Only <b>facts</b>, no guessing. Add numbers when you can (°C, mL, minutes).</p>
+        <p class="th" style="margin:0">⚠️ Never taste things in the science lab!</p>
+        <div class="frame"><b>Sentence frame</b>I see / hear / feel / smell ______.</div>
+        <button class="flip ex" data-flip><span class="n">📝 A glass of iced cha yen stands on the table for 10 minutes. Write one observation.</span><span class="b info">✅ “I see water drops on the outside of the glass.” (fact)<br>❌ “The water came from the air.” (this is an inference)</span></button>
+      </article>
+      <article class="box skc" style="--c:var(--k2)">
+        <div class="skh"><span class="ico">💭</span><div><h3>Inferring</h3><span class="th">การลงความเห็นจากข้อมูล</span></div></div>
+        <p>Use an observation <b>plus what you know</b> to explain <b>why</b> something happened.</p>
+        <div class="frame"><b>Sentence frame</b>I think ______ because ______.</div>
+        <button class="flip ex" data-flip><span class="n">📝 Why are there water drops on the outside of the cold glass?</span><span class="b info">“I think water vapour in the air touched the cold glass and condensed into water drops, because cooling makes a gas change into a liquid.”</span></button>
+      </article>
+      <article class="box skc" style="--c:var(--k3)">
+        <div class="skh"><span class="ico">🗂️</span><div><h3>Classifying</h3><span class="th">การจำแนกประเภท</span></div></div>
+        <p>Put things into groups using <b>one clear rule</b>. Every item goes into <b>only one</b> group. Always say your rule.</p>
+        <div class="frame"><b>Sentence frame</b>Group 1 has ______ because they ______. Group 2 has ______ because they ______.</div>
+        <button class="flip ex" data-flip><span class="n">📝 Sort: salt, sand, sugar, oil. What is your rule?</span><span class="b info">Rule: <b>dissolves in water or not</b>. Group 1 (soluble): salt, sugar. Group 2 (insoluble): sand, oil.</span></button>
+      </article>
+      <article class="box skc" style="--c:var(--k4)">
+        <div class="skh"><span class="ico">🗣️</span><div><h3>Explaining with reasons</h3><span class="th">การอธิบายและให้เหตุผล</span></div></div>
+        <p>Give a full answer with three parts: <b>Claim</b> (your answer), <b>Evidence</b> (what you saw or measured) and <b>Reason</b> (the science idea).</p>
+        <div class="frame"><b>Sentence frame (C-E-R)</b>Claim: ______. Evidence: ______. Reason: ______.</div>
+        <button class="flip ex" data-flip><span class="n">📝 Is burning paper reversible?</span><span class="b info"><b>Claim:</b> No, it is irreversible. <b>Evidence:</b> the paper turns into black ash and smoke, and the ash cannot become paper again. <b>Reason:</b> a new substance forms, so it is a chemical change.</span></button>
+      </article>
+      <article class="box skc" style="--c:var(--k5)">
+        <div class="skh"><span class="ico">🔢</span><div><h3>Using numbers</h3><span class="th">การใช้จำนวนและการวัด</span></div></div>
+        <p>Read scales and units carefully. Add, subtract or find a part. <b>Always write the unit</b> (°C, mL, km, litres).</p>
+        <div class="frame"><b>Steps</b>1. Find the numbers. 2. Choose + − × ÷. 3. Answer with the unit.</div>
+        <button class="flip ex" data-flip><span class="n">📝 Only 2.5% of Earth’s water is fresh. In 1,000 litres, how much is freshwater?</span><span class="b info">2.5% = 2.5 out of 100. 1,000 ÷ 100 × 2.5 = <b>25 litres</b>.</span></button>
+      </article>
+      <article class="box skc" style="--c:var(--k6)">
+        <div class="skh"><span class="ico">📊</span><div><h3>Interpreting data</h3><span class="th">การตีความหมายข้อมูลและลงข้อสรุป</span></div></div>
+        <p>Read a <b>table or graph</b>. Find the highest, the lowest and the <b>pattern</b>. Then write a conclusion.</p>
+        <div class="frame"><b>Sentence frame</b>When ______ goes up, ______ goes up / goes down.</div>
+        <button class="flip ex" data-flip><span class="n">📝 Sugar dissolves in 120 s at 10 °C, 80 s at 30 °C and 20 s at 70 °C. What is the pattern?</span><span class="b info">“When the water temperature goes up, the time to dissolve goes down.” Sugar dissolves faster in hotter water.</span></button>
+      </article>
+      <article class="box skc" style="--c:var(--k7)">
+        <div class="skh"><span class="ico">🔮</span><div><h3>Predicting</h3><span class="th">การพยากรณ์</span></div></div>
+        <p>Use a <b>pattern</b> in the data or what you know to say what <b>will happen next</b>.</p>
+        <div class="frame"><b>Sentence frame</b>I predict that ______ because the pattern shows ______.</div>
+        <button class="flip ex" data-flip><span class="n">📝 From the sugar data above, how long will it take at 90 °C?</span><span class="b info">“I predict <b>less than 20 seconds</b>, because the hotter the water, the faster sugar dissolves.”</span></button>
+      </article>
+      <article class="box skc" style="--c:var(--k8)">
+        <div class="skh"><span class="ico">⚖️</span><div><h3>Variables &amp; fair tests</h3><span class="th">การกำหนดและควบคุมตัวแปร</span></div></div>
+        <p>In a <b>fair test</b> you change <b>only one thing</b>, measure one thing, and keep everything else the same.</p>
+        <div class="frame"><b>Sentence frame</b>I change ______. I measure ______. I keep ______ the same.</div>
+        <button class="flip ex" data-flip><span class="n">📝 Does hot water dissolve salt faster than cold water?</span><span class="b info">Change: water temperature. Measure: time for the salt to dissolve. Keep the same: amount of water, amount of salt, size of glass, stirring.</span></button>
+      </article>
+    </div>
+
+    <div class="box" style="--c:var(--k8)">
+      <h3>⚖️ The three variables <span class="th">ตัวแปร 3 ชนิด</span></h3>
+      <p>Experiment: <b>“If the water is hotter, then salt will dissolve faster.”</b> This is a <b>hypothesis</b> (สมมติฐาน): an “If …, then …” guess we can test.</p>
+      <div class="vars">
+        <div class="var" style="--vc:var(--k1)"><h4>🔧 Independent variable</h4><span class="th">ตัวแปรต้น</span><p>The thing <b>you change</b>.</p><p>👉 water temperature (20, 40, 60 °C)</p></div>
+        <div class="var" style="--vc:var(--k6)"><h4>📏 Dependent variable</h4><span class="th">ตัวแปรตาม</span><p>The thing <b>you measure</b> (the result).</p><p>👉 time for the salt to dissolve</p></div>
+        <div class="var" style="--vc:var(--k3)"><h4>🔒 Controlled variables</h4><span class="th">ตัวแปรควบคุม</span><p>Things you <b>keep the same</b>.</p><p>👉 amount of water, amount of salt, glass size, stirring</p></div>
+      </div>
+    </div>
+
+    <div class="box" style="--c:var(--k2)">
+      <h3>👀 or 💭? Observation or inference — tap to check</h3>
+      <div class="flips">
+        <button class="flip" data-flip><span class="n">“The ice cube got smaller.”</span><span class="b ph">👀 Observation</span></button>
+        <button class="flip" data-flip><span class="n">“The ice melted because the room is warm.”</span><span class="b ch">💭 Inference</span></button>
+        <button class="flip" data-flip><span class="n">“There are bubbles in the pot.”</span><span class="b ph">👀 Observation</span></button>
+        <button class="flip" data-flip><span class="n">“The nail has red-brown flakes on it.”</span><span class="b ph">👀 Observation</span></button>
+        <button class="flip" data-flip><span class="n">“The nail rusted because of water and air.”</span><span class="b ch">💭 Inference</span></button>
+        <button class="flip" data-flip><span class="n">“The thermometer shows 100 °C.”</span><span class="b ph">👀 Observation</span></button>
+      </div>
+    </div>
+    <div class="lfoot"><button class="btn solid" data-sk="practice">🎯 Start skill practice</button><button class="btn" data-sk="test">🏆 Skills Challenge</button></div>
+  </div>
+
+  <!-- skill practice -->
+  <div class="skview" id="sk-practice">
+    <div id="skSetsView">
+      <div class="box intro" style="margin-bottom:14px">
+        <h3 style="color:var(--sci)">🎯 Skill practice <span class="th">แบบฝึกทักษะ</span></h3>
+        <ul>
+          <li>Questions use <b>pictures, tables, graphs and experiments</b>. Read them first!</li>
+          <li>2 tries with a hint 💡. Some questions ask you to <b>write</b> an answer ✍️. Then compare with the model answer and check yourself honestly.</li>
+          <li>At the end, tap <b>🔁 Fix my mistakes</b>.</li>
+        </ul>
+      </div>
+      <div class="sets" id="skSets"></div>
+    </div>
+    <div id="skRun"></div>
+  </div>
+
+  <!-- skills challenge -->
+  <div class="skview" id="sk-test">
+    <div id="skTestIntro" class="box intro">
+      <h3 style="color:var(--sci)">🏆 Skills Challenge <span class="th">แบบทดสอบทักษะ</span></h3>
+      <ul>
+        <li><b>16 questions</b>, 2 for each of the 8 skills, with tables, graphs and experiments.</li>
+        <li>No answers are shown until you <b>submit</b>. Then you see your score <b>for each skill</b>.</li>
+        <li>Then <b>🔁 Fix my mistakes</b> with hints. <span class="th">แก้มือข้อที่ผิดพร้อมคำใบ้</span></li>
+      </ul>
+      <div><button class="btn solid" id="startSkTest">Start the challenge ▶</button></div>
+    </div>
+    <div id="skTestRun"></div>
+  </div>
+</section>
+
 <footer>Buddy EP · Science 5 · buddy-ep.github.io/materials</footer>
 </div>
 
@@ -860,6 +1030,127 @@ const TEST=[
 {l:"u4l2",t:"mc",q:"Which match is CORRECT?",o:["Dew — water drops on grass at night","Frost — hot steam","Fog — a cloud high in the sky","Cirrus — a dark rain cloud"],a:0,h:"Check each one carefully.",ex:"Dew forms at night on cool surfaces. Frost is ice, fog is near the ground, cirrus is thin and white."}
 ];
 
+
+/* ================= SKILLS & ABILITY DATA ================= */
+const SKILLS={
+  sk1:{s:"Skill:",t:"Observing",c:"var(--k1)"},
+  sk2:{s:"Skill:",t:"Inferring",c:"var(--k2)"},
+  sk3:{s:"Skill:",t:"Classifying",c:"var(--k3)"},
+  sk4:{s:"Skill:",t:"Explaining with reasons",c:"var(--k4)"},
+  sk5:{s:"Skill:",t:"Using numbers",c:"var(--k5)"},
+  sk6:{s:"Skill:",t:"Interpreting data",c:"var(--k6)"},
+  sk7:{s:"Skill:",t:"Predicting",c:"var(--k7)"},
+  sk8:{s:"Skill:",t:"Variables & fair tests",c:"var(--k8)"}
+};
+const SKSETS=[
+  {k:"sA",s:"Set A",t:"Observe & Infer",c:"var(--k1)",d:"👀 Observing · 💭 Inferring"},
+  {k:"sB",s:"Set B",t:"Classify & Explain",c:"var(--k3)",d:"🗂️ Classifying · 🗣️ Explaining (C-E-R)"},
+  {k:"sC",s:"Set C",t:"Numbers, Tables & Graphs",c:"var(--k6)",d:"🔢 Using numbers · 📊 Interpreting data"},
+  {k:"sD",s:"Set D",t:"Experiments & Predicting",c:"var(--k8)",d:"⚖️ Variables & fair tests · 🔮 Predicting"}
+];
+
+/* stimulus builders (tables, bar charts, line graphs, picture cards) */
+function tbl(cap,head,rows){return `<div class="tbl"><table class="cmp dt"><caption>${cap}</caption><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table></div>`}
+function pic(e,lines){return `<div class="pic"><div class="pe">${e}</div><ul>${lines.map(l=>`<li>${l}</li>`).join("")}</ul></div>`}
+function lbl(x,y,t,cls){const p=String(t).split("|");return `<text x="${x}" y="${y}" text-anchor="middle" class="${cls}">`+p.map((s,i)=>`<tspan x="${x}" dy="${i?13:0}">${s}</tspan>`).join("")+`</text>`}
+function bars(o){
+  const n=o.vals.length,X0=48,X1=408,Y0=170,Y1=16,H=Y0-Y1,bw=(X1-X0)/n;let g="";
+  for(let v=0;v<=o.max;v+=o.step){const y=Y0-v/o.max*H;g+=`<line x1="${X0}" x2="${X1}" y1="${y}" y2="${y}" class="gl"/><text x="${X0-6}" y="${y+4}" text-anchor="end" class="ax">${v}</text>`}
+  o.vals.forEach((v,i)=>{const h=v/o.max*H,w=bw*.56,x=X0+i*bw+(bw-w)/2;
+    g+=`<rect x="${x}" y="${Y0-h}" width="${w}" height="${h}" rx="3" class="bx"/><text x="${x+w/2}" y="${Y0-h-5}" text-anchor="middle" class="vl">${v}</text>`+lbl(x+w/2,Y0+16,o.labels[i],"ax")});
+  const my=(Y0+Y1)/2;
+  return `<figure class="chart"><figcaption>${o.title}</figcaption><svg viewBox="0 0 420 206" role="img" aria-label="${o.title}">${g}<text x="12" y="${my}" transform="rotate(-90 12 ${my})" text-anchor="middle" class="ax">${o.unit}</text></svg>${o.note?`<small>${o.note}</small>`:""}</figure>`;
+}
+function linec(o){
+  const n=o.xs.length,X0=52,X1=404,Y0=166,Y1=14,sx=i=>X0+i*(X1-X0)/(n-1),sy=v=>Y0-(v-o.ymin)/(o.ymax-o.ymin)*(Y0-Y1);let g="";
+  for(let v=o.ymin;v<=o.ymax;v+=o.step){const y=sy(v);g+=`<line x1="${X0}" x2="${X1}" y1="${y}" y2="${y}" class="gl"/><text x="${X0-6}" y="${y+4}" text-anchor="end" class="ax">${v}</text>`}
+  o.xs.forEach((x,i)=>{g+=`<text x="${sx(i)}" y="${Y0+16}" text-anchor="middle" class="ax">${x}</text>`});
+  g+=`<polyline class="ln" points="${o.ys.map((v,i)=>sx(i)+","+sy(v)).join(" ")}"/>`+o.ys.map((v,i)=>`<circle cx="${sx(i)}" cy="${sy(v)}" r="4" class="lp"/>`).join("");
+  const my=(Y0+Y1)/2;
+  g+=`<text x="${(X0+X1)/2}" y="${Y0+34}" text-anchor="middle" class="ax">${o.xlab}</text><text x="12" y="${my}" transform="rotate(-90 12 ${my})" text-anchor="middle" class="ax">${o.ylab}</text>`;
+  return `<figure class="chart"><figcaption>${o.title}</figcaption><svg viewBox="0 0 420 210" role="img" aria-label="${o.title}">${g}</svg>${o.note?`<small>${o.note}</small>`:""}</figure>`;
+}
+
+const ST={
+  glass:pic("🥤💧",["A glass of iced cha yen stands on the table for 10 minutes.","Drops of water appear on the <b>outside</b> of the glass.","The table under the glass is wet."]),
+  sugar:tbl("Time for 1 spoon of sugar to dissolve (100 mL of water, stirred)",["Water temperature (°C)","10","30","50","70"],[["Time to dissolve (seconds)","120","80","45","20"]]),
+  water:bars({title:"Water used at Pamai’s home in one day",labels:["Bathtub","Shower","Dishes in|a basin","Dishes under|running tap"],vals:[150,60,20,80],max:160,step:40,unit:"litres",note:"Example data for practice"}),
+  heat:linec({title:"Heating ice in a beaker",xs:[0,1,2,3,4,5,6,7,8,9,10],ys:[-10,0,0,0,0,20,40,60,80,100,100],ymin:-20,ymax:120,step:20,xlab:"Time (minutes)",ylab:"Temperature (°C)",note:"Example data for practice"}),
+  salt:pic("🧂🥛",["Plearn wants to know: <b>Does the temperature of water change how fast salt dissolves?</b>","She uses 3 glasses of water at <b>20 °C, 40 °C and 60 °C</b>.","She adds 1 spoon of salt to each glass and times how long it takes to dissolve."]),
+  rust:tbl("Rusting experiment — result after 1 week",["Tube","What is inside","Result"],[["A","Nail + water + air","🟤 Lots of rust"],["B","Nail + dry air (no water)","⚪ No rust"],["C","Nail + boiled water with oil on top (no air)","⚪ No rust"]]),
+  evap:tbl("100 mL of water left for 1 day",["Container and place","Water lost (mL)"],[["Wide plate, in the sun","40"],["Narrow glass, in the sun","10"],["Wide plate, in the shade","15"]]),
+  clouds:bars({title:"Clouds recorded by Class 5/1 in one week",labels:["Cumulus","Stratus","Cirrus","Cumulo-|nimbus"],vals:[4,2,3,1],max:5,step:1,unit:"times seen"}),
+  dissolve:tbl("Stirring 1 spoon of each substance into water",["Substance","Water clear after stirring?","Bits settle at the bottom?"],[["Salt","Yes","No"],["Sand","No","Yes"],["Sugar","Yes","No"],["Chalk powder","No","Yes"]]),
+  ice:tbl("Time for an ice cube to melt",["Room temperature (°C)","Time to melt (minutes)"],[["20","30"],["30","20"],["40","10"]])
+};
+
+const SKPRACTICE=[
+/* ---- Set A: Observe & Infer ---- */
+{set:"sA",l:"sk1",t:"mc",st:ST.glass,q:"Which sentence is an OBSERVATION (a fact you can see)?",o:["There are water drops on the outside of the glass.","The water came from the air.","The glass is leaking.","The ice is melting through the glass."],a:0,h:"An observation only says what you can see — not why.",ex:"“There are water drops on the outside” is what you can see. The other sentences try to explain why, or are wrong."},
+{set:"sA",l:"sk2",t:"mc",st:ST.glass,q:"Which is the BEST inference (explanation)?",o:["Water vapour in the air condensed on the cold glass.","The tea leaked through the glass.","Someone spilled water on the glass.","The glass is sweating like a person."],a:0,h:"Glass has no holes. Think about what happens when a gas touches something cold.",ex:"Water vapour in the air touches the cold glass, cools and condenses into liquid drops."},
+{set:"sA",l:"sk1",t:"tf",q:"“The bread smells burnt” is an observation.",a:true,h:"",ex:"True. You use your sense of smell, so it is an observation."},
+{set:"sA",l:"sk1",t:"mc",q:"Pamai heats a beaker of water. Which observation uses a NUMBER?",o:["The water temperature is 100 °C.","The water looks hot.","The water is bubbling a lot.","Steam is coming out."],a:0,h:"Look for a measurement with a unit.",ex:"“100 °C” is a measured number. Observations with numbers are more exact."},
+{set:"sA",l:"sk2",t:"mc",st:pic("🌱🛣️",["Early in the morning the grass is wet.","The road is dry.","It did not rain last night."]),q:"What is the best inference?",o:["Dew formed on the cool grass during the night.","It rained only on the grass.","Someone watered the road.","The grass is melting."],a:0,h:"No rain… but the grass is wet. What forms at night on cool surfaces?",ex:"Dew forms at night when water vapour condenses on cool surfaces like grass."},
+{set:"sA",l:"sk2",t:"mc",st:pic("🚪🪑",["A metal (iron) gate near the sea has red-brown, flaky patches.","A plastic chair next to it looks the same as last year."]),q:"Which inference is best?",o:["The iron gate rusted because of water and air; plastic does not rust.","The gate was painted red.","The plastic chair rusted too.","The gate melted in the sun."],a:0,h:"Red-brown and flaky on iron means …",ex:"Iron reacts with water and air and forms rust, a new substance. Plastic does not rust."},
+{set:"sA",l:"sk1",t:"sort",q:"Observation or inference?",cats:["👀 Observation","💭 Inference"],items:[["The ice cube got smaller.",0],["The ice melted because the room is warm.",1],["There are bubbles in the pot.",0],["The sky is dark grey.",0],["It will rain soon because there are cumulonimbus clouds.",1],["The puddle dried up because of the Sun’s heat.",1]],h:"Sentences with “because” usually explain — they are inferences.",ex:"Observations: ice got smaller, bubbles in the pot, sky is dark grey. Inferences: the sentences that explain why."},
+{set:"sA",l:"sk2",t:"mc",st:pic("🧊🍽️",["Teacher Dan puts a small piece of dry ice on a plate.","After 30 minutes the dry ice is gone.","The plate is still dry."]),q:"What can you infer?",o:["The dry ice sublimated — it changed straight into a gas.","The dry ice melted into water.","Someone took it away.","It dissolved into the plate."],a:0,h:"The plate is DRY, so no liquid was made.",ex:"No liquid was left, so the solid changed straight into a gas: sublimation."},
+{set:"sA",l:"sk2",t:"open",q:"In Surin, there is fog on the road at 6 a.m., but it is gone by 10 a.m. Explain what happened. Use: “I think ___ because ___.”",model:"I think the fog evaporated because the Sun heated the air, so the tiny water droplets changed back into water vapour.",check:["You said the Sun / heat / warmer air.","You said the droplets evaporated or changed into water vapour (gas)."]},
+
+/* ---- Set B: Classify & Explain ---- */
+{set:"sB",l:"sk3",t:"sort",q:"Group these by their state at room temperature.",cats:["Solid","Liquid","Gas"],items:[["Rock",0],["Vinegar",1],["Oxygen",2],["Salt",0],["Cooking oil",1],["Water vapour",2],["Sugar",0]],h:"Does it keep its shape (solid), flow (liquid) or spread out in the air (gas)?",ex:"Solid: rock, salt, sugar. Liquid: vinegar, cooking oil. Gas: oxygen, water vapour."},
+{set:"sB",l:"sk3",t:"mc",q:"Pleng made two groups. Group A: salt, sugar, vinegar. Group B: sand, oil, chalk powder. What rule did she use?",o:["Soluble or insoluble in water","Solid or liquid","Natural or man-made","Hot or cold"],a:0,h:"Group A has a liquid AND solids, so it is not about state.",ex:"Group A dissolves in water (soluble). Group B does not (insoluble)."},
+{set:"sB",l:"sk3",t:"mc",q:"Which one does NOT belong? Burning paper, rusting nail, frying an egg, melting butter.",o:["Melting butter — it is a physical change.","Burning paper","Rusting nail","Frying an egg"],a:0,h:"Three of them make a new substance.",ex:"Burning, rusting and frying are chemical changes. Melting butter is physical — it is still butter."},
+{set:"sB",l:"sk3",t:"sort",q:"Natural change or man-made change?",cats:["🌿 Natural","🧑‍🍳 Man-made"],items:[["Fruit rotting on a tree",0],["Cooking rice",1],["An iron gate rusting in the rain",0],["Baking a cake",1],["Ice melting on a mountain",0],["Burning paper in a lab",1]],h:"Did a person make it happen?",ex:"Natural: rotting, rusting in the rain, ice melting on a mountain. Man-made: cooking, baking, burning in a lab."},
+{set:"sB",l:"sk4",t:"mc",q:"Claim: “Dissolving salt in water is a reversible change.” Which is the best EVIDENCE?",o:["When the water evaporates, salt crystals are left in the dish.","Salt tastes salty.","Salt is white.","Salt water looks clear."],a:0,h:"Evidence must show that we can get the salt BACK.",ex:"Getting the salt back after the water evaporates proves the change is reversible."},
+{set:"sB",l:"sk4",t:"mc",q:"Plearn says: “Toasting bread is a chemical change.” Which REASON supports her claim?",o:["A new substance forms — the bread turns brown, smells different and cannot change back.","The bread gets warm.","The bread is cut into a new shape.","The bread is a solid."],a:0,h:"What makes a change chemical?",ex:"A chemical change makes a new substance and cannot go back."},
+{set:"sB",l:"sk4",t:"mc",q:"Why do wet clothes dry faster on a sunny, windy day? Choose the best explanation.",o:["The Sun’s heat and the wind make the water evaporate faster.","The wind pushes the water deeper into the clothes.","The Sun turns the water into ice.","The clothes drink the water."],a:0,h:"Drying = water changing from liquid to gas.",ex:"Heat and wind both speed up evaporation."},
+{set:"sB",l:"sk3",t:"mc",q:"Which rule puts cirrus, cirrocumulus and cirrostratus in one group?",o:["They are all upper-level clouds (more than 6 km).","They all bring thunderstorms.","They all form near the ground.","They are all kinds of fog."],a:0,h:"Look at the start of each name: cirro-.",ex:"Cirrus-type clouds are upper-level clouds, more than 6 km above the ground."},
+{set:"sB",l:"sk4",t:"open",q:"Claim: Cooking an egg is an irreversible change. Write the EVIDENCE and the REASON.",model:"Evidence: the clear part of the egg turns white and solid, and it does not go back when it cools down. Reason: a new substance is formed, so it is a chemical change, and chemical changes are irreversible.",check:["Evidence: what you can see (white / solid / does not go back).","Reason: a new substance forms / it is a chemical change."]},
+
+/* ---- Set C: Numbers, Tables & Graphs ---- */
+{set:"sC",l:"sk6",t:"mc",st:ST.sugar,q:"What does the table show?",o:["The hotter the water, the faster the sugar dissolves.","The hotter the water, the slower the sugar dissolves.","Temperature does not change dissolving.","Sugar does not dissolve in cold water."],a:0,h:"As the temperature goes up, what happens to the time?",ex:"The time goes down (120 → 20 s) as the temperature goes up, so sugar dissolves faster in hotter water."},
+{set:"sC",l:"sk5",t:"mc",st:ST.sugar,q:"How many seconds faster does the sugar dissolve at 70 °C than at 10 °C?",o:["100 seconds","20 seconds","120 seconds","50 seconds"],a:0,h:"Subtract: time at 10 °C − time at 70 °C.",ex:"120 − 20 = 100 seconds faster."},
+{set:"sC",l:"sk7",t:"mc",st:ST.sugar,q:"Predict: how long will it take at 90 °C?",o:["Less than 20 seconds","About 120 seconds","More than 80 seconds","The sugar will not dissolve"],a:0,h:"Follow the pattern — hotter means …",ex:"The pattern shows hotter water = faster. So at 90 °C it should take less than 20 seconds."},
+{set:"sC",l:"sk6",t:"mc",st:ST.water,q:"Which activity uses the MOST water?",o:["Bathtub","Shower","Dishes in a basin","Dishes under a running tap"],a:0,h:"Find the tallest bar.",ex:"The bathtub bar is the tallest: 150 litres."},
+{set:"sC",l:"sk5",t:"mc",st:ST.water,q:"How many litres can Pamai save by washing dishes in a basin instead of under a running tap?",o:["60 litres","20 litres","80 litres","100 litres"],a:0,h:"Running tap − basin.",ex:"80 − 20 = 60 litres saved each day."},
+{set:"sC",l:"sk5",t:"mc",q:"Only 2.5% of Earth’s water is freshwater. If we had 200 litres of “Earth’s water”, how much would be freshwater?",o:["5 litres","2.5 litres","195 litres","20 litres"],a:0,h:"2.5% means 2.5 out of every 100.",ex:"100 litres → 2.5 litres, so 200 litres → 5 litres."},
+{set:"sC",l:"sk6",t:"mc",st:ST.heat,q:"Why does the temperature stay at 0 °C from minute 1 to minute 4?",o:["The ice is melting — the heat is used to change solid into liquid.","The heater was turned off.","The water is boiling.","The thermometer is broken."],a:0,h:"0 °C is the temperature where ice changes state.",ex:"While ice melts, the heat is used to change the state, so the temperature stays at 0 °C until all the ice has melted."},
+{set:"sC",l:"sk6",t:"mc",st:ST.heat,q:"At what temperature does the water boil in this graph?",o:["100 °C","0 °C","50 °C","−10 °C"],a:0,h:"Look where the line becomes flat at the top.",ex:"The line goes flat again at 100 °C — the boiling point of water."},
+{set:"sC",l:"sk5",t:"mc",q:"A plane flies 4 km above the ground. Which cloud level is it in?",o:["Mid-level (2–6 km)","Upper level (more than 6 km)","Lower level (up to 2 km)","Above all clouds"],a:0,h:"Is 4 between 2 and 6?",ex:"4 km is between 2 and 6 km, so it is the mid-level (altostratus, altocumulus)."},
+{set:"sC",l:"sk6",t:"open",st:ST.sugar,q:"Write a conclusion for the sugar experiment. Use: “When ___ goes up, ___ goes ___.”",model:"When the water temperature goes up, the time for the sugar to dissolve goes down. Sugar dissolves faster in hotter water.",check:["You named both things: water temperature and time to dissolve.","You said the time goes DOWN (dissolves faster)."]},
+
+/* ---- Set D: Experiments & Predicting ---- */
+{set:"sD",l:"sk8",t:"mc",st:ST.salt,q:"What does Plearn CHANGE? (independent variable / ตัวแปรต้น)",o:["The temperature of the water","The amount of salt","The time it takes to dissolve","The size of the glass"],a:0,h:"Which thing is different in each glass?",ex:"She changes the water temperature (20, 40, 60 °C)."},
+{set:"sD",l:"sk8",t:"mc",st:ST.salt,q:"What does Plearn MEASURE? (dependent variable / ตัวแปรตาม)",o:["The time it takes the salt to dissolve","The water temperature","The kind of glass","The colour of the salt"],a:0,h:"What result does she write down?",ex:"She measures the time for the salt to dissolve — this is the result."},
+{set:"sD",l:"sk8",t:"mc",st:ST.salt,q:"Which things must she keep THE SAME? (controlled variables / ตัวแปรควบคุม)",o:["The amount of water and the amount of salt","The temperature of the water","The time to dissolve","Nothing needs to be the same"],a:0,h:"Everything except the one thing she changes.",ex:"Same amount of water, same amount of salt, same glass, same stirring — so the test is fair."},
+{set:"sD",l:"sk8",t:"mc",st:ST.salt,q:"Which is a good HYPOTHESIS (สมมติฐาน) for this experiment?",o:["If the water is hotter, then the salt will dissolve faster.","Salt is white.","I like salty food.","Water is a liquid."],a:0,h:"A hypothesis is an “If …, then …” sentence you can test.",ex:"“If the water is hotter, then the salt will dissolve faster” can be tested with this experiment."},
+{set:"sD",l:"sk6",t:"mc",st:ST.rust,q:"What does this experiment show?",o:["Iron needs BOTH water and air to rust.","Iron needs only water to rust.","Iron needs only air to rust.","Oil makes iron rust."],a:0,h:"Only tube A rusted. What does tube A have that B and C do not?",ex:"Tube B had no water and tube C had no air — neither rusted. Only A (water + air) rusted."},
+{set:"sD",l:"sk7",t:"mc",st:ST.rust,q:"Predict: an iron nail is painted and then left in the rain. What will happen?",o:["It will rust less, because the paint keeps water and air away.","It will rust faster.","It will melt.","It will dissolve in the rain."],a:0,h:"Rust needs water AND air to touch the iron.",ex:"Paint covers the iron so water and air cannot reach it. That is why we paint iron gates and bridges."},
+{set:"sD",l:"sk8",t:"mc",q:"Pleng tests where a wet towel dries fastest: in the sun, in the shade and inside a room. Which makes it a FAIR test?",o:["Use the same kind of towel with the same amount of water each time.","Use a big towel in the sun and a small towel in the shade.","Check each towel at a different time.","Use different amounts of water."],a:0,h:"Only the PLACE should be different.",ex:"In a fair test, only one thing changes (the place). Everything else stays the same."},
+{set:"sD",l:"sk7",t:"mc",st:ST.evap,q:"Predict: how much water will a NARROW glass IN THE SHADE lose in 1 day?",o:["Less than 10 mL","More than 40 mL","Exactly 40 mL","It will gain water"],a:0,h:"A narrow glass loses less. The shade also makes it lose less.",ex:"Narrow (10 mL) and shade (15 mL) both lose less than the wide plate in the sun. Together it should lose less than 10 mL."},
+{set:"sD",l:"sk7",t:"mc",q:"It is December. The sky is clear and the night is cold. Predict what Pamai will see on the grass early in the morning.",o:["Dew (or frost if it is below freezing)","Snow","A rainbow","Dry grass with no water"],a:0,h:"What forms on cool surfaces at night?",ex:"On cool, clear nights water vapour condenses on grass as dew. If it is below freezing, frost forms."},
+{set:"sD",l:"sk8",t:"open",q:"Design a fair test: Does stirring make sugar dissolve faster? Write: “I change ___. I measure ___. I keep ___ the same.”",model:"I change: stirring or not stirring. I measure: the time for the sugar to dissolve. I keep the same: the amount of water, the amount of sugar, the water temperature and the size of the glass.",check:["Change: stirring / not stirring.","Measure: time to dissolve.","Keep the same: at least two things (water, sugar, temperature, glass)."]}
+];
+
+const SKTEST=[
+{l:"sk1",t:"mc",q:"Which is an OBSERVATION, not an inference?",o:["The ice cream is dripping onto my hand.","The ice cream is melting because it is hot today.","The shop’s freezer must be broken.","The ice cream was made yesterday."],a:0,h:"Which one only says what you can see?",ex:"“Dripping onto my hand” is what you see. The others explain or guess."},
+{l:"sk1",t:"mc",q:"Teacher Sa drops baking soda into vinegar. Which OBSERVATION should go in the lab record?",o:["Bubbles form and the mixture fizzes.","It is a chemical change.","A new gas is made because they react.","The vinegar wants to escape."],a:0,h:"Write what you see and hear, not the science idea.",ex:"Bubbles and fizzing are observations. “It is a chemical change” is a conclusion."},
+{l:"sk2",t:"mc",st:pic("☀️💦",["At 8 a.m. there is a big puddle on the playground.","At 2 p.m. the puddle is gone.","It was sunny all day."]),q:"What is the best inference?",o:["The water evaporated because of the Sun’s heat.","The water froze.","The water condensed.","Someone drank the puddle."],a:0,h:"Sunny all day — liquid to gas …",ex:"The Sun heated the water and it evaporated into water vapour."},
+{l:"sk2",t:"mc",q:"A cold bottle of water from the fridge has water drops outside. A bottle at room temperature does not. What can you infer?",o:["Water vapour condenses on cold surfaces.","Cold bottles leak.","Room-temperature bottles are waterproof.","The drops came from inside the bottle."],a:0,h:"What is different between the two bottles?",ex:"Only the cold bottle has drops, so cooling makes water vapour in the air condense."},
+{l:"sk3",t:"mc",q:"Which group contains only CHEMICAL changes?",o:["Rotting, rusting, burning","Melting, boiling, freezing","Cutting, folding, tearing","Dissolving, evaporating, condensing"],a:0,h:"Which group makes new substances?",ex:"Rotting, rusting and burning all make new substances."},
+{l:"sk3",t:"mc",q:"Plearn sorts water sources. Group 1: river, lake, canal. Group 2: groundwater, soil water. What is her rule?",o:["Surface water or subsurface water","Saltwater or freshwater","Natural or man-made","Hot or cold water"],a:0,h:"Where is the water — on top of the ground or below it?",ex:"Group 1 is on the surface; Group 2 is below the surface."},
+{l:"sk4",t:"mc",q:"Claim: “Fog is a kind of cloud.” Which EVIDENCE supports this claim best?",o:["Fog is made of tiny water droplets in the air, like a cloud, but near the ground.","Fog is white.","Fog happens in the morning.","Fog makes us feel cold."],a:0,h:"Good evidence shows fog and clouds are made of the same thing.",ex:"Both are tiny water droplets in the air; fog forms near the ground."},
+{l:"sk4",t:"mc",q:"Why should we take a shower instead of a bath? Choose the best reason.",o:["A shower uses less water, and only a small part of Earth’s water is fresh.","Showers are more fun.","Bathtubs are made of plastic.","Shower water is saltwater."],a:0,h:"Think about saving freshwater.",ex:"A shower uses less water. Freshwater is only 2.5% of Earth’s water, so we must save it."},
+{l:"sk5",t:"mc",q:"Water at 25 °C is heated until it boils at 100 °C. How many degrees did the temperature go up?",o:["75 °C","125 °C","100 °C","25 °C"],a:0,h:"100 − 25",ex:"100 − 25 = 75 degrees."},
+{l:"sk5",t:"mc",st:ST.clouds,q:"How many clouds did Class 5/1 record altogether?",o:["10","4","9","12"],a:0,h:"Add all the bars.",ex:"4 + 2 + 3 + 1 = 10."},
+{l:"sk6",t:"mc",st:ST.clouds,q:"Which cloud type did Class 5/1 see the most?",o:["Cumulus","Stratus","Cirrus","Cumulonimbus"],a:0,h:"Find the tallest bar.",ex:"Cumulus was seen 4 times — the most."},
+{l:"sk6",t:"mc",st:ST.dissolve,q:"Which conclusion is correct?",o:["Salt and sugar are soluble; sand and chalk powder are insoluble.","All four substances are soluble.","Sand and chalk powder are soluble.","Only salt is soluble."],a:0,h:"Clear water and nothing at the bottom = dissolved.",ex:"Salt and sugar made clear water with nothing at the bottom, so they dissolved."},
+{l:"sk7",t:"mc",st:ST.ice,q:"Predict: how long will the ice cube take to melt in a room at 10 °C?",o:["More than 30 minutes","Less than 10 minutes","Exactly 20 minutes","It will never melt"],a:0,h:"Colder room → slower melting.",ex:"The pattern shows that cooler rooms take longer. 10 °C is cooler than 20 °C, so it takes more than 30 minutes (it still melts, because 10 °C is above 0 °C)."},
+{l:"sk7",t:"mc",q:"Tall, dark cumulonimbus clouds are forming in the afternoon. Predict the weather.",o:["Heavy rain with thunder and lightning","Frost on the grass","A clear, sunny evening","Snow"],a:0,h:"What do cumulonimbus clouds bring?",ex:"Cumulonimbus clouds bring heavy rain, thunder and lightning."},
+{l:"sk8",t:"mc",q:"Pamai tests: “Does the size of the plate change how fast water evaporates?” What should she CHANGE?",o:["The size of the plate","The amount of water","The place where she puts the plates","The kind of water"],a:0,h:"The question tells you what to change.",ex:"The plate size is the independent variable (ตัวแปรต้น)."},
+{l:"sk8",t:"mc",q:"Pamai tests if plate size changes how fast water evaporates. What should she keep THE SAME?",o:["The amount of water and the place (sun or shade)","The size of the plate","The amount of water left at the end","Nothing"],a:0,h:"Keep everything the same except the plate size.",ex:"Same amount of water and same place make it a fair test. The water left at the end is what she measures."}
+];
+
 /* ================= HELPERS ================= */
 const $=s=>document.querySelector(s);
 const $$=s=>[...document.querySelectorAll(s)];
@@ -889,6 +1180,7 @@ document.addEventListener("click",e=>{
   const m=t.closest("[data-mode]"); if(m&&m.closest("nav.modes")){showMode(m.dataset.mode);return}
   const mg=t.closest("[data-mode-go]"); if(mg){showMode(mg.dataset.modeGo);return}
   const g=t.closest("[data-go]"); if(g){e.preventDefault();showLesson(g.dataset.go);return}
+  const sk=t.closest("[data-sk]"); if(sk){e.preventDefault();showMode("skills");showSk(sk.dataset.sk);return}
   const gs=t.closest("[data-goset]"); if(gs){showMode("practice");startSet(gs.dataset.goset,null,"full");return}
   const p=t.closest("[data-proc]"); if(p){setProc(p.dataset.proc);return}
   const f=t.closest("[data-flip]"); if(f){f.classList.toggle("show");return}
@@ -933,6 +1225,7 @@ function prep(q){
   if(q.t==="sort"){it.order=shuffle(q.items.map((_,k)=>k));it.sel={};it.marks={}}
   if(q.t==="order"){it.pool=shuffle(q.steps.map((_,k)=>k));it.seq=[]}
   if(q.t==="type") it.val="";
+  if(q.t==="open"){it.val="";it.revealed=false}
   return it;
 }
 function answerText(q){
@@ -941,6 +1234,7 @@ function answerText(q){
   if(q.t==="type")return q.ans;
   if(q.t==="sort")return q.cats.map((c,ci)=>c+": "+q.items.filter(x=>x[1]===ci).map(x=>x[0]).join(", ")).join(" · ");
   if(q.t==="order")return q.steps.join(" → ");
+  if(q.t==="open")return q.model;
 }
 function pickText(it){const q=it.q;if(it.pick===null||it.pick===undefined)return "(no answer)";
   if(q.t==="mc")return q.o[it.pick]; if(q.t==="tf")return it.pick?"True":"False"; return ""}
@@ -1004,6 +1298,10 @@ function Runner(el,list,cfg){
         it.pool.filter(k=>!used.has(k)).map(k=>`<button data-act="ordadd" data-k="${k}" ${lock?"disabled":""}>${esc(q.steps[k])}</button>`).join("")+
         `</div></div>`;
     }
+    if(q.t==="open"){
+      return `<textarea class="tarea" rows="3" ${it.revealed?"disabled":""} placeholder="Write your answer here ✏️" aria-label="Your answer">${esc(it.val)}</textarea>`+
+        (it.revealed?`<div class="model"><b>✍️ Model answer</b><p>${esc(q.model)}</p><b>Check your answer — did you…</b><ul>${q.check.map(c=>`<li>${esc(c)}</li>`).join("")}</ul></div>`:"");
+    }
     if(q.t==="type"){
       return `<input class="tin" type="text" value="${esc(it.val)}" ${lock?"disabled":""} autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Write your answer here ✏️" aria-label="Your answer">`;
     }
@@ -1011,13 +1309,14 @@ function Runner(el,list,cfg){
 
   function fbHTML(it){
     const f=it.fb;if(!f)return "";const q=it.q;
-    if(f.k==="good")return `<div class="fb good"><b>${f.msg}</b><p>${esc(q.ex)}</p></div>`;
+    if(f.k==="good")return `<div class="fb good"><b>${f.msg}</b>${q.ex?`<p>${esc(q.ex)}</p>`:""}</div>`;
+    if(f.k==="selfno")return `<div class="fb hint"><b>That’s OK! 💪</b><p>Read the model answer again. Next time, try to include every point in the checklist.</p></div>`;
     if(f.k==="hint")return `<div class="fb hint"><b>${f.msg}</b>${f.h?`<p>💡 Hint: ${esc(f.h)}</p>`:""}</div>`;
     return `<div class="fb bad"><b>Let’s learn this one together 💡</b><p class="ansline">✅ Answer: ${esc(answerText(q))}</p><p>${esc(q.ex)}</p></div>`;
   }
 
   function render(){
-    const it=R.items[R.i],q=it.q,n=R.items.length,L=LESSONS[q.l];
+    const it=R.items[R.i],q=it.q,n=R.items.length,L=META[q.l];
     const answered=R.items.filter(x=>test?x.pick!==null:x.done).length;
     const dots=R.items.map((x,k)=>{
       let c="dot";
@@ -1030,16 +1329,19 @@ function Runner(el,list,cfg){
       navR=(R.i<n-1?`<button class="btn solid" data-act="next">Next ➜</button>`:"")+`<button class="btn ${R.i===n-1?"solid":""}" data-act="submit">Submit ✔ <span class="th" style="color:inherit">ส่งคำตอบ</span></button>`;
     }else if(it.done){
       navR=`<button class="btn solid" data-act="next">${R.i<n-1?"Next ➜":"See my score 🏁"}</button>`;
+    }else if(q.t==="open"){
+      navR=it.revealed?`<button class="btn" data-act="self" data-v="0">🔁 Not yet</button><button class="btn solid" data-act="self" data-v="1">✅ My answer matches</button>`:`<button class="btn solid" data-act="reveal">Show model answer 👀</button>`;
     }else if(q.t==="sort"||q.t==="order"||q.t==="type"){
       navR=(q.t==="order"&&it.seq.length?`<button class="btn" data-act="ordclr">Clear</button>`:"")+`<button class="btn solid" data-act="check" ${ready(it)?"":"disabled"}>Check ✔</button>`;
     }
-    const kindTip={sort:"Choose a group for every item, then tap Check.",order:"",type:"",mc:"",tf:""}[q.t];
+    const kindTip={sort:"Choose a group for every item, then tap Check.",open:"✍️ Write your answer, then compare it with the model answer.",order:"",type:"",mc:"",tf:""}[q.t];
     el.innerHTML=`<div class="run" style="--c:${cfg.color||"var(--sci)"}">
       <div class="rtop"><h3>${cfg.title}</h3>${cfg.timer?`<span class="pill tmr">⏱ ${fmt(Math.floor((Date.now()-R.t0)/1000))}</span>`:""}<span class="pill">${test?"Answered":"Done"} ${answered}/${n}</span></div>
       <div class="bar"><i style="width:${answered/n*100}%"></i></div>
       <div class="dots">${dots}</div>
       <div class="qcard" style="--c:${L.c}">
         <div class="qmeta">Q${R.i+1} of ${n} · ${L.s} ${esc(L.t)}${q.t==="tf"?" · True or False":""}</div>
+        ${q.st?`<div class="stim">${q.st}</div>`:""}
         <p class="qtext">${esc(q.q)}</p>
         ${kindTip?`<p class="th" style="margin:0">${kindTip}</p>`:""}
         ${answerHTML(it)}
@@ -1050,6 +1352,8 @@ function Runner(el,list,cfg){
     </div>`;
     const tin=el.querySelector(".tin");
     if(tin){tin.oninput=()=>{it.val=tin.value};tin.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();act("check")}};if(!it.done)tin.focus({preventScroll:true})}
+    const ta=el.querySelector(".tarea");
+    if(ta){ta.oninput=()=>{it.val=ta.value}}
   }
 
   function finish(){clearInterval(R.tick);const secs=Math.floor((Date.now()-R.t0)/1000);
@@ -1066,6 +1370,8 @@ function Runner(el,list,cfg){
     if(a==="ordrm"){if(it.done)return;it.seq.splice(+d.n,1);render();return}
     if(a==="ordclr"){it.seq=[];render();return}
     if(a==="check"){if(it.done||!ready(it))return;attempt(it);render();return}
+    if(a==="reveal"){if(!norm(it.val)){it.fb={k:"hint",msg:"Write your answer first ✏️",h:""};render();return}it.revealed=true;it.fb=null;render();return}
+    if(a==="self"){if(it.done)return;it.done=true;it.ok=it.first=d.v==="1";it.fb=it.ok?{k:"good",msg:pickOne(PRAISE)}:{k:"selfno"};render();return}
     if(a==="next"){if(R.i<R.items.length-1){R.i++;render();el.scrollIntoView({block:"start",behavior:"smooth"})}else finish();return}
     if(a==="prev"){if(R.i>0){R.i--;render()}return}
     if(a==="go"){R.i=+d.i;render();return}
@@ -1080,99 +1386,121 @@ function Runner(el,list,cfg){
 
 function stars(p){return p>=90?"⭐⭐⭐":p>=70?"⭐⭐":p>=50?"⭐":"🌱"}
 
-/* ================= PRACTICE ================= */
-const best={};
-function drawSets(){
-  $("#sets").innerHTML=Object.keys(LESSONS).map(k=>{const L=LESSONS[k],n=PRACTICE.filter(q=>q.l===k).length;
-    return `<button class="setcard" style="--c:${L.c}" data-set="${k}"><small>${L.s}</small><b>${L.t}</b><small>${n} questions · mixed types</small>${best[k]!=null?`<span class="best">Best first-try score: ${best[k]}/${n} ${stars(best[k]/n*100)}</span>`:""}</button>`}).join("");
+const META=Object.assign({},LESSONS,SKILLS);
+/* ================= PRACTICE (lesson sets + skill sets) ================= */
+const SETS={},best={};
+Object.keys(LESSONS).forEach(k=>{const L=LESSONS[k];SETS[k]={s:L.s,t:L.t,c:L.c,d:"",qs:PRACTICE.filter(q=>q.l===k),g:"k"}});
+SKSETS.forEach(o=>{SETS[o.k]={s:o.s,t:o.t,c:o.c,d:o.d,qs:SKPRACTICE.filter(q=>q.set===o.k),g:"s"}});
+const GRP={k:{view:"#setsView",run:"#practiceRun",grid:"#sets",types:"mixed types"},s:{view:"#skSetsView",run:"#skRun",grid:"#skSets",types:"tables, graphs & experiments"}};
+function drawSets(g){
+  $(GRP[g].grid).innerHTML=Object.keys(SETS).filter(k=>SETS[k].g===g).map(k=>{const S=SETS[k],n=S.qs.length;
+    return `<button class="setcard" style="--c:${S.c}" data-set="${k}"><small>${S.s}</small><b>${S.t}</b>${S.d?`<small>${S.d}</small>`:""}<small>${n} questions · ${GRP[g].types}</small>${best[k]!=null?`<span class="best">Best first-try score: ${best[k]}/${n} ${stars(best[k]/n*100)}</span>`:""}</button>`}).join("");
 }
-$("#sets").addEventListener("click",e=>{const b=e.target.closest("[data-set]");if(b)startSet(b.dataset.set,null,"full")});
-function backToSets(){$("#practiceRun").innerHTML="";$("#setsView").style.display="";drawSets();window.scrollTo({top:0})}
+["#sets","#skSets"].forEach(id=>$(id).addEventListener("click",e=>{const b=e.target.closest("[data-set]");if(b)startSet(b.dataset.set,null,"full")}));
+function backToSets(g){const G=GRP[g];$(G.run).innerHTML="";$(G.view).style.display="";drawSets(g);window.scrollTo({top:0})}
 function startSet(k,list,round){
-  const L=LESSONS[k];list=list||PRACTICE.filter(q=>q.l===k);
-  $("#setsView").style.display="none";
-  const el=$("#practiceRun");
-  Runner(el,list,{mode:"practice",title:(round==="fix"?"🔁 Fix my mistakes · ":"🎯 ")+L.s+" "+L.t,color:L.c,quit:"Back to all sets",onQuit:backToSets,
+  const S=SETS[k],G=GRP[S.g];list=list||S.qs;
+  $(G.view).style.display="none";
+  Runner($(G.run),list,{mode:"practice",title:(round==="fix"?"🔁 Fix my mistakes · ":"🎯 ")+S.s+" "+S.t,color:S.c,quit:"Back to all sets",onQuit:()=>backToSets(S.g),
     onDone:items=>practiceSummary(k,items,round)});
   window.scrollTo({top:0});
 }
 function practiceSummary(k,items,round){
-  const L=LESSONS[k],n=items.length,got=items.filter(x=>x.first).length,miss=items.filter(x=>!x.first);
+  const S=SETS[k],G=GRP[S.g],n=items.length,got=items.filter(x=>x.first).length,miss=items.filter(x=>!x.first);
   if(round==="full")best[k]=Math.max(best[k]||0,got);
   const p=Math.round(got/n*100);
   const head=round==="fix"?`Fix round: ${got} of ${n} right on the first try`:`You got ${got} out of ${n} on the first try`;
-  const msg=miss.length===0?(round==="fix"?"All fixed! 🎉 You learned from your mistakes!":"Perfect! 🎉 You know this lesson very well!"):
+  const msg=miss.length===0?(round==="fix"?"All fixed! 🎉 You learned from your mistakes!":"Perfect! 🎉 You know this very well!"):
     "Let’s fix the ones you missed. Practice makes progress! 💪";
-  $("#practiceRun").innerHTML=`<div class="box res" style="--c:${L.c}">
-    <h3>${L.s} ${esc(L.t)}</h3>
+  const review=S.g==="k"?`<button class="btn" data-go="${k}">📖 Review the lesson</button>`:`<button class="btn" data-sk="learn">📖 Review the 8 skills</button>`;
+  $(G.run).innerHTML=`<div class="box res" style="--c:${S.c}">
+    <h3>${S.s} ${esc(S.t)}</h3>
     <div class="scorebig"><b>${got}/${n}</b><span class="stars">${stars(p)}</span></div>
     <p><b>${head}.</b> ${msg}</p>
-    ${miss.length?`<h4>To fix (${miss.length})</h4><div class="rev">${miss.map(x=>`<div class="rv no"><span class="q">${esc(x.q.q)}</span><span class="cor">✅ ${esc(answerText(x.q))}</span><span class="ex">${esc(x.q.ex)}</span></div>`).join("")}</div>`:""}
+    ${miss.length?`<h4>To fix (${miss.length})</h4><div class="rev">${miss.map(x=>`<div class="rv no"><span class="q">${esc(x.q.q)}</span><span class="cor">✅ ${esc(answerText(x.q))}</span>${x.q.ex?`<span class="ex">${esc(x.q.ex)}</span>`:""}</div>`).join("")}</div>`:""}
     <div class="lfoot">
-      ${miss.length?`<button class="btn solid" id="pFix">🔁 Fix my mistakes (${miss.length}) <span class="th" style="color:inherit">แก้มือ</span></button>`:""}
-      <button class="btn" id="pAgain">↺ Do the whole set again</button>
-      <button class="btn" data-go="${k}">📖 Review the lesson</button>
-      <button class="btn" id="pBack">All sets</button>
+      ${miss.length?`<button class="btn solid" data-p="fix">🔁 Fix my mistakes (${miss.length}) <span class="th" style="color:inherit">แก้มือ</span></button>`:""}
+      <button class="btn" data-p="again">↺ Do the whole set again</button>
+      ${review}
+      <button class="btn" data-p="back">All sets</button>
     </div></div>`;
-  if(miss.length)$("#pFix").onclick=()=>startSet(k,miss.map(x=>x.q),"fix");
-  $("#pAgain").onclick=()=>startSet(k,null,"full");
-  $("#pBack").onclick=backToSets;
+  $(G.run).onclick=e=>{const b=e.target.closest("[data-p]");if(!b)return;$(G.run).onclick=null;
+    if(b.dataset.p==="fix")startSet(k,miss.map(x=>x.q),"fix");
+    else if(b.dataset.p==="again")startSet(k,null,"full");
+    else backToSets(S.g)};
   window.scrollTo({top:0});
 }
-drawSets();
+drawSets("k");drawSets("s");
 
-/* ================= FINAL TEST ================= */
-let T=null;
-$("#startTest").onclick=startTest;
-function startTest(){
-  $("#testIntro").style.display="none";
-  T={items:null,secs:0,fixed:new Set(),filter:"wrong"};
-  Runner($("#testRun"),TEST,{mode:"test",title:"🧪 Final Test · Unit 3 & 4",timer:true,quit:"Quit test",
-    onQuit:()=>{$("#testRun").innerHTML="";$("#testIntro").style.display=""},
-    onDone:(items,secs)=>{T.items=items;T.secs=secs;testResults()}});
+/* ================= EXAMS (Final Test + Skills Challenge) ================= */
+const EXAMS={
+  final:{bank:TEST,intro:"#testIntro",run:"#testRun",title:"🧪 Final Test · Unit 3 & 4",secs:LESSONS,secLabel:"Score by lesson",
+    review:k=>`<a href="#" data-go="${k}">📖 Review</a>`},
+  skills:{bank:SKTEST,intro:"#skTestIntro",run:"#skTestRun",title:"🏆 Skills Challenge",secs:SKILLS,secLabel:"Score by skill",
+    review:()=>`<a href="#" data-sk="learn">📖 Review</a>`}
+};
+const ES={};
+$("#startTest").onclick=()=>startExam("final");
+$("#startSkTest").onclick=()=>startExam("skills");
+function startExam(id){
+  const E=EXAMS[id];
+  $(E.intro).style.display="none";
+  ES[id]={items:null,secs:0,fixed:new Set(),filter:"wrong"};
+  Runner($(E.run),E.bank,{mode:"test",title:E.title,timer:true,quit:"Quit",
+    onQuit:()=>{$(E.run).innerHTML="";$(E.intro).style.display=""},
+    onDone:(items,secs)=>{ES[id].items=items;ES[id].secs=secs;examResults(id)}});
   window.scrollTo({top:0});
 }
-function testResults(){
+function examResults(id){
+  const E=EXAMS[id],T=ES[id],el=$(E.run);
   const items=T.items,n=items.length,got=items.filter(x=>x.ok).length,p=Math.round(got/n*100);
   const wrong=items.filter(x=>!x.ok),toFix=wrong.filter(x=>!T.fixed.has(x.q));
   const after=got+T.fixed.size;
-  const msg=p>=90?"Excellent! You are ready for the final! 🏆":p>=70?"Great work! Fix the few you missed. ⭐":p>=50?"Good try! Review the weak lessons and fix your mistakes. 💪":"Let’s review the lessons and try again. You can do it! 🌱";
-  const secs=Object.keys(LESSONS).map(k=>{const L=LESSONS[k],g=items.filter(x=>x.q.l===k),r=g.filter(x=>x.ok).length,pc=r/g.length*100;
-    return `<div class="sec" style="--sc:${L.c}"><span><b>${L.s}</b> ${esc(L.t)}</span><span class="bar"><i style="width:${pc}%"></i></span><span>${r}/${g.length} ${pc<70?`<a href="#" data-go="${k}">📖 Review</a>`:"✅"}</span></div>`}).join("");
+  const msg=p>=90?"Excellent! You are ready for the exam! 🏆":p>=70?"Great work! Fix the few you missed. ⭐":p>=50?"Good try! Review the weak parts and fix your mistakes. 💪":"Let’s review and try again. You can do it! 🌱";
+  const secs=Object.keys(E.secs).map(k=>{const L=E.secs[k],g=items.filter(x=>x.q.l===k);if(!g.length)return "";const r=g.filter(x=>x.ok).length,pc=r/g.length*100;
+    return `<div class="sec" style="--sc:${L.c}"><span>${L.s==="Skill:"?"":`<b>${L.s}</b> `}${esc(L.t)}</span><span class="bar"><i style="width:${pc}%"></i></span><span>${r}/${g.length} ${pc<70?E.review(k):"✅"}</span></div>`}).join("");
   const list=items.map((x,k)=>({x,k})).filter(o=>T.filter==="all"||!o.x.ok);
   const rev=list.map(({x,k})=>`<div class="rv ${x.ok?"":"no"}"><span class="q"><b>Q${k+1}.</b> ${esc(x.q.q)}</span>
+    ${x.q.st&&!x.ok?`<div class="stim sm">${x.q.st}</div>`:""}
     ${x.ok?`<span class="cor">✅ ${esc(answerText(x.q))}</span>`:`<span class="you">❌ Your answer: ${esc(pickText(x))}</span><span class="cor">✅ Correct: ${esc(answerText(x.q))}</span>`}
     <span class="ex">${esc(x.q.ex)}</span>${!x.ok&&T.fixed.has(x.q)?`<span class="fixed">🔁 Fixed in a retry round ✔</span>`:""}</div>`).join("")||`<p>🎉 No wrong answers!</p>`;
-  $("#testRun").innerHTML=`<div class="box res" style="--c:var(--sci)">
-    <h3>🏁 Your Final Test result</h3>
+  el.innerHTML=`<div class="box res" style="--c:var(--sci)">
+    <h3>🏁 ${E.title.replace(/^\S+\s/,"")} — your result</h3>
     <div class="scorebig"><b>${got}/${n}</b><span>${p}% · ⏱ ${fmt(T.secs)}</span><span class="stars">${stars(p)}</span></div>
     <p><b>${msg}</b></p>
     ${T.fixed.size?`<div class="fixnote">🔁 After fixing mistakes: <b>${after}/${n}</b> — you fixed ${T.fixed.size} of ${wrong.length} wrong answers.${toFix.length?"":" All fixed! 🎉"}</div>`:""}
-    <h4>Score by lesson</h4><div class="secs">${secs}</div>
+    <h4>${E.secLabel}</h4><div class="secs">${secs}</div>
     <div class="lfoot">
-      ${toFix.length?`<button class="btn solid" id="tFix">🔁 Fix my mistakes (${toFix.length}) <span class="th" style="color:inherit">แก้มือข้อที่ผิด</span></button>`:""}
-      <button class="btn" id="tRetake">↺ Take the whole test again</button>
+      ${toFix.length?`<button class="btn solid" data-x="fix">🔁 Fix my mistakes (${toFix.length}) <span class="th" style="color:inherit">แก้มือข้อที่ผิด</span></button>`:""}
+      <button class="btn" data-x="retake">↺ Take it again</button>
     </div>
     <div class="rtop"><h4 style="flex:1">📋 Check your answers</h4><div class="toggle"><button data-f="wrong" class="${T.filter==="wrong"?"on":""}">Wrong only</button><button data-f="all" class="${T.filter==="all"?"on":""}">All</button></div></div>
     <div class="rev">${rev}</div>
   </div>`;
-  if(toFix.length)$("#tFix").onclick=()=>{
-    Runner($("#testRun"),toFix.map(x=>x.q),{mode:"practice",title:"🔁 Fix my mistakes · Final Test",color:"var(--sci)",quit:"Back to my result",onQuit:testResults,
-      onDone:its=>{its.forEach(x=>{if(x.first)T.fixed.add(x.q)});fixSummary(its)}});
+  el.onclick=e=>{
+    const f=e.target.closest("[data-f]");if(f){T.filter=f.dataset.f;examResults(id);return}
+    const b=e.target.closest("[data-x]");if(!b)return;el.onclick=null;
+    if(b.dataset.x==="retake"){startExam(id);return}
+    Runner(el,toFix.map(x=>x.q),{mode:"practice",title:"🔁 Fix my mistakes · "+E.title.replace(/^\S+\s/,""),color:"var(--sci)",quit:"Back to my result",onQuit:()=>examResults(id),
+      onDone:its=>{its.forEach(x=>{if(x.first)T.fixed.add(x.q)});fixSummary(id,its)}});
     window.scrollTo({top:0});
   };
-  $("#tRetake").onclick=startTest;
-  $$("#testRun .toggle button").forEach(b=>b.onclick=()=>{T.filter=b.dataset.f;testResults()});
 }
-function fixSummary(its){
-  const n=its.length,got=its.filter(x=>x.first).length;
-  $("#testRun").innerHTML=`<div class="box res" style="--c:var(--sci)">
+function fixSummary(id,its){
+  const el=$(EXAMS[id].run),n=its.length,got=its.filter(x=>x.first).length;
+  el.innerHTML=`<div class="box res" style="--c:var(--sci)">
     <h3>🔁 Fix round done!</h3>
     <div class="scorebig"><b>${got}/${n}</b><span>fixed on the first try</span></div>
     <p>${got===n?"Amazing! You fixed every mistake! 🎉":"Good effort! The ones you still missed are waiting for another try. 💪"}</p>
-    <div class="lfoot"><button class="btn solid" id="fBack">See my updated result ➜</button></div></div>`;
-  $("#fBack").onclick=testResults;
+    <div class="lfoot"><button class="btn solid" data-x="back">See my updated result ➜</button></div></div>`;
+  el.onclick=e=>{if(e.target.closest("[data-x]")){el.onclick=null;examResults(id)}};
   window.scrollTo({top:0});
+}
+
+/* ================= SKILLS sub-views ================= */
+function showSk(v){
+  $$(".skview").forEach(x=>x.classList.toggle("on",x.id==="sk-"+v));
+  $$("#skchips button").forEach(b=>b.classList.toggle("on",b.dataset.sk===v));
 }
 </script>
 </body>

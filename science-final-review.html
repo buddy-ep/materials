@@ -1,0 +1,1179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>G5 Science Final Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Lexend:wght@400;500;600&family=Sarabun:wght@400;600&display=swap">
+<style>
+/* Science 5 final review: Learn (6 lessons with interactive models) / Practice (per-lesson sets, 2 tries + hint) / Final Test (30 Q) + fix-my-mistakes rounds */
+:root{
+  --paper:#f7f9fc; --grid:#e3e9f3; --ink:#1d2a44; --muted:#5a6781; --card:#ffffff; --line:#d5ddea;
+  --sci:#1f8a4c;
+  --l1:#2266c8; --l2:#0f8a7e; --l3:#d9651b; --l4:#7a4bc4; --l5:#0e7490; --l6:#4f5f86;
+  --hot:#d6452b; --cold:#2a7fd4;
+  --ok:#1f8a4c; --okbg:#e7f5ec; --bad:#c0392b; --badbg:#fdecea; --note:#fff6db; --notefg:#6b5310;
+  --sky:#dcecfb; --cloud:#ffffff; --storm:#5d6b82; --soil:#d9b98c; --rock:#b9bec7; --water:#3d8fe0; --sea:#1f5fa8; --land:#7fb069;
+  --display:"Baloo 2","Sarabun",system-ui,sans-serif;
+  --body:"Lexend","Sarabun",system-ui,sans-serif;
+  --thai:"Sarabun",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#131a27; --grid:#1c2536; --ink:#e7ecf5; --muted:#9aa7bf; --card:#1a2334; --line:#2c384e;
+  --sci:#5fd08e;
+  --l1:#6a9ef0; --l2:#3cc2b3; --l3:#f28a45; --l4:#a986e8; --l5:#4cc3dd; --l6:#9fb0d8;
+  --hot:#ff7a5c; --cold:#6fb2ff;
+  --ok:#5fd08e; --okbg:#173325; --bad:#ff8a7a; --badbg:#3a1d1d; --note:#3a3118; --notefg:#f0d88a;
+  --sky:#1d3350; --cloud:#e4eaf3; --storm:#8a96ab; --soil:#6b5236; --rock:#4a505b; --water:#4f9ff0; --sea:#2b6cb8; --land:#4f7d43;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#131a27; --grid:#1c2536; --ink:#e7ecf5; --muted:#9aa7bf; --card:#1a2334; --line:#2c384e;
+  --sci:#5fd08e;
+  --l1:#6a9ef0; --l2:#3cc2b3; --l3:#f28a45; --l4:#a986e8; --l5:#4cc3dd; --l6:#9fb0d8;
+  --hot:#ff7a5c; --cold:#6fb2ff;
+  --ok:#5fd08e; --okbg:#173325; --bad:#ff8a7a; --badbg:#3a1d1d; --note:#3a3118; --notefg:#f0d88a;
+  --sky:#1d3350; --cloud:#e4eaf3; --storm:#8a96ab; --soil:#6b5236; --rock:#4a505b; --water:#4f9ff0; --sea:#2b6cb8; --land:#4f7d43;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:24px 24px}
+.wrap{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:22px 64px}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+.th{font-family:var(--thai);font-weight:400;color:var(--muted)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--sci);outline-offset:2px}
+
+header.top{display:grid;gap:6px;margin-bottom:14px}
+.back{font-size:.88rem;color:var(--muted);text-decoration:none;width:max-content}
+.back:hover{color:var(--sci)}
+.eyebrow{font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-size:clamp(1.9rem,6vw,2.9rem);font-weight:800}
+h1 em{font-style:normal;color:var(--sci)}
+.lede{max-width:64ch;color:var(--muted);margin:0}
+
+nav.modes{position:sticky;top:0;z-index:10;background:var(--paper);padding-block:10px;margin-bottom:18px;
+  border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+nav.modes button{border:2px solid var(--sci);background:var(--card);color:var(--sci);border-radius:12px;padding:8px 6px;
+  font-weight:600;display:grid;line-height:1.25;text-align:center}
+nav.modes button small{font-family:var(--thai);font-weight:400;font-size:.8rem;opacity:.85}
+nav.modes button.on{background:var(--sci);color:var(--card)}
+.pane{display:none}.pane.on{display:block}
+
+/* ---------- LEARN ---------- */
+.lchips{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:16px}
+.lchips button{flex:0 0 auto;border:2px solid var(--c);color:var(--c);background:var(--card);border-radius:999px;
+  padding:5px 13px;font-weight:600;font-size:.88rem}
+.lchips button.on{background:var(--c);color:var(--card)}
+.lesson{display:none;--c:var(--ink)}.lesson.on{display:grid;gap:16px}
+[data-l="u3l1"]{--c:var(--l1)}[data-l="u3l2"]{--c:var(--l2)}[data-l="u3l3"]{--c:var(--l3)}
+[data-l="u3l4"]{--c:var(--l4)}[data-l="u4l1"]{--c:var(--l5)}[data-l="u4l2"]{--c:var(--l6)}
+.lhead{border-bottom:3px solid var(--c);padding-bottom:6px}
+.lhead .chap{font-family:var(--display);font-weight:800;color:var(--c);font-size:.95rem}
+.lhead h2{font-size:clamp(1.5rem,4.6vw,2.05rem)}
+.lhead .th{font-size:1.05rem}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:10px;min-width:0}
+.box h3{font-size:1.18rem;color:var(--c)}
+.box p{margin:0}
+.big{border-left:5px solid var(--c)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.mini{border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.mini h4{font-size:1.02rem;margin-bottom:4px}
+.mini ul{margin:0;padding-left:18px}
+.good h4{color:var(--ok)} .warn h4{color:var(--bad)}
+.tip{background:var(--note);color:var(--notefg);border-radius:10px;padding:10px 14px;font-size:.93rem}
+.kws{display:flex;flex-wrap:wrap;gap:6px}
+.kw{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:3px 11px;font-size:.88rem;display:inline-flex;gap:6px;align-items:baseline}
+.kw .th{font-size:.85rem}
+button.kw::after{content:"🔊";font-size:.75rem}
+.lfoot{display:flex;flex-wrap:wrap;gap:10px}
+.btn{border:2px solid var(--c,var(--sci));background:var(--card);color:var(--c,var(--sci));border-radius:10px;padding:8px 16px;font-weight:600}
+.btn.solid{background:var(--c,var(--sci));color:var(--card)}
+.btn:disabled{opacity:.45;cursor:default}
+table.cmp{border-collapse:collapse;width:100%;font-size:.92rem}
+table.cmp th,table.cmp td{border:1px solid var(--line);padding:7px 9px;vertical-align:top;text-align:left}
+table.cmp th{background:var(--grid)}
+.tbl{overflow-x:auto}
+
+/* states diagram */
+.diagram svg{width:100%;height:auto;display:block}
+.diagram .stbox{fill:var(--paper);stroke:var(--line);stroke-width:2}
+.diagram .stname{font-family:var(--display);font-weight:800;font-size:17px;fill:var(--ink);text-anchor:middle}
+.diagram .pt{fill:var(--c)}
+.proc{cursor:pointer}
+.proc path{fill:none;stroke-width:4;stroke-linecap:round}
+.proc.h path{stroke:var(--hot)} .proc.c path{stroke:var(--cold)}
+.proc text{font-size:13px;font-weight:600;text-anchor:middle}
+.proc.h text{fill:var(--hot)} .proc.c text{fill:var(--cold)}
+.proc .hit{stroke:transparent!important;stroke-width:22}
+.diagram.has-on .proc{opacity:.25}
+.diagram.has-on .proc.on{opacity:1}
+.diagram.has-on .proc.on path:not(.hit){stroke-width:6}
+.pchips{display:flex;flex-wrap:wrap;gap:6px}
+.pchips button{border:2px solid var(--pc);color:var(--pc);background:var(--card);border-radius:999px;padding:3px 11px;font-size:.88rem;font-weight:600}
+.pchips button.on{background:var(--pc);color:var(--card)}
+.pchips .h{--pc:var(--hot)} .pchips .c{--pc:var(--cold)}
+.pinfo{border-radius:10px;background:var(--paper);border:1px dashed var(--line);padding:10px 14px;min-height:84px}
+.pinfo h4{font-size:1.1rem}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:.88rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:22px;height:4px;border-radius:2px}
+
+/* tap-to-reveal cards */
+.flips{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.flip{border:1px solid var(--line);background:var(--paper);border-radius:10px;padding:10px;text-align:center;display:grid;gap:4px;min-height:96px;align-content:center}
+.flips.wl{grid-template-columns:repeat(auto-fill,minmax(230px,1fr));align-items:start}
+.flip .e{font-size:1.7rem;line-height:1}
+.flip .n{font-weight:600;font-size:.9rem}
+.flip .b{display:none;font-size:.85rem;font-weight:600;border-radius:6px;padding:2px 6px}
+.flip.show .b{display:block}
+.flip.show{border-color:var(--c)}
+.b.ch{background:var(--badbg);color:var(--bad)} .b.ph{background:var(--okbg);color:var(--ok)}
+.b.info{background:var(--grid);color:var(--ink);font-weight:400;text-align:left}
+.flip.wide{min-height:auto;text-align:left;grid-template-columns:auto 1fr;align-items:center;gap:4px 10px}
+.flip.wide .e{grid-row:span 2}
+.flip.wide .b{grid-column:1/-1}
+
+/* equation */
+.eq{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:6px;align-items:center;text-align:center}
+.eq .part{border:2px solid var(--c);border-radius:10px;padding:8px 4px;background:var(--paper);min-width:0}
+.eq .part b{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--c)}
+.eq .part span{display:block;font-size:.95rem}
+.eq .part .e{font-size:1.5rem}
+.eq .op{font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--c)}
+
+/* pies + svgs */
+.pies{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.pie{display:grid;grid-template-columns:120px 1fr;gap:10px;align-items:center}
+.pie svg{width:120px;height:120px}
+.sw{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-1px;margin-right:5px}
+svg.scene{width:100%;height:auto;display:block;border-radius:10px}
+svg.scene text{font-family:var(--body);font-size:13px;fill:var(--ink)}
+svg.scene .lbl{font-weight:600}
+svg.scene .halo{paint-order:stroke;stroke:var(--card);stroke-width:4px;stroke-linejoin:round}
+
+/* checklist */
+.checks{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.chk{border:2px solid var(--line);background:var(--paper);border-radius:10px;padding:10px;display:grid;gap:4px;text-align:center}
+.chk .e{font-size:1.6rem;line-height:1}
+.chk span{font-size:.86rem}
+.chk.on{border-color:var(--ok);background:var(--okbg)}
+.chk.on::after{content:"✔ I do this!";font-size:.78rem;font-weight:600;color:var(--ok)}
+
+/* cloud stepper */
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.flow button{border:2px solid var(--line);background:var(--paper);border-radius:10px;padding:6px 10px;font-size:.86rem;font-weight:600}
+.flow button.on{border-color:var(--c);background:var(--c);color:var(--card)}
+.flow .ar{color:var(--muted);font-weight:800}
+.clouds{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.cl{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;gap:4px;min-width:0}
+.cl svg{width:100%;height:auto;max-height:90px;border-radius:8px}
+.cl h4{font-size:1.05rem}
+.cl p{font-size:.88rem;margin:0}
+.sky{fill:var(--sky)} .cf{fill:var(--cloud)} .cs{fill:var(--storm)}
+
+/* ---------- PRACTICE ---------- */
+.sets{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.setcard{text-align:left;border:1px solid var(--line);border-left:5px solid var(--c);background:var(--card);border-radius:10px;padding:12px 14px;display:grid;gap:2px}
+.setcard b{font-weight:600}
+.setcard small{color:var(--muted)}
+.setcard .best{font-size:.82rem;color:var(--c);font-weight:600}
+.intro{display:grid;gap:10px}
+.intro ul{margin:0;padding-left:20px}
+
+/* ---------- RUNNER ---------- */
+.run{--c:var(--sci);display:grid;gap:12px}
+.rtop{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rtop h3{font-size:1.15rem;color:var(--c);flex:1 1 auto}
+.pill{font-size:.85rem;font-weight:600;border-radius:999px;padding:2px 10px;background:var(--card);border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--grid);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--c);border-radius:99px;transition:width .25s}
+.dots{display:flex;flex-wrap:wrap;gap:5px}
+.dot{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:var(--card);font-size:.75rem;font-weight:600;
+  display:grid;place-items:center;padding:0;font-variant-numeric:tabular-nums}
+.dot.ans{background:var(--c);border-color:var(--c);color:var(--card)}
+.dot.r{background:var(--ok);border-color:var(--ok);color:var(--card)}
+.dot.w{background:var(--bad);border-color:var(--bad);color:var(--card)}
+.dot.cur{outline:3px solid var(--ink);outline-offset:1px}
+span.dot{cursor:default}
+.qcard{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:12px;padding:16px 18px;display:grid;gap:12px}
+.qmeta{font-size:.8rem;color:var(--muted);font-weight:600}
+.qtext{margin:0;font-size:1.08rem;font-weight:500}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:center;text-align:left;border:2px solid var(--line);background:var(--paper);border-radius:10px;padding:9px 12px}
+.opt .L{flex:0 0 28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--grid);font-weight:600;font-size:.85rem}
+.opt.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,var(--card))}
+.opt.sel .L{background:var(--c);color:var(--card)}
+.opt.right{border-color:var(--ok);background:var(--okbg)} .opt.right .L{background:var(--ok);color:var(--card)}
+.opt.wrong{border-color:var(--bad);background:var(--badbg)} .opt.wrong .L{background:var(--bad);color:var(--card)}
+.opt:disabled{cursor:default}
+.opt:disabled:not(.right):not(.wrong){opacity:.6}
+.srow{display:grid;grid-template-columns:minmax(110px,1fr) auto;gap:6px 10px;align-items:center;border-bottom:1px dashed var(--line);padding-bottom:6px}
+.srow .it{font-weight:500}
+.srow .it small{display:block;color:var(--ok);font-weight:600}
+.segs{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
+.seg{border:2px solid var(--line);background:var(--paper);border-radius:8px;padding:3px 9px;font-size:.84rem;font-weight:600}
+.seg.on{border-color:var(--c);background:var(--c);color:var(--card)}
+.srow.ok .seg.on{background:var(--ok);border-color:var(--ok)}
+.srow.no .seg.on{background:var(--bad);border-color:var(--bad)}
+.ordzone{display:grid;gap:6px}
+.ordzone .lab{font-size:.8rem;color:var(--muted);font-weight:600}
+.ordlist{display:grid;gap:6px;min-height:40px;border:2px dashed var(--line);border-radius:10px;padding:6px}
+.ordlist button,.ordpool button{text-align:left;border:2px solid var(--line);background:var(--paper);border-radius:8px;padding:6px 10px;font-size:.92rem}
+.ordlist button{border-color:var(--c)}
+.ordlist button.ok{border-color:var(--ok);background:var(--okbg)}
+.ordpool{display:flex;flex-wrap:wrap;gap:6px}
+.tin{font:inherit;font-size:1.1rem;border:2px solid var(--line);border-radius:10px;padding:8px 12px;background:var(--paper);color:var(--ink);width:100%;max-width:340px}
+.tin:focus{outline:none;border-color:var(--c)}
+.fb{border-radius:10px;padding:10px 14px;display:grid;gap:4px}
+.fb p{margin:0;font-size:.95rem}
+.fb.good{background:var(--okbg)} .fb.good b{color:var(--ok)}
+.fb.hint{background:var(--note);color:var(--notefg)}
+.fb.bad{background:var(--badbg)} .fb.bad b{color:var(--bad)}
+.fb .ansline{font-weight:600}
+.rnav{display:flex;gap:8px;flex-wrap:wrap;justify-content:space-between}
+.rnav .sp{flex:1}
+
+/* results */
+.res{display:grid;gap:14px}
+.scorebig{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.scorebig b{font-family:var(--display);font-size:3rem;line-height:1;color:var(--c)}
+.scorebig span{color:var(--muted)}
+.stars{font-size:1.5rem;letter-spacing:2px}
+.secs{display:grid;gap:8px}
+.sec{display:grid;grid-template-columns:minmax(120px,190px) 1fr auto;gap:10px;align-items:center;font-size:.9rem}
+.sec .bar{height:12px}
+.sec .bar i{background:var(--sc)}
+.sec a{color:var(--sc);font-weight:600;font-size:.8rem}
+.fixnote{background:var(--okbg);border-radius:10px;padding:10px 14px}
+.rev{display:grid;gap:8px}
+.rv{border:1px solid var(--line);border-left:5px solid var(--ok);border-radius:10px;padding:10px 12px;background:var(--card);display:grid;gap:3px;font-size:.93rem}
+.rv.no{border-left-color:var(--bad)}
+.rv .q{font-weight:500}
+.rv .you{color:var(--bad)} .rv .cor{color:var(--ok);font-weight:600}
+.rv .ex{color:var(--muted);font-size:.88rem}
+.rv .fixed{font-size:.8rem;font-weight:600;color:var(--ok)}
+.toggle{display:flex;gap:6px}
+.toggle button{border:1px solid var(--line);background:var(--card);border-radius:8px;padding:3px 10px;font-size:.85rem}
+.toggle button.on{background:var(--ink);color:var(--card)}
+#practiceRun,#testRun{scroll-margin-top:80px}
+footer{color:var(--muted);font-size:.85rem;text-align:center;margin-top:40px}
+@media (max-width:520px){
+  .eq{grid-template-columns:1fr;}
+  .eq .op{line-height:1}
+  .sec{grid-template-columns:1fr auto}
+  .sec .bar{grid-column:1/-1;grid-row:2}
+  .pie{grid-template-columns:100px 1fr}.pie svg{width:100px;height:100px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <a class="back" href="index.html">← Buddy EP home</a>
+  <div class="eyebrow">Vanichnukul School · Science 5 · Final Exam Review</div>
+  <h1>Changing State <em>&amp;</em> Water on Earth</h1>
+  <p class="lede">Unit 3 and Unit 4 in one place. Learn each lesson, practise, then take the final test and fix your mistakes. <span class="th">ทบทวนบทเรียน ฝึกทำโจทย์ แล้วทำแบบทดสอบ พร้อมแก้มือข้อที่ผิด</span></p>
+</header>
+
+<nav class="modes" aria-label="Mode">
+  <button data-mode="learn" class="on">📖 Learn<small>บทเรียน</small></button>
+  <button data-mode="practice">🎯 Practice<small>แบบฝึกหัด</small></button>
+  <button data-mode="test">🧪 Final Test<small>แบบทดสอบ</small></button>
+</nav>
+
+<!-- ======================= LEARN ======================= -->
+<section class="pane on" id="learn">
+  <div class="lchips" id="lchips">
+    <button data-go="u3l1" class="on" style="--c:var(--l1)">U3 · L1 States</button>
+    <button data-go="u3l2" style="--c:var(--l2)">U3 · L2 Dissolving</button>
+    <button data-go="u3l3" style="--c:var(--l3)">U3 · L3 Chemical change</button>
+    <button data-go="u3l4" style="--c:var(--l4)">U3 · L4 Reversible?</button>
+    <button data-go="u4l1" style="--c:var(--l5)">U4 · L1 Water sources</button>
+    <button data-go="u4l2" style="--c:var(--l6)">U4 · L2 Clouds, fog, dew, frost</button>
+  </div>
+
+  <!-- U3 L1 -->
+  <article class="lesson on" data-l="u3l1">
+    <div class="lhead"><div class="chap">Unit 3 · Lesson 1</div><h2>Change of State of Matter</h2><div class="th">การเปลี่ยนสถานะของสสาร</div></div>
+    <div class="box big">
+      <p><b>Solids, liquids and gases</b> are <b>states of matter</b>. Matter can change from one state to another when it is <b style="color:var(--hot)">heated 🔥</b> or <b style="color:var(--cold)">cooled ❄️</b>.</p>
+      <p>A change of state is a <b>physical change</b> (การเปลี่ยนแปลงทางกายภาพ). The size, shape, volume, colour or state may change, but it is <b>still the same matter</b>. <b>No new substance</b> is formed. Usually it is <b>reversible</b>: it can go back to its first form by heating or cooling.</p>
+    </div>
+    <div class="box">
+      <h3>🔎 Explore the 6 changes</h3>
+      <p class="th" style="margin:0">Tap an arrow or a button to see each change.</p>
+      <div class="diagram" id="stDiagram">
+        <svg viewBox="0 0 640 300" role="img" aria-label="Diagram: solid, liquid and gas with six changes of state">
+          <defs>
+            <marker id="mh" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--hot)"/></marker>
+            <marker id="mc" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--cold)"/></marker>
+          </defs>
+          <rect class="stbox" x="20" y="95" width="120" height="110" rx="14"/>
+          <rect class="stbox" x="260" y="95" width="120" height="110" rx="14"/>
+          <rect class="stbox" x="500" y="95" width="120" height="110" rx="14"/>
+          <g class="pt">
+            <circle cx="50" cy="118" r="7"/><circle cx="66" cy="118" r="7"/><circle cx="82" cy="118" r="7"/><circle cx="98" cy="118" r="7"/><circle cx="114" cy="118" r="7"/>
+            <circle cx="50" cy="134" r="7"/><circle cx="66" cy="134" r="7"/><circle cx="82" cy="134" r="7"/><circle cx="98" cy="134" r="7"/><circle cx="114" cy="134" r="7"/>
+            <circle cx="50" cy="150" r="7"/><circle cx="66" cy="150" r="7"/><circle cx="82" cy="150" r="7"/><circle cx="98" cy="150" r="7"/><circle cx="114" cy="150" r="7"/>
+            <circle cx="283" cy="140" r="7"/><circle cx="301" cy="128" r="7"/><circle cx="318" cy="145" r="7"/><circle cx="337" cy="131" r="7"/><circle cx="356" cy="146" r="7"/>
+            <circle cx="292" cy="157" r="7"/><circle cx="328" cy="160" r="7"/><circle cx="350" cy="117" r="7"/><circle cx="309" cy="112" r="7"/>
+            <circle cx="520" cy="112" r="7"/><circle cx="590" cy="120" r="7"/><circle cx="555" cy="150" r="7"/><circle cx="600" cy="160" r="7"/><circle cx="527" cy="165" r="7"/>
+          </g>
+          <text class="stname" x="80" y="192">SOLID 🧊</text>
+          <text class="stname" x="320" y="192">LIQUID 💧</text>
+          <text class="stname" x="560" y="192">GAS 💨</text>
+          <g class="proc h" data-proc="melting"><path class="hit" d="M147 125H253"/><path d="M147 125H250" marker-end="url(#mh)"/><text x="200" y="114">Melting</text></g>
+          <g class="proc c" data-proc="freezing"><path class="hit" d="M253 175H147"/><path d="M253 175H150" marker-end="url(#mc)"/><text x="200" y="196">Freezing</text></g>
+          <g class="proc h" data-proc="vaporization"><path class="hit" d="M387 125H493"/><path d="M387 125H490" marker-end="url(#mh)"/><text x="440" y="114">Vaporization</text></g>
+          <g class="proc c" data-proc="condensation"><path class="hit" d="M493 175H387"/><path d="M493 175H390" marker-end="url(#mc)"/><text x="440" y="196">Condensation</text></g>
+          <g class="proc h" data-proc="sublimation"><path class="hit" d="M80 90C150 10 490 10 560 90"/><path d="M80 90C150 10 490 10 556 86" marker-end="url(#mh)"/><text x="320" y="52">Sublimation (solid → gas)</text></g>
+          <g class="proc c" data-proc="deposition"><path class="hit" d="M560 210C490 290 150 290 80 210"/><path d="M560 210C490 290 150 290 84 214" marker-end="url(#mc)"/><text x="320" y="256">Deposition (gas → solid)</text></g>
+        </svg>
+      </div>
+      <div class="legend"><span><i style="background:var(--hot)"></i>🔥 Heat up (add heat)</span><span><i style="background:var(--cold)"></i>❄️ Cool down (lose heat)</span></div>
+      <div class="pchips" id="pchips">
+        <button class="h" data-proc="melting">Melting</button>
+        <button class="c" data-proc="freezing">Freezing</button>
+        <button class="h" data-proc="vaporization">Vaporization</button>
+        <button class="c" data-proc="condensation">Condensation</button>
+        <button class="h" data-proc="sublimation">Sublimation</button>
+        <button class="c" data-proc="deposition">Deposition</button>
+      </div>
+      <div class="pinfo" id="pinfo"><p class="th">👆 Choose a change to see what it means.</p></div>
+    </div>
+    <div class="box">
+      <h3>💨 Two ways of vaporization</h3>
+      <div class="cols">
+        <div class="mini"><h4>Evaporation <span class="th">การระเหย</span></h4><p>A <b>natural</b> process. The liquid <b>at the surface</b> changes to gas. <br>👕 Wet clothes dry in the sun.</p></div>
+        <div class="mini"><h4>Boiling <span class="th">การเดือด</span></h4><p>The liquid is heated until it reaches its <b>boiling point</b>. <br>🍜 Water bubbles in a pot (water boils at 100 °C).</p></div>
+      </div>
+    </div>
+    <div class="box">
+      <h3>⚖️ Effects of changes of state</h3>
+      <div class="cols">
+        <div class="mini good"><h4>👍 Advantages</h4><ul><li>The <b>water cycle</b>, which is important to all living things.</li><li>We use water in everyday life.</li></ul></div>
+        <div class="mini warn"><h4>👎 Disadvantages</h4><ul><li><b>Big hailstones</b> (ลูกเห็บ) can destroy houses and living things.</li><li><b>Climate change</b> makes the polar ice caps melt → <b>floods</b>, and living things <b>lose their habitats</b>.</li></ul></div>
+      </div>
+    </div>
+    <div class="tip">💡 <b>Memory trick:</b> 🔥 Heat moves matter to the <b>right</b>: solid → liquid → gas. ❄️ Cooling moves it to the <b>left</b>: gas → liquid → solid. Sublimation and deposition <b>skip</b> the liquid.</div>
+    <div class="box"><h3>🔤 Key words</h3><div class="kws">
+      <button class="kw" data-say="melting">melting / fusion <span class="th">การหลอมเหลว</span></button>
+      <button class="kw" data-say="solidification">solidification / freezing <span class="th">การแข็งตัว</span></button>
+      <button class="kw" data-say="vaporization">vaporization <span class="th">การกลายเป็นไอ</span></button>
+      <button class="kw" data-say="evaporation">evaporation <span class="th">การระเหย</span></button>
+      <button class="kw" data-say="boiling point">boiling point <span class="th">จุดเดือด</span></button>
+      <button class="kw" data-say="condensation">condensation <span class="th">การควบแน่น</span></button>
+      <button class="kw" data-say="sublimation">sublimation <span class="th">การระเหิด</span></button>
+      <button class="kw" data-say="deposition">deposition <span class="th">การระเหิดกลับ</span></button>
+      <button class="kw" data-say="reversible">reversible <span class="th">ผันกลับได้</span></button>
+    </div></div>
+    <div class="lfoot"><button class="btn solid" data-goset="u3l1">🎯 Practise this lesson</button><button class="btn" data-go="u3l2">Next lesson →</button></div>
+  </article>
+
+  <!-- U3 L2 -->
+  <article class="lesson" data-l="u3l2">
+    <div class="lhead"><div class="chap">Unit 3 · Lesson 2</div><h2>Dissolving of Substances in Water</h2><div class="th">การละลายของสารในน้ำ</div></div>
+    <div class="box big">
+      <p>When a substance is added to water and <b>mixes well until it is uniform</b> (the same all through = <b>homogeneous</b>), the substance <b>dissolves</b> in water (ละลาย). The solution has the properties of both the substance and the water.</p>
+      <p>Some substances dissolve in water. Others do not.</p>
+    </div>
+    <div class="cols">
+      <div class="box"><h3 style="color:var(--ok)">✅ Soluble <span class="th">ละลายน้ำได้</span></h3><p>It <b>can</b> dissolve.</p>
+        <div class="kws"><span class="kw">🧂 salt</span><span class="kw">🍬 sugar</span><span class="kw">🍶 vinegar</span><span class="kw">🧺 detergent powder</span></div></div>
+      <div class="box"><h3 style="color:var(--bad)">🚫 Insoluble <span class="th">ไม่ละลายน้ำ</span></h3><p>It <b>cannot</b> dissolve.</p>
+        <div class="kws"><span class="kw">🛢️ oil</span><span class="kw">🏖️ sand</span><span class="kw">🍚 rice</span><span class="kw">🖍️ chalk powder</span></div></div>
+    </div>
+    <div class="box">
+      <h3>🧪 Solute + Solvent = Solution</h3>
+      <p>A <b>solution</b> (สารละลาย) is a mixture of a <b>solute</b> (ตัวละลาย — the thing that dissolves) and a <b>solvent</b> (ตัวทำละลาย — here, water). Solids, liquids <i>and</i> gases can dissolve in water.</p>
+      <div class="eq" id="eq"></div>
+      <div><button class="btn" id="eqNext">Next example ▶</button></div>
+    </div>
+    <div class="box">
+      <h3>🥤 Mixtures</h3>
+      <p>A <b>mixture</b> (สารผสม) is two or more different substances mixed together.</p>
+      <div class="cols">
+        <div class="mini"><h4>Homogeneous mixture <span class="th">สารเนื้อเดียว</span></h4><p><b>Homo = same.</b> It looks the same all through.</p><p>☕ coffee and milk · 🧃 fruit juice · 🧂💧 salt and water · 🪙 coins (metals mixed together)</p></div>
+        <div class="mini"><h4>Compare: heterogeneous <span class="th">สารเนื้อผสม</span></h4><p><b>Hetero = different.</b> You can see the different parts.</p><p>🏖️💧 sand and water · 🛢️💧 oil and water</p></div>
+      </div>
+    </div>
+    <div class="tip">💡 Dissolving is a <b>physical change</b>. No new substance is made. Heat salt water until the water evaporates and you get the salt back — it is <b>reversible</b>.</div>
+    <div class="box"><h3>🔤 Key words</h3><div class="kws">
+      <button class="kw" data-say="dissolve">dissolve <span class="th">ละลาย</span></button>
+      <button class="kw" data-say="soluble">soluble <span class="th">ละลายน้ำได้</span></button>
+      <button class="kw" data-say="insoluble">insoluble <span class="th">ไม่ละลายน้ำ</span></button>
+      <button class="kw" data-say="solution">solution <span class="th">สารละลาย</span></button>
+      <button class="kw" data-say="solute">solute <span class="th">ตัวละลาย</span></button>
+      <button class="kw" data-say="solvent">solvent <span class="th">ตัวทำละลาย</span></button>
+      <button class="kw" data-say="mixture">mixture <span class="th">สารผสม</span></button>
+      <button class="kw" data-say="homogeneous">homogeneous <span class="th">เนื้อเดียว</span></button>
+    </div></div>
+    <div class="lfoot"><button class="btn solid" data-goset="u3l2">🎯 Practise this lesson</button><button class="btn" data-go="u3l3">Next lesson →</button></div>
+  </article>
+
+  <!-- U3 L3 -->
+  <article class="lesson" data-l="u3l3">
+    <div class="lhead"><div class="chap">Unit 3 · Lesson 3</div><h2>Chemical Change in Substances</h2><div class="th">การเปลี่ยนแปลงทางเคมีของสาร</div></div>
+    <div class="box big">
+      <p>A <b>chemical change</b> (chemical reaction) changes the <b>chemical composition</b> of a substance. One or more substances change into <b>one or more new substances</b>.</p>
+      <p>It is <b>irreversible</b>: it cannot change back to its first form.</p>
+    </div>
+    <div class="box">
+      <h3>🤔 Physical or chemical? Tap to check</h3>
+      <div class="flips">
+        <button class="flip" data-flip><span class="e">🪵🔥</span><span class="n">Burning wood</span><span class="b ch">Chemical — new substances (ash, smoke)</span></button>
+        <button class="flip" data-flip><span class="e">🍦</span><span class="n">Melting ice cream</span><span class="b ph">Physical — still ice cream</span></button>
+        <button class="flip" data-flip><span class="e">🔩</span><span class="n">Rusting iron nail</span><span class="b ch">Chemical — rust is new</span></button>
+        <button class="flip" data-flip><span class="e">🪓</span><span class="n">Chopping wood</span><span class="b ph">Physical — only the shape changes</span></button>
+        <button class="flip" data-flip><span class="e">🍞</span><span class="n">Baking bread</span><span class="b ch">Chemical</span></button>
+        <button class="flip" data-flip><span class="e">♨️</span><span class="n">Boiling water</span><span class="b ph">Physical — change of state</span></button>
+        <button class="flip" data-flip><span class="e">🍌</span><span class="n">Ripening banana</span><span class="b ch">Chemical</span></button>
+        <button class="flip" data-flip><span class="e">📄✂️</span><span class="n">Shredding paper</span><span class="b ph">Physical</span></button>
+        <button class="flip" data-flip><span class="e">🫧</span><span class="n">Baking soda + vinegar</span><span class="b ch">Chemical — a new gas makes bubbles</span></button>
+        <button class="flip" data-flip><span class="e">🍬💧</span><span class="n">Sugar dissolving in water</span><span class="b ph">Physical</span></button>
+        <button class="flip" data-flip><span class="e">🍳</span><span class="n">Frying eggs</span><span class="b ch">Chemical</span></button>
+        <button class="flip" data-flip><span class="e">🌿☀️</span><span class="n">Photosynthesis</span><span class="b ch">Chemical — plants make food</span></button>
+      </div>
+      <p class="th" style="margin:0">More chemical changes from the lesson: digestion, rotting, toasting a marshmallow, lighting a firecracker, baking a cake, grilling fish.</p>
+    </div>
+    <div class="box">
+      <h3>📋 Chemical change vs physical change</h3>
+      <div class="tbl"><table class="cmp">
+        <tr><th>Chemical change 🧪</th><th>Physical change 🧊</th></tr>
+        <tr><td>1. A <b>new substance</b> is formed.</td><td>1. <b>No new substance</b> is formed.</td></tr>
+        <tr><td>2. Properties of the substance <b>change</b>.</td><td>2. <b>No change</b> in properties.</td></tr>
+        <tr><td>3. Changes in <b>inner</b> structures.</td><td>3. Changes in <b>outer</b> structures (shapes).</td></tr>
+        <tr><td>4. <b>Irreversible</b> or difficult to reverse.</td><td>4. <b>Reversible</b> (can return to the original state).</td></tr>
+        <tr><td>5. e.g. fuel burning (combustion), grilling food, ripening fruit</td><td>5. e.g. change of state of water, dissolving in water</td></tr>
+      </table></div>
+    </div>
+    <div class="box">
+      <h3>⚖️ Good or a problem?</h3>
+      <p>Chemical changes are important to living things and the environment, but some cause problems.</p>
+      <div class="cols">
+        <div class="mini good"><h4>👍 Useful</h4><p>🍳 Cooking · 💊 Medicine · 🌿 Photosynthesis · 🍽️ Digestion</p></div>
+        <div class="mini warn"><h4>👎 Problems</h4><p>💥 Explosion · 🧨 Firecrackers can be dangerous</p></div>
+      </div>
+    </div>
+    <div class="box"><h3>🔤 Key words</h3><div class="kws">
+      <button class="kw" data-say="chemical change">chemical change <span class="th">การเปลี่ยนแปลงทางเคมี</span></button>
+      <button class="kw" data-say="new substance">new substance <span class="th">สารใหม่</span></button>
+      <button class="kw" data-say="irreversible">irreversible <span class="th">ผันกลับไม่ได้</span></button>
+      <button class="kw" data-say="combustion">combustion <span class="th">การเผาไหม้</span></button>
+      <button class="kw" data-say="rusting">rusting <span class="th">การเกิดสนิม</span></button>
+      <button class="kw" data-say="digestion">digestion <span class="th">การย่อยอาหาร</span></button>
+      <button class="kw" data-say="rotting">rotting <span class="th">การเน่าเสีย</span></button>
+      <button class="kw" data-say="photosynthesis">photosynthesis <span class="th">การสังเคราะห์ด้วยแสง</span></button>
+    </div></div>
+    <div class="lfoot"><button class="btn solid" data-goset="u3l3">🎯 Practise this lesson</button><button class="btn" data-go="u3l4">Next lesson →</button></div>
+  </article>
+
+  <!-- U3 L4 -->
+  <article class="lesson" data-l="u3l4">
+    <div class="lhead"><div class="chap">Unit 3 · Lesson 4</div><h2>Reversible and Irreversible Changes</h2><div class="th">การเปลี่ยนแปลงที่ผันกลับได้และผันกลับไม่ได้</div></div>
+    <div class="box big"><p>Changes in a substance can be <b>natural</b> 🌿 (ice melting in the sun, iron rusting in the rain) or <b>man-made</b> 🧑‍🍳 (cooking, burning paper).</p></div>
+    <div class="cols">
+      <div class="box"><h3>↔️ Reversible change <span class="th">ผันกลับได้</span></h3>
+        <p>A <b>temporary</b> change. The substance <b>can change back</b> to its original form.</p>
+        <p>Physical changes are reversible changes.</p>
+        <p>🧊 melting of ice · ♨️ boiling of water · 🍬 dissolving sugar in water</p></div>
+      <div class="box"><h3>➡️ Irreversible change <span class="th">ผันกลับไม่ได้</span></h3>
+        <p>A <b>permanent</b> change. The substance <b>cannot change back</b> to its original form.</p>
+        <p>Chemical changes are irreversible changes.</p>
+        <p>📄🔥 burning paper · 🔩 rusting of iron · 🍳 cooking</p></div>
+    </div>
+    <div class="box">
+      <h3>🔁 Can it go back? Tap to check</h3>
+      <div class="flips">
+        <button class="flip" data-flip><span class="e">🍫</span><span class="n">Melting chocolate</span><span class="b ph">↔️ Reversible — cool it and it is solid again</span></button>
+        <button class="flip" data-flip><span class="e">🥚</span><span class="n">Cooking an egg</span><span class="b ch">➡️ Irreversible</span></button>
+        <button class="flip" data-flip><span class="e">🧊</span><span class="n">Freezing water</span><span class="b ph">↔️ Reversible</span></button>
+        <button class="flip" data-flip><span class="e">📄🔥</span><span class="n">Burning paper</span><span class="b ch">➡️ Irreversible — ash can’t become paper</span></button>
+        <button class="flip" data-flip><span class="e">🧂💧</span><span class="n">Dissolving salt</span><span class="b ph">↔️ Reversible — evaporate the water</span></button>
+        <button class="flip" data-flip><span class="e">🍎</span><span class="n">Rotting apple</span><span class="b ch">➡️ Irreversible</span></button>
+        <button class="flip" data-flip><span class="e">🍞</span><span class="n">Toasting bread</span><span class="b ch">➡️ Irreversible</span></button>
+        <button class="flip" data-flip><span class="e">💨</span><span class="n">Water vapour → drops on a cold glass</span><span class="b ph">↔️ Reversible</span></button>
+      </div>
+    </div>
+    <div class="tip">💡 <b>Link it:</b> Physical change = reversible = temporary. Chemical change = irreversible = permanent.</div>
+    <div class="box"><h3>🔤 Key words</h3><div class="kws">
+      <button class="kw" data-say="reversible">reversible <span class="th">ผันกลับได้</span></button>
+      <button class="kw" data-say="irreversible">irreversible <span class="th">ผันกลับไม่ได้</span></button>
+      <button class="kw" data-say="temporary">temporary <span class="th">ชั่วคราว</span></button>
+      <button class="kw" data-say="permanent">permanent <span class="th">ถาวร</span></button>
+      <button class="kw" data-say="natural">natural <span class="th">ตามธรรมชาติ</span></button>
+      <button class="kw" data-say="man-made">man-made <span class="th">มนุษย์ทำขึ้น</span></button>
+    </div></div>
+    <div class="lfoot"><button class="btn solid" data-goset="u3l4">🎯 Practise this lesson</button><button class="btn" data-go="u4l1">Next lesson →</button></div>
+  </article>
+
+  <!-- U4 L1 -->
+  <article class="lesson" data-l="u4l1">
+    <div class="lhead"><div class="chap">Unit 4 · Lesson 1</div><h2>Water Sources and Water Conservation</h2><div class="th">แหล่งน้ำบนโลกและการอนุรักษ์น้ำ</div></div>
+    <div class="box">
+      <h3>🌍 How much water?</h3>
+      <div class="pies">
+        <div class="pie">
+          <svg viewBox="0 0 160 160" role="img" aria-label="Pie: three quarters water, one quarter land"><circle cx="80" cy="80" r="70" fill="var(--water)"/><path d="M80 80L80 10A70 70 0 0 1 150 80Z" fill="var(--land)"/><circle cx="80" cy="80" r="70" fill="none" stroke="var(--card)" stroke-width="3"/></svg>
+          <div><b>Earth’s surface</b><br><span class="sw" style="background:var(--water)"></span>Water <b>¾</b><br><span class="sw" style="background:var(--land)"></span>Land <b>¼</b><br><small class="th">Water covers more of Earth than land.</small></div>
+        </div>
+        <div class="pie">
+          <svg viewBox="0 0 160 160" role="img" aria-label="Pie: 97.5 percent saltwater, 2.5 percent freshwater"><circle cx="80" cy="80" r="70" fill="var(--sea)"/><path d="M80 80L80 10A70 70 0 0 1 90.95 10.86Z" fill="var(--ok)"/><circle cx="80" cy="80" r="70" fill="none" stroke="var(--card)" stroke-width="3"/></svg>
+          <div><b>All the water on Earth</b><br><span class="sw" style="background:var(--sea)"></span>Saltwater <b>97.5%</b> (seas, oceans)<br><span class="sw" style="background:var(--ok)"></span>Freshwater <b>2.5%</b> (lakes, rivers, soil, groundwater)</div>
+        </div>
+      </div>
+      <div class="tip">💡 Most of Earth’s water is saltwater. We can use only a <b>small part</b> (freshwater), so we must take care of it.</div>
+    </div>
+    <div class="box">
+      <h3>⛰️ Surface water and subsurface water</h3>
+      <svg class="scene" viewBox="0 0 640 260" role="img" aria-label="Cross-section: lake, river and sea on the surface; soil water and groundwater underground">
+        <rect x="0" y="0" width="640" height="96" class="sky"/>
+        <circle cx="600" cy="34" r="18" fill="#f5b700"/>
+        <rect x="0" y="96" width="640" height="64" fill="var(--soil)"/>
+        <rect x="0" y="160" width="640" height="100" fill="var(--rock)"/>
+        <path d="M0 96H640" stroke="var(--land)" stroke-width="6"/>
+        <ellipse cx="130" cy="97" rx="78" ry="11" fill="var(--water)"/>
+        <path d="M250 97C290 90 320 104 360 97S430 90 470 97" stroke="var(--water)" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M500 93H640V112H520Z" fill="var(--sea)"/>
+        <g fill="var(--water)"><circle cx="40" cy="122" r="3"/><circle cx="90" cy="135" r="3"/><circle cx="150" cy="118" r="3"/><circle cx="210" cy="140" r="3"/><circle cx="270" cy="124" r="3"/><circle cx="330" cy="143" r="3"/><circle cx="390" cy="121" r="3"/><circle cx="450" cy="137" r="3"/><circle cx="510" cy="125" r="3"/><circle cx="570" cy="142" r="3"/><circle cx="620" cy="122" r="3"/></g>
+        <path d="M60 200C120 186 200 214 280 198S430 186 520 204S600 212 640 200V226C560 238 470 214 380 228S180 240 60 226Z" fill="var(--water)" opacity=".85"/>
+        <text class="lbl halo" x="130" y="80" text-anchor="middle">Lake</text>
+        <text class="lbl halo" x="360" y="80" text-anchor="middle">River</text>
+        <text class="lbl halo" x="570" y="80" text-anchor="middle">Sea (saltwater)</text>
+        <text class="lbl halo" x="20" y="24">SURFACE WATER — on the surface of Earth</text>
+        <text class="lbl halo" x="320" y="156" text-anchor="middle">Soil water — in the pore spaces in the soil</text>
+        <text class="lbl halo" x="320" y="252" text-anchor="middle">Groundwater — stored in rock spaces underground</text>
+        <text class="lbl halo" x="20" y="182">SUBSURFACE WATER — below the surface</text>
+      </svg>
+      <div class="cols">
+        <div class="mini"><h4>🌊 Surface water <span class="th">น้ำผิวดิน</span></h4><ul><li><b>Seas and oceans</b> → <b>saltwater</b> (a lot of salt)</li><li><b>Rivers, lakes, canals</b> and more → <b>freshwater</b> (little or no salt)</li></ul></div>
+        <div class="mini"><h4>🪨 Subsurface water <span class="th">น้ำใต้ผิวดิน</span></h4><ul><li><b>Groundwater</b> (น้ำบาดาล): water stored in rock spaces underground</li><li><b>Soil water</b> (น้ำในดิน): water in the pore spaces in the soil</li></ul></div>
+      </div>
+    </div>
+    <div class="box">
+      <h3>💧 Freshwater sources — tap each card</h3>
+      <div class="flips wl">
+        <button class="flip wide" data-flip><span class="e">🏔️</span><span class="n">Glaciers &amp; ice caps</span><span class="b info">Large bodies of ice that slowly move over land and store <b>frozen freshwater</b>. <span class="th">ธารน้ำแข็ง</span></span></button>
+        <button class="flip wide" data-flip><span class="e">🏞️</span><span class="n">Lake</span><span class="b info">A large body of water <b>surrounded by land</b>. <span class="th">ทะเลสาบ</span></span></button>
+        <button class="flip wide" data-flip><span class="e">🌾</span><span class="n">Swamp</span><span class="b info">A wet area of land with many plants and trees. Some swamps contain saltwater or <b>brackish water</b> (น้ำกร่อย). <span class="th">หนองบึง</span></span></button>
+        <button class="flip wide" data-flip><span class="e">🏞️〰️</span><span class="n">River</span><span class="b info">A body of water that <b>flows across land</b> and enters seas, lakes or other rivers. e.g. the Mun River in Surin. <span class="th">แม่น้ำ</span></span></button>
+        <button class="flip wide" data-flip><span class="e">🚤</span><span class="n">Canal</span><span class="b info">A <b>man-made</b> waterway for boats or to carry water. e.g. the khlongs in Bangkok. <span class="th">คลอง</span></span></button>
+        <button class="flip wide" data-flip><span class="e">🧊🟫</span><span class="n">Permafrost</span><span class="b info">Ground that stays <b>frozen for at least two years</b> straight. <span class="th">ชั้นดินเยือกแข็ง</span></span></button>
+        <button class="flip wide" data-flip><span class="e">💨</span><span class="n">Water vapour</span><span class="b info">Water in the air in the form of <b>gas</b>. <span class="th">ไอน้ำ</span></span></button>
+      </div>
+    </div>
+    <div class="box">
+      <h3>🚰 Ways to conserve water <span class="th">การอนุรักษ์น้ำ</span></h3>
+      <p class="th" style="margin:0">Tap the ones you do at home!</p>
+      <div class="checks" id="checks">
+        <button class="chk"><span class="e">🌳</span><span>Plant trees.</span></button>
+        <button class="chk"><span class="e">🚯</span><span>Do not throw waste into water sources.</span></button>
+        <button class="chk"><span class="e">🚰</span><span>Turn off the tap tightly after use.</span></button>
+        <button class="chk"><span class="e">🚜</span><span>Dredge canals to help store more water.</span></button>
+        <button class="chk"><span class="e">🍽️</span><span>Fill a basin with water to wash the dishes.</span></button>
+        <button class="chk"><span class="e">🚿</span><span>Take a shower instead of using a bathtub.</span></button>
+      </div>
+      <p id="chkMsg" style="font-weight:600;color:var(--ok)"></p>
+    </div>
+    <div class="box"><h3>🔤 Key words</h3><div class="kws">
+      <button class="kw" data-say="surface water">surface water <span class="th">น้ำผิวดิน</span></button>
+      <button class="kw" data-say="subsurface water">subsurface water <span class="th">น้ำใต้ผิวดิน</span></button>
+      <button class="kw" data-say="groundwater">groundwater <span class="th">น้ำบาดาล</span></button>
+      <button class="kw" data-say="freshwater">freshwater <span class="th">น้ำจืด</span></button>
+      <button class="kw" data-say="saltwater">saltwater <span class="th">น้ำเค็ม</span></button>
+      <button class="kw" data-say="brackish water">brackish water <span class="th">น้ำกร่อย</span></button>
+      <button class="kw" data-say="conserve">conserve <span class="th">อนุรักษ์</span></button>
+      <button class="kw" data-say="dredge">dredge <span class="th">ขุดลอก</span></button>
+    </div></div>
+    <div class="lfoot"><button class="btn solid" data-goset="u4l1">🎯 Practise this lesson</button><button class="btn" data-go="u4l2">Next lesson →</button></div>
+  </article>
+
+  <!-- U4 L2 -->
+  <article class="lesson" data-l="u4l2">
+    <div class="lhead"><div class="chap">Unit 4 · Lesson 2</div><h2>Natural Phenomena with Water</h2><div class="th">ปรากฏการณ์ทางธรรมชาติ: เมฆ หมอก น้ำค้าง น้ำค้างแข็ง</div></div>
+    <div class="box big">
+      <p><b>Weather</b> (ลมฟ้าอากาศ) is the condition of the <b>atmosphere</b> at a particular <b>place and time</b>. It includes clouds, rain, wind, temperature and humidity (ความชื้น).</p>
+      <p>Some weather phenomena are <b>clouds, fog, dew and frost</b>.</p>
+    </div>
+    <div class="box">
+      <h3>☁️ How do clouds form?</h3>
+      <p>A <b>cloud</b> is a group of tiny <b>water droplets or ice crystals</b> floating in the sky. Tap ▶ Play or tap each step.</p>
+      <div class="flow" id="flow"></div>
+      <div class="pinfo" id="flowInfo"></div>
+      <div><button class="btn" id="flowPlay">▶ Play</button></div>
+      <div class="tip">💡 Tiny particles in the air — <b>dust, salt and pollen</b> — help the droplets form clouds.</div>
+    </div>
+    <div class="box">
+      <h3>🌥️ Four main kinds of clouds</h3>
+      <div class="clouds">
+        <div class="cl"><svg viewBox="0 0 120 84" aria-hidden="true"><rect class="sky" width="120" height="84" rx="8"/><g fill="none" stroke="var(--cloud)" stroke-width="4" stroke-linecap="round"><path d="M10 52C40 22 70 17 110 20"/><path d="M22 62C47 38 76 33 106 35"/><path d="M38 70C58 55 82 50 102 51"/></g></svg>
+          <h4>Cirrus</h4><p>White, long and thin, <b>like feathers</b>. Made of <b>ice crystals</b>.</p></div>
+        <div class="cl"><svg viewBox="0 0 120 84" aria-hidden="true"><rect class="sky" width="120" height="84" rx="8"/><g class="cf"><circle cx="42" cy="44" r="15"/><circle cx="60" cy="34" r="19"/><circle cx="80" cy="44" r="15"/><rect x="27" y="44" width="68" height="16" rx="6"/></g></svg>
+          <h4>Cumulus</h4><p>Big and puffy, <b>like cotton balls</b>. Round top, flat bottom.</p></div>
+        <div class="cl"><svg viewBox="0 0 120 84" aria-hidden="true"><rect class="sky" width="120" height="84" rx="8"/><g class="cf"><rect x="6" y="30" width="108" height="14" rx="7"/><rect x="14" y="46" width="98" height="12" rx="6"/></g><g stroke="var(--cloud)" stroke-width="2" stroke-linecap="round"><path d="M30 64v6M55 64v6M80 64v6M100 64v6"/></g></svg>
+          <h4>Stratus</h4><p><b>Flat sheets</b> that cover the whole sky. Can bring rain or <b>light drizzle</b>.</p></div>
+        <div class="cl"><svg viewBox="0 0 120 84" aria-hidden="true"><rect class="sky" width="120" height="84" rx="8"/><g class="cs"><path d="M18 18Q60 4 102 18L86 26H34Z"/><rect x="38" y="20" width="44" height="30"/><circle cx="36" cy="50" r="11"/><circle cx="60" cy="52" r="13"/><circle cx="84" cy="50" r="11"/></g><path d="M64 60L56 70H63L57 80" fill="none" stroke="#f5b700" stroke-width="3" stroke-linejoin="round"/></svg>
+          <h4>Cumulonimbus</h4><p><b>Tall and dark</b> cumulus clouds. Bring <b>heavy rain, thunder and lightning</b>.</p></div>
+      </div>
+    </div>
+    <div class="box">
+      <h3>📏 Clouds sorted by height</h3>
+      <svg class="scene" viewBox="0 0 640 300" role="img" aria-label="Cloud heights: upper level above 6 km, mid level 2 to 6 km, lower level up to 2 km">
+        <rect x="56" y="20" width="584" height="130" fill="var(--sky)" opacity=".55"/>
+        <rect x="56" y="150" width="584" height="87" fill="var(--sky)" opacity=".85"/>
+        <rect x="56" y="237" width="584" height="43" fill="var(--sky)"/>
+        <rect x="56" y="280" width="584" height="12" fill="var(--land)"/>
+        <g stroke="var(--muted)" stroke-dasharray="5 5"><path d="M56 150H640"/><path d="M56 237H640"/></g>
+        <g font-size="12" text-anchor="end"><text x="48" y="24">12 km</text><text x="48" y="154">6 km</text><text x="48" y="241">2 km</text><text x="48" y="292">0</text></g>
+        <text class="lbl halo" x="66" y="42">UPPER LEVEL · more than 6 km</text>
+        <text class="lbl halo" x="66" y="170">MID-LEVEL · 2–6 km</text>
+        <text class="lbl halo" x="66" y="254">LOWER LEVEL · up to 2 km</text>
+        <g font-size="13"><text x="140" y="90">Cirrus</text><text x="290" y="72">Cirrocumulus</text><text x="460" y="112">Cirrostratus</text>
+        <text x="190" y="210">Altostratus</text><text x="410" y="200">Altocumulus</text>
+        <text x="70" y="274">Nimbostratus</text><text x="185" y="274">Stratocumulus</text><text x="310" y="274">Stratus</text><text x="385" y="274">Cumulus</text><text x="470" y="274">Cumulonimbus</text></g>
+      </svg>
+      <div class="tbl"><table class="cmp">
+        <tr><th>Upper level<br><small>more than 6 km above the ground</small></th><th>Mid-level<br><small>between 2–6 km</small></th><th>Lower level<br><small>no more than 2 km</small></th></tr>
+        <tr><td>Cirrus<br>Cirrocumulus<br>Cirrostratus</td><td>Altocumulus<br>Altostratus</td><td>Nimbostratus<br>Stratocumulus<br>Stratus<br>Cumulus<br>Cumulonimbus</td></tr>
+      </table></div>
+      <div class="tip">💡 Name clues: <b>cirro-</b> = high up · <b>alto-</b> = middle · <b>nimbo- / -nimbus</b> = rain cloud.</div>
+    </div>
+    <div class="box">
+      <h3>🌫️ Fog, dew and frost</h3>
+      <div class="cols">
+        <div class="mini"><h4>🌫️ Fog <span class="th">หมอก</span></h4><p>A <b>cloud that forms near the ground</b>. Water vapour condenses into tiny droplets around dust. It can make it <b>hard to see</b> roads, cars and buildings.</p></div>
+        <div class="mini"><h4>💧 Dew <span class="th">น้ำค้าง</span></h4><p>Forms <b>at night</b> when water vapour condenses into droplets on <b>cool surfaces</b> like leaves, grass and spider webs. The temperature when this starts is the <b>dew point</b> (จุดน้ำค้าง).</p></div>
+        <div class="mini"><h4>❄️ Frost <span class="th">น้ำค้างแข็ง (แม่คะนิ้ง / เหมยขาบ)</span></h4><p>Forms when the temperature near the ground is <b>below the freezing point</b>. Dew freezes into <b>ice crystals</b>. e.g. frost on Doi Inthanon in winter.</p></div>
+      </div>
+    </div>
+    <div class="box"><h3>🔤 Key words</h3><div class="kws">
+      <button class="kw" data-say="weather">weather <span class="th">ลมฟ้าอากาศ</span></button>
+      <button class="kw" data-say="atmosphere">atmosphere <span class="th">บรรยากาศ</span></button>
+      <button class="kw" data-say="humidity">humidity <span class="th">ความชื้น</span></button>
+      <button class="kw" data-say="cirrus">cirrus</button>
+      <button class="kw" data-say="cumulus">cumulus</button>
+      <button class="kw" data-say="stratus">stratus</button>
+      <button class="kw" data-say="cumulonimbus">cumulonimbus</button>
+      <button class="kw" data-say="fog">fog <span class="th">หมอก</span></button>
+      <button class="kw" data-say="dew">dew <span class="th">น้ำค้าง</span></button>
+      <button class="kw" data-say="dew point">dew point <span class="th">จุดน้ำค้าง</span></button>
+      <button class="kw" data-say="frost">frost <span class="th">น้ำค้างแข็ง</span></button>
+    </div></div>
+    <div class="lfoot"><button class="btn solid" data-goset="u4l2">🎯 Practise this lesson</button><button class="btn" data-mode-go="test">🧪 Ready? Take the final test →</button></div>
+  </article>
+</section>
+
+<!-- ======================= PRACTICE ======================= -->
+<section class="pane" id="practice">
+  <div id="setsView">
+    <div class="box intro" style="margin-bottom:14px">
+      <h3 style="color:var(--sci)">🎯 Practice sets <span class="th">แบบฝึกหัดรายบท</span></h3>
+      <ul>
+        <li>One question at a time. You get <b>2 tries</b> — a hint 💡 comes after the first try.</li>
+        <li>Your score counts answers that are right on the <b>first try</b>.</li>
+        <li>At the end, tap <b>🔁 Fix my mistakes</b> to try the missed ones again. <span class="th">แก้มือข้อที่พลาดได้จนกว่าจะถูกหมด</span></li>
+      </ul>
+    </div>
+    <div class="sets" id="sets"></div>
+  </div>
+  <div id="practiceRun"></div>
+</section>
+
+<!-- ======================= TEST ======================= -->
+<section class="pane" id="test">
+  <div id="testIntro" class="box intro">
+    <h3 style="color:var(--sci)">🧪 Final Test — Unit 3 &amp; 4 <span class="th">แบบทดสอบปลายภาค</span></h3>
+    <ul>
+      <li><b>30 questions</b> from all 6 lessons (multiple choice and true/false).</li>
+      <li>Move with <b>Back / Next</b> or tap the numbers. You can change answers before you submit.</li>
+      <li>No answers are shown until you <b>submit</b>. Then you see your score for each lesson.</li>
+      <li>After that, <b>🔁 Fix my mistakes</b>: try each wrong question again with a hint. <span class="th">แก้มือข้อที่ผิดพร้อมคำใบ้</span></li>
+    </ul>
+    <div><button class="btn solid" id="startTest">Start the test ▶</button></div>
+  </div>
+  <div id="testRun"></div>
+</section>
+
+<footer>Buddy EP · Science 5 · buddy-ep.github.io/materials</footer>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const LESSONS={
+  u3l1:{s:"U3 · L1",t:"Change of State of Matter",c:"var(--l1)"},
+  u3l2:{s:"U3 · L2",t:"Dissolving in Water",c:"var(--l2)"},
+  u3l3:{s:"U3 · L3",t:"Chemical Change",c:"var(--l3)"},
+  u3l4:{s:"U3 · L4",t:"Reversible & Irreversible",c:"var(--l4)"},
+  u4l1:{s:"U4 · L1",t:"Water Sources & Conservation",c:"var(--l5)"},
+  u4l2:{s:"U4 · L2",t:"Clouds, Fog, Dew & Frost",c:"var(--l6)"}
+};
+const PROC={
+  melting:{n:"Melting (fusion)",th:"การหลอมเหลว",f:"Solid → Liquid",how:"🔥 Heat",ex:"Ice cubes in a glass of cha yen melt into water. Ice cream melts in the sun."},
+  freezing:{n:"Solidification (freezing)",th:"การแข็งตัว",f:"Liquid → Solid",how:"❄️ Cool",ex:"Water in an ice tray turns into ice in the freezer."},
+  vaporization:{n:"Vaporization",th:"การกลายเป็นไอ",f:"Liquid → Gas",how:"🔥 Heat",ex:"Two ways: evaporation (at the surface, natural — wet clothes dry) and boiling (heated to its boiling point — water bubbles in a pot)."},
+  condensation:{n:"Condensation",th:"การควบแน่น",f:"Gas → Liquid",how:"❄️ Cool",ex:"Water drops form on the lid when you steam eggs, and on the outside of a cold glass."},
+  sublimation:{n:"Sublimation",th:"การระเหิด",f:"Solid → Gas (no liquid first)",how:"🔥 Heat",ex:"Dry ice turns straight into gas. Mothballs (ลูกเหม็น) get smaller and smaller."},
+  deposition:{n:"Deposition",th:"การระเหิดกลับ",f:"Gas → Solid (no liquid first)",how:"❄️ Cool",ex:"On a very cold morning, water vapour turns into frost on branches and spider webs."}
+};
+const EQ=[
+  ["🍬","Sugar","(solid)","💧","Water","🥤","Sugar solution"],
+  ["🧂","Salt","(solid)","💧","Water","🌊","Salt water"],
+  ["🧴","Alcohol","(liquid)","💧","Water","🧪","Alcohol solution"],
+  ["🫧","Oxygen","(gas)","💧","Water","🐟","Water fish can breathe in"]
+];
+const FLOW=[
+  ["☀️ Sun heats water","Heat from the Sun warms water in seas, rivers and lakes."],
+  ["💨 Evaporation","The water evaporates and becomes water vapour (a gas)."],
+  ["⬆️ Water vapour rises","The water vapour rises into the atmosphere."],
+  ["🌡️ Cooling","High in the sky the air is cooler, so the water vapour cools down."],
+  ["💧 Condensation","It condenses into tiny water droplets or ice crystals around dust, salt or pollen."],
+  ["☁️ Cloud forms","Millions of tiny droplets together make a cloud!"]
+];
+
+/* Question types: mc {o,a(index of correct in o)}, tf {a:true/false}, type {acc,ans}, sort {cats,items:[[name,catIndex]]}, order {steps in correct order} */
+const PRACTICE=[
+/* ---- U3 L1 ---- */
+{l:"u3l1",t:"mc",q:"Pleng puts ice cubes in a glass. After 20 minutes they become water. What is this change called?",o:["Melting","Freezing","Condensation","Sublimation"],a:0,h:"The ice changes from a solid to a liquid.",ex:"Solid → liquid when heated is melting (การหลอมเหลว)."},
+{l:"u3l1",t:"mc",q:"Melting is also known as ______.",o:["fusion","deposition","evaporation","boiling"],a:0,h:"It starts with the letter F.",ex:"Melting is also called fusion."},
+{l:"u3l1",t:"mc",q:"Water in an ice tray in the freezer becomes ice. This is called ______.",o:["solidification","vaporization","sublimation","condensation"],a:0,h:"Liquid → solid. It is also called freezing.",ex:"Liquid → solid when cooled is solidification (freezing, การแข็งตัว)."},
+{l:"u3l1",t:"tf",q:"Evaporation and boiling are two ways of vaporization.",a:true,h:"",ex:"True. Both change a liquid into a gas. Evaporation happens at the surface; boiling happens at the boiling point."},
+{l:"u3l1",t:"mc",q:"Which one is EVAPORATION?",o:["Wet clothes dry in the sun.","Water bubbles in a very hot pot.","Ice melts in a glass.","Fog forms in the morning."],a:0,h:"Evaporation is natural and happens at the surface of the liquid.",ex:"Wet clothes dry because water at the surface slowly changes into gas — evaporation (การระเหย). Bubbling in a hot pot is boiling."},
+{l:"u3l1",t:"mc",q:"Water drops form on the outside of a cold glass of cha yen. Which change is this?",o:["Condensation","Evaporation","Melting","Sublimation"],a:0,h:"Water vapour in the air touches the cold glass and becomes liquid.",ex:"Gas → liquid when cooled is condensation (การควบแน่น)."},
+{l:"u3l1",t:"mc",q:"Dry ice changes straight into a gas without becoming a liquid. This is ______.",o:["sublimation","deposition","melting","boiling"],a:0,h:"Solid → gas, skipping the liquid.",ex:"Solid → gas directly is sublimation (การระเหิด)."},
+{l:"u3l1",t:"mc",q:"A gas changes straight into a solid without becoming a liquid first. This is ______.",o:["deposition","condensation","solidification","sublimation"],a:0,h:"It is the opposite of sublimation.",ex:"Gas → solid directly is deposition (การระเหิดกลับ)."},
+{l:"u3l1",t:"sort",q:"Does each change need HEAT or COOLING?",cats:["🔥 Heat","❄️ Cool"],items:[["Melting",0],["Freezing",1],["Vaporization",0],["Condensation",1],["Sublimation",0],["Deposition",1]],h:"Heat moves matter toward gas. Cooling moves it toward solid.",ex:"Heat: melting, vaporization, sublimation. Cool: freezing (solidification), condensation, deposition."},
+{l:"u3l1",t:"type",q:"A liquid is heated and changes into a gas. Write the name of this change: v__________",acc:["vaporization","vaporisation"],ans:"vaporization",h:"It starts with “vapor…”.",ex:"Liquid → gas is vaporization (การกลายเป็นไอ)."},
+{l:"u3l1",t:"tf",q:"In a change of state, a new substance is formed.",a:false,h:"",ex:"False. A change of state is a physical change. It is still the same matter — no new substance."},
+{l:"u3l1",t:"mc",q:"Which is a DISADVANTAGE of changes of state?",o:["Big hailstones can destroy houses.","The water cycle brings us rain.","We dry clothes in the sun.","We use ice to keep drinks cold."],a:0,h:"Look for something that causes damage.",ex:"Big hailstones can destroy houses and living things. Melting polar ice caps causing floods is another disadvantage."},
+
+/* ---- U3 L2 ---- */
+{l:"u3l2",t:"sort",q:"Sort the substances. Do they dissolve in water?",cats:["✅ Soluble","🚫 Insoluble"],items:[["Salt",0],["Oil",1],["Sugar",0],["Sand",1],["Vinegar",0],["Rice",1],["Detergent powder",0],["Chalk powder",1]],h:"Soluble ones disappear into the water and make it look the same all through.",ex:"Soluble: salt, sugar, vinegar, detergent powder. Insoluble: oil, sand, rice, chalk powder."},
+{l:"u3l2",t:"mc",q:"In salt water, the SALT is the ______.",o:["solute","solvent","mixture","gas"],a:0,h:"It is the substance that dissolves.",ex:"The solute (ตัวละลาย) is the substance that dissolves. Water is the solvent."},
+{l:"u3l2",t:"mc",q:"In sugar water, the WATER is the ______.",o:["solvent","solute","insoluble substance","new substance"],a:0,h:"It is the substance that the sugar dissolves in.",ex:"The solvent (ตัวทำละลาย) is the substance that dissolves the solute — here, water."},
+{l:"u3l2",t:"mc",q:"A solution is a mixture of ______.",o:["a solute and a solvent","a solid and a gas only","oil and water","sand and water"],a:0,h:"Solute + ______ = solution.",ex:"Solution = solute + solvent."},
+{l:"u3l2",t:"tf",q:"Oil dissolves in water.",a:false,h:"",ex:"False. Oil is insoluble. It stays as a separate layer on top of the water."},
+{l:"u3l2",t:"mc",q:"Which is a homogeneous mixture?",o:["Fruit juice","Sand and water","Oil and water","Rice and beans"],a:0,h:"It looks the same all through.",ex:"Fruit juice is homogeneous — it looks the same everywhere. Coffee and milk, and salt and water are other examples."},
+{l:"u3l2",t:"mc",q:"In the word “homogeneous”, what does “homo” mean?",o:["same","different","hot","water"],a:0,h:"A homogeneous mixture looks the ____ all through.",ex:"Homo = same. A homogeneous mixture has the same appearance all through."},
+{l:"u3l2",t:"mc",q:"Fish breathe oxygen that is dissolved in water. What does this show?",o:["Gases can dissolve in water.","Gases never dissolve in water.","Oxygen is a solid.","Fish breathe air above the water."],a:0,h:"Oxygen is a gas.",ex:"Most gases can dissolve in water. Fish, algae and other water animals use dissolved oxygen."},
+{l:"u3l2",t:"mc",q:"Plearn mixes alcohol and water and stirs. What happens?",o:["It forms a clear, homogeneous solution.","It forms two layers.","It becomes a solid.","It makes a new substance."],a:0,h:"Alcohol is a liquid that is soluble in water.",ex:"Some liquids dissolve in water. Alcohol + water makes a clear, homogeneous solution."},
+{l:"u3l2",t:"type",q:"A substance that CANNOT dissolve in water is i__________.",acc:["insoluble"],ans:"insoluble",h:"in + soluble",ex:"Insoluble (ไม่ละลายน้ำ) = cannot dissolve."},
+{l:"u3l2",t:"tf",q:"Dissolving sugar in water is a physical change.",a:true,h:"",ex:"True. No new substance forms, and you can get the sugar back by evaporating the water."},
+{l:"u3l2",t:"mc",q:"Which one is NOT soluble in water?",o:["Chalk powder","Salt","Sugar","Detergent powder"],a:0,h:"Which one would make the water cloudy and sink to the bottom?",ex:"Chalk powder is insoluble. Salt, sugar and detergent powder are soluble."},
+
+/* ---- U3 L3 ---- */
+{l:"u3l3",t:"mc",q:"A chemical change ______.",o:["forms a new substance","only changes the shape","is always reversible","only changes the state"],a:0,h:"Think: is the substance still the same after the change?",ex:"In a chemical change, one or more substances change into new substances."},
+{l:"u3l3",t:"sort",q:"Is each change physical or chemical?",cats:["🧊 Physical","🧪 Chemical"],items:[["Burning wood",1],["Melting ice cream",0],["Rusting iron nail",1],["Chopping wood",0],["Frying an egg",1],["Shredding paper",0],["Ripening banana",1],["Boiling water",0]],h:"Ask: is a NEW substance made?",ex:"Chemical: burning wood, rusting, frying an egg, ripening banana. Physical: melting, chopping, shredding, boiling."},
+{l:"u3l3",t:"mc",q:"Which is a chemical change?",o:["Baking a cake","Cutting paper","Melting butter","Freezing juice"],a:0,h:"Which one can never go back to how it was?",ex:"Baking a cake makes new substances — you can’t get the eggs and flour back."},
+{l:"u3l3",t:"mc",q:"Pamai mixes baking soda and vinegar. Bubbles of gas appear. This is ______.",o:["a chemical change","a physical change","melting","only dissolving"],a:0,h:"The bubbles are a gas that was not there before.",ex:"A new gas is formed, so it is a chemical change."},
+{l:"u3l3",t:"tf",q:"Digestion of food in our body is a chemical change.",a:true,h:"",ex:"True. Our body changes food into new substances."},
+{l:"u3l3",t:"mc",q:"A physical change changes the ______ structure. A chemical change changes the ______ structure.",o:["outer … inner","inner … outer","inner … inner","outer … outer"],a:0,h:"Physical change = shape only.",ex:"Physical change: outer structure (shape). Chemical change: inner structure."},
+{l:"u3l3",t:"mc",q:"Which chemical change can cause problems?",o:["Explosion","Cooking","Medicine","Photosynthesis"],a:0,h:"Which one is dangerous?",ex:"Explosions are chemical changes that can be dangerous. Cooking, medicine and photosynthesis are useful."},
+{l:"u3l3",t:"mc",q:"Plants make their own food using sunlight. This chemical change is ______.",o:["photosynthesis","evaporation","condensation","melting"],a:0,h:"“Photo” means light.",ex:"Photosynthesis (การสังเคราะห์ด้วยแสง) is a chemical change."},
+{l:"u3l3",t:"type",q:"A change that cannot go back to its original form is i____________.",acc:["irreversible"],ans:"irreversible",h:"ir + reversible",ex:"Irreversible (ผันกลับไม่ได้). Chemical changes are irreversible."},
+{l:"u3l3",t:"tf",q:"In a chemical change, the properties of the substance do not change.",a:false,h:"",ex:"False. In a chemical change the properties DO change, because a new substance is formed."},
+{l:"u3l3",t:"mc",q:"An iron gate is left in the rain. It turns red-brown and flaky. What happened?",o:["It rusted — a new substance formed.","It melted.","It dissolved in the rain.","It evaporated."],a:0,h:"Iron + water + air for a long time …",ex:"Rusting is a chemical change. Rust is a new substance."},
+
+/* ---- U3 L4 ---- */
+{l:"u3l4",t:"mc",q:"A reversible change is a ______ change.",o:["temporary","permanent","dangerous","chemical"],a:0,h:"It does not last forever — it can go back.",ex:"Reversible = temporary. The substance can change back."},
+{l:"u3l4",t:"mc",q:"An irreversible change is a ______ change.",o:["permanent","temporary","physical","quick"],a:0,h:"It stays that way forever.",ex:"Irreversible = permanent. The substance cannot change back."},
+{l:"u3l4",t:"sort",q:"Reversible or irreversible?",cats:["↔️ Reversible","➡️ Irreversible"],items:[["Melting ice",0],["Burning paper",1],["Boiling water",0],["Rusting of iron",1],["Dissolving sugar in water",0],["Cooking an egg",1],["Freezing water",0],["Baking bread",1]],h:"Can you get the first thing back?",ex:"Reversible: melting, boiling, dissolving, freezing. Irreversible: burning, rusting, cooking, baking."},
+{l:"u3l4",t:"tf",q:"Physical changes are usually reversible.",a:true,h:"",ex:"True. Physical change = reversible; chemical change = irreversible."},
+{l:"u3l4",t:"tf",q:"Burning paper is reversible because we can make the ash into paper again.",a:false,h:"",ex:"False. Burning is a chemical change. The ash and smoke are new substances — it is irreversible."},
+{l:"u3l4",t:"mc",q:"Teacher Sa melts chocolate, then puts it in the fridge. It becomes solid again. This shows ______.",o:["a reversible change","an irreversible change","a chemical change","rusting"],a:0,h:"Did the chocolate go back to how it was?",ex:"The chocolate went back to a solid, so it is a reversible (physical) change."},
+{l:"u3l4",t:"mc",q:"Changes in substances can be ______.",o:["natural or man-made","only natural","only man-made","only in a science lab"],a:0,h:"Some happen by themselves; some people make happen.",ex:"Changes can be natural (rusting in the rain) or man-made (cooking)."},
+{l:"u3l4",t:"mc",q:"Which change is NATURAL (not made by people)?",o:["A banana ripens on the tree.","Cooking rice","Baking bread","Frying eggs"],a:0,h:"Which one happens without people doing it?",ex:"Fruit ripening happens by itself in nature. Cooking, baking and frying are man-made."},
+{l:"u3l4",t:"mc",q:"Which pair is correct?",o:["Chemical change — irreversible","Physical change — new substance","Chemical change — temporary","Physical change — permanent"],a:0,h:"Chemical change makes a new substance, so can it go back?",ex:"Chemical change = irreversible (permanent). Physical change = reversible (temporary), no new substance."},
+{l:"u3l4",t:"type",q:"Melting ice is a r__________ change.",acc:["reversible"],ans:"reversible",h:"It can go back (re-).",ex:"Melting ice is reversible — freeze the water and you have ice again."},
+
+/* ---- U4 L1 ---- */
+{l:"u4l1",t:"mc",q:"About how much of the Earth’s surface is covered by water?",o:["¾ (three quarters)","¼ (one quarter)","½ (half)","All of it"],a:0,h:"Water covers MORE of the Earth than land.",ex:"About ¾ of the Earth is covered by water and ¼ is land."},
+{l:"u4l1",t:"mc",q:"What percent of all the water on Earth is freshwater?",o:["2.5%","97.5%","25%","75%"],a:0,h:"It is a very small part.",ex:"Only 2.5% is freshwater. 97.5% is saltwater in seas and oceans."},
+{l:"u4l1",t:"mc",q:"Seas and oceans are ______ because they contain a lot of salt.",o:["saltwater","freshwater","groundwater","soil water"],a:0,h:"The answer has “salt” in it.",ex:"Seas and oceans are bodies of saltwater."},
+{l:"u4l1",t:"sort",q:"Surface water or subsurface water?",cats:["🌊 Surface","🪨 Subsurface"],items:[["River",0],["Groundwater",1],["Lake",0],["Soil water",1],["Ocean",0],["Canal",0]],h:"Subsurface means BELOW the surface of the Earth.",ex:"Surface: rivers, lakes, oceans, canals. Subsurface: groundwater and soil water."},
+{l:"u4l1",t:"mc",q:"Water stored in rock spaces underground is called ______.",o:["groundwater","soil water","a canal","a swamp"],a:0,h:"Ground + water.",ex:"Groundwater (น้ำบาดาล) is stored in rock spaces underground."},
+{l:"u4l1",t:"mc",q:"A man-made waterway for boats or to carry water is a ______.",o:["canal","river","lake","glacier"],a:0,h:"Bangkok has many of these (khlong).",ex:"A canal (คลอง) is a man-made waterway."},
+{l:"u4l1",t:"mc",q:"Ground that stays frozen for at least two years straight is ______.",o:["permafrost","an ice cap","frost","dew"],a:0,h:"Perma- = permanent.",ex:"Permafrost is ground that remains frozen for at least two years."},
+{l:"u4l1",t:"mc",q:"A large body of water surrounded by land is a ______.",o:["lake","river","canal","swamp"],a:0,h:"It does not flow across land.",ex:"A lake is a large body of water surrounded by land."},
+{l:"u4l1",t:"mc",q:"Some swamps contain saltwater or ______ water.",o:["brackish","tap","boiling","frozen"],a:0,h:"It means a little bit salty (น้ำกร่อย).",ex:"Brackish water is a mix of fresh and salt water."},
+{l:"u4l1",t:"mc",q:"Which is the best way to save water?",o:["Turn off the tap tightly after use.","Leave the tap on while brushing your teeth.","Fill the bathtub every day.","Throw waste into the river."],a:0,h:"Which one stops water from being wasted?",ex:"Turning off the tap tightly saves water."},
+{l:"u4l1",t:"tf",q:"Taking a shower uses less water than using a bathtub.",a:true,h:"",ex:"True. That is why taking a shower is a way to conserve water."},
+{l:"u4l1",t:"mc",q:"Why do people dredge canals?",o:["To help store more water","To make the water salty","To stop the rain","To freeze the water"],a:0,h:"Dredging digs mud out of the bottom.",ex:"Dredging (ขุดลอก) makes canals deeper so they can store more water."},
+{l:"u4l1",t:"tf",q:"Glaciers and ice caps store frozen freshwater.",a:true,h:"",ex:"True. They are large bodies of ice that store frozen freshwater."},
+
+/* ---- U4 L2 ---- */
+{l:"u4l2",t:"mc",q:"The condition of the atmosphere at a particular place and time is called ______.",o:["weather","the water cycle","humidity","dew point"],a:0,h:"Sunny, rainy, windy …",ex:"Weather (ลมฟ้าอากาศ) includes clouds, rain, wind, temperature and humidity."},
+{l:"u4l2",t:"order",q:"Put the steps of cloud formation in order. Tap them one by one.",steps:["The Sun heats water","Water evaporates","Water vapour rises","Water vapour cools","Water vapour condenses into tiny droplets","A cloud forms"],h:"Start with the Sun. End with the cloud.",ex:"Sun heats water → evaporation → vapour rises → cooling → condensation → cloud forms."},
+{l:"u4l2",t:"mc",q:"Dust, salt and pollen in the air help clouds form because ______.",o:["water droplets form around them","they make the Sun hotter","they are made of ice","they stop evaporation"],a:0,h:"The droplets need something tiny to hold on to.",ex:"Water vapour condenses into droplets around tiny particles like dust, salt and pollen."},
+{l:"u4l2",t:"mc",q:"Long, thin, white clouds like feathers, made of ice crystals, are ______.",o:["cirrus","cumulus","stratus","cumulonimbus"],a:0,h:"They are the highest clouds.",ex:"Cirrus clouds look like feathers and are made of ice crystals."},
+{l:"u4l2",t:"mc",q:"Big, puffy clouds like cotton balls, with round tops and flat bottoms, are ______.",o:["cumulus","cirrus","stratus","fog"],a:0,h:"Think “cotton balls”.",ex:"Cumulus clouds are big and puffy."},
+{l:"u4l2",t:"mc",q:"Tall, dark clouds that bring heavy rain, thunder and lightning are ______.",o:["cumulonimbus","cirrus","stratus","cumulus"],a:0,h:"“Nimbus” means rain cloud.",ex:"Cumulonimbus clouds are tall, dark storm clouds."},
+{l:"u4l2",t:"mc",q:"Flat sheets of cloud that cover the whole sky and may bring light drizzle are ______.",o:["stratus","cumulus","cirrus","cumulonimbus"],a:0,h:"Like a big flat blanket.",ex:"Stratus clouds are flat sheets."},
+{l:"u4l2",t:"sort",q:"Which level is each cloud in?",cats:["Upper","Mid","Lower"],items:[["Cirrus",0],["Altostratus",1],["Stratus",2],["Cirrostratus",0],["Altocumulus",1],["Cumulus",2],["Nimbostratus",2]],h:"cirro- = high, alto- = middle.",ex:"Upper: cirrus, cirrostratus. Mid: altostratus, altocumulus. Lower: stratus, cumulus, nimbostratus."},
+{l:"u4l2",t:"mc",q:"Upper-level clouds are ______ above the ground.",o:["more than 6 km","between 2 and 6 km","no more than 2 km","less than 1 km"],a:0,h:"They are the highest clouds.",ex:"Upper level: more than 6 km. Mid: 2–6 km. Lower: no more than 2 km."},
+{l:"u4l2",t:"mc",q:"Pleng visits Doi Inthanon in January. Early in the morning she sees thin white ice on the grass. What is it?",o:["Frost","Dew","Fog","A cloud"],a:0,h:"It is very cold — below freezing point.",ex:"Frost forms when the temperature near the ground is below the freezing point."},
+{l:"u4l2",t:"mc",q:"A cloud that forms near the ground and makes it hard to see the road is ______.",o:["fog","frost","cirrus","dew"],a:0,h:"Drivers must be careful in the morning.",ex:"Fog is a cloud that forms near or above the ground."},
+{l:"u4l2",t:"mc",q:"The temperature at which water vapour starts to condense into dew is the ______.",o:["dew point","boiling point","freezing point","melting point"],a:0,h:"It has the word “dew” in it.",ex:"The dew point is the temperature when dew starts to form."},
+{l:"u4l2",t:"tf",q:"Dew usually forms at night on cool surfaces such as leaves and grass.",a:true,h:"",ex:"True. Water vapour condenses on cool surfaces at night."},
+{l:"u4l2",t:"type",q:"Water vapour cools and changes into tiny water droplets. This change is called c____________.",acc:["condensation"],ans:"condensation",h:"Gas → liquid.",ex:"Condensation (การควบแน่น) makes clouds, fog and dew."}
+];
+
+const TEST=[
+/* U3 L1 (6) */
+{l:"u3l1",t:"mc",q:"Which change needs HEAT?",o:["Melting","Freezing","Condensation","Deposition"],a:0,h:"Heat moves matter toward liquid and gas.",ex:"Melting needs heat. Freezing, condensation and deposition happen when matter cools."},
+{l:"u3l1",t:"mc",q:"Mothballs (ลูกเหม็น) in a wardrobe get smaller and smaller, but no liquid is seen. This is ______.",o:["sublimation","melting","evaporation","condensation"],a:0,h:"Solid → gas, skipping the liquid.",ex:"Sublimation: a solid changes straight into a gas."},
+{l:"u3l1",t:"mc",q:"Teacher Dan heats water for noodles. It bubbles and turns into steam. Which is correct?",o:["The water reached its boiling point.","The water is freezing.","Only the surface water is evaporating naturally.","The steam is a solid."],a:0,h:"Bubbles all through the water when it is very hot.",ex:"Boiling happens when a liquid is heated to its boiling point."},
+{l:"u3l1",t:"mc",q:"Ice → water → steam. Which two changes happen, in order?",o:["Melting, then vaporization","Freezing, then condensation","Condensation, then melting","Sublimation, then deposition"],a:0,h:"Solid → liquid first, then liquid → gas.",ex:"Solid → liquid is melting; liquid → gas is vaporization."},
+{l:"u3l1",t:"mc",q:"Climate change makes the polar ice caps melt. What can happen?",o:["Floods, and living things lose their habitats","More ice is formed","Seas become freshwater","Nothing changes"],a:0,h:"Where does all the melted water go?",ex:"Melting ice caps can cause floods and make living things lose their habitats."},
+{l:"u3l1",t:"mc",q:"In a physical change, which one CANNOT happen?",o:["A new substance is formed.","The shape changes.","The size changes.","The state changes."],a:0,h:"Physical change = still the same matter.",ex:"In a physical change, size, shape, volume, colour and state may change, but no new substance is formed."},
+/* U3 L2 (6) */
+{l:"u3l2",t:"mc",q:"Which pair makes a solution?",o:["Salt + water","Sand + water","Oil + water","Rice + water"],a:0,h:"Which one is soluble?",ex:"Salt dissolves in water, so salt + water makes a solution."},
+{l:"u3l2",t:"mc",q:"When a substance dissolves in water, the mixture ______.",o:["looks the same all through","has two layers","has big pieces in it","turns into a solid"],a:0,h:"It becomes uniform (homogeneous).",ex:"Dissolving makes a uniform (homogeneous) mixture."},
+{l:"u3l2",t:"mc",q:"Pamai stirs milk into hot coffee. It looks the same everywhere. This is ______.",o:["a homogeneous mixture","an insoluble substance","a chemical change","a gas"],a:0,h:"Homo = same.",ex:"Coffee and milk is a homogeneous mixture."},
+{l:"u3l2",t:"mc",q:"Which group has ONLY soluble substances?",o:["Salt, sugar, vinegar","Sand, oil, rice","Chalk powder, sand, sugar","Oil, salt, rice"],a:0,h:"Remove any group with oil, sand, rice or chalk.",ex:"Salt, sugar and vinegar are all soluble."},
+{l:"u3l2",t:"mc",q:"Detergent powder is dissolved in water. Which is the SOLVENT?",o:["Water","Detergent powder","The bubbles","The bucket"],a:0,h:"The solvent does the dissolving.",ex:"Water is the solvent; detergent powder is the solute."},
+{l:"u3l2",t:"mc",q:"A mixture is ______.",o:["two or more different substances mixed together","always one substance","always a gas","always a new substance"],a:0,h:"Mix = put together.",ex:"A mixture is made up of two or more different substances mixed together."},
+/* U3 L3 (5) */
+{l:"u3l3",t:"mc",q:"Which is NOT a chemical change?",o:["Chopping wood","Burning wood","Rotting fruit","Grilling fish"],a:0,h:"Which one only changes the shape?",ex:"Chopping wood is physical — the pieces are still wood."},
+{l:"u3l3",t:"mc",q:"Which sentence about chemical change is TRUE?",o:["It changes the inner structure of the substance.","It is always easy to reverse.","No new substance is formed.","It only changes the shape."],a:0,h:"Look at the comparison table.",ex:"Chemical change: new substance, changes in properties and inner structures, irreversible."},
+{l:"u3l3",t:"mc",q:"Plearn toasts a marshmallow. It turns brown, smells different and cannot become white again. Why?",o:["A new substance formed — a chemical change.","It melted — a physical change.","It dissolved.","It evaporated."],a:0,h:"New colour + new smell + cannot go back.",ex:"Toasting a marshmallow is a chemical change."},
+{l:"u3l3",t:"mc",q:"Which chemical change is USEFUL to living things?",o:["Digestion","An explosion","Rotting of our food","A firecracker accident"],a:0,h:"Which one helps our body?",ex:"Digestion helps our body use food. Cooking, medicine and photosynthesis are useful too."},
+{l:"u3l3",t:"mc",q:"A green banana turns yellow, soft and sweet. This is ______.",o:["ripening — a chemical change","melting — a physical change","dissolving","condensation"],a:0,h:"Can it become green and hard again?",ex:"Ripening of fruit is a chemical change."},
+/* U3 L4 (4) */
+{l:"u3l4",t:"mc",q:"Which is a REVERSIBLE change?",o:["Dissolving sugar in water","Burning paper","Cooking an egg","Rusting of iron"],a:0,h:"Which one is a physical change?",ex:"Dissolving sugar is reversible — evaporate the water to get the sugar back."},
+{l:"u3l4",t:"mc",q:"Which is an IRREVERSIBLE change?",o:["Baking bread","Melting ice","Boiling water","Freezing juice"],a:0,h:"Which one is a chemical change?",ex:"Baking bread is irreversible — you cannot get the flour back."},
+{l:"u3l4",t:"mc",q:"How can we get the salt back from salt water?",o:["Heat it until the water evaporates.","Add more water.","Add sand.","We can never get it back."],a:0,h:"Dissolving is reversible.",ex:"When the water evaporates, the salt is left behind."},
+{l:"u3l4",t:"mc",q:"Reversible is to temporary as irreversible is to ______.",o:["permanent","quick","natural","liquid"],a:0,h:"Opposite of temporary.",ex:"Reversible = temporary; irreversible = permanent."},
+/* U4 L1 (5) */
+{l:"u4l1",t:"mc",q:"Most of the water on Earth is ______.",o:["saltwater in seas and oceans","freshwater in rivers","groundwater","ice in glaciers"],a:0,h:"97.5% …",ex:"97.5% of Earth’s water is saltwater in seas and oceans."},
+{l:"u4l1",t:"mc",q:"Water in the pore spaces in the soil is called ______.",o:["soil water","groundwater","surface water","brackish water"],a:0,h:"The answer has “soil” in it.",ex:"Soil water is in the pore spaces in the soil. Groundwater is in rock spaces."},
+{l:"u4l1",t:"mc",q:"Which is SUBSURFACE water?",o:["Groundwater","The Mun River","A lake","A canal"],a:0,h:"Sub- = below.",ex:"Groundwater is below the surface. Rivers, lakes and canals are surface water."},
+{l:"u4l1",t:"mc",q:"Which action does NOT help conserve water?",o:["Throwing rubbish into the canal","Planting trees","Using a basin to wash dishes","Turning off the tap tightly"],a:0,h:"Which one makes water dirty?",ex:"Do not throw waste into water sources."},
+{l:"u4l1",t:"mc",q:"Why must we take care of freshwater?",o:["Only a small part (2.5%) of Earth’s water is fresh.","Freshwater is 97.5% of all water.","We can drink seawater.","There is no water on Earth."],a:0,h:"Look at the second pie chart.",ex:"Only 2.5% of the water is freshwater, so we must use it wisely."},
+/* U4 L2 (4) */
+{l:"u4l2",t:"mc",q:"Which kind of cloud is made of ice crystals?",o:["Cirrus","Cumulus","Stratus","Fog"],a:0,h:"The feather-like clouds high in the sky.",ex:"Cirrus clouds are made of ice crystals."},
+{l:"u4l2",t:"mc",q:"Cumulus and stratus clouds are at which level?",o:["Lower level (no more than 2 km)","Upper level (more than 6 km)","Mid-level (2–6 km)","Higher than 12 km"],a:0,h:"They do not have cirro- or alto- in their names.",ex:"Cumulus and stratus are lower-level clouds."},
+{l:"u4l2",t:"mc",q:"Water vapour rises into the atmosphere. What happens next to make a cloud?",o:["It cools and condenses into tiny droplets.","It melts.","It boils.","It turns into sand."],a:0,h:"Higher up it is cooler …",ex:"The vapour cools and condenses into tiny droplets or ice crystals, which form a cloud."},
+{l:"u4l2",t:"mc",q:"Which match is CORRECT?",o:["Dew — water drops on grass at night","Frost — hot steam","Fog — a cloud high in the sky","Cirrus — a dark rain cloud"],a:0,h:"Check each one carefully.",ex:"Dew forms at night on cool surfaces. Frost is ice, fog is near the ground, cirrus is thin and white."}
+];
+
+/* ================= HELPERS ================= */
+const $=s=>document.querySelector(s);
+const $$=s=>[...document.querySelectorAll(s)];
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pickOne=a=>a[Math.floor(Math.random()*a.length)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const norm=s=>String(s).trim().toLowerCase().replace(/\s+/g," ").replace(/[.!]$/,"");
+const LET="ABCDEFGH";
+const PRAISE=["Great job! 🎉","You got it! ⭐","Excellent! 💪","Super! 🌟","Well done! 👏"];
+const FIXED=["You fixed it! 👍","Good thinking! 👍","Yes — you got it now! 🙌"];
+function say(t){try{const u=new SpeechSynthesisUtterance(t);u.lang="en-US";u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function fmt(sec){const m=Math.floor(sec/60),s=sec%60;return m+":"+String(s).padStart(2,"0")}
+
+/* ================= MODES & LEARN ================= */
+function showMode(m){
+  $$("nav.modes button").forEach(b=>b.classList.toggle("on",b.dataset.mode===m));
+  $$(".pane").forEach(p=>p.classList.toggle("on",p.id===m));
+  window.scrollTo({top:0});
+}
+function showLesson(k){
+  $$(".lesson").forEach(a=>a.classList.toggle("on",a.dataset.l===k));
+  $$("#lchips button").forEach(b=>b.classList.toggle("on",b.dataset.go===k));
+  showMode("learn");
+}
+document.addEventListener("click",e=>{
+  const t=e.target;
+  const m=t.closest("[data-mode]"); if(m&&m.closest("nav.modes")){showMode(m.dataset.mode);return}
+  const mg=t.closest("[data-mode-go]"); if(mg){showMode(mg.dataset.modeGo);return}
+  const g=t.closest("[data-go]"); if(g){e.preventDefault();showLesson(g.dataset.go);return}
+  const gs=t.closest("[data-goset]"); if(gs){showMode("practice");startSet(gs.dataset.goset,null,"full");return}
+  const p=t.closest("[data-proc]"); if(p){setProc(p.dataset.proc);return}
+  const f=t.closest("[data-flip]"); if(f){f.classList.toggle("show");return}
+  const kw=t.closest("[data-say]"); if(kw){say(kw.dataset.say);return}
+  const c=t.closest(".chk"); if(c){c.classList.toggle("on");chkMsg();return}
+});
+function setProc(k){
+  const d=PROC[k];
+  $("#stDiagram").classList.add("has-on");
+  $$("#stDiagram .proc").forEach(g=>g.classList.toggle("on",g.dataset.proc===k));
+  $$("#pchips button").forEach(b=>b.classList.toggle("on",b.dataset.proc===k));
+  $("#pinfo").innerHTML=`<h4>${d.n} <span class="th">${d.th}</span></h4><p><b>${d.f}</b> · ${d.how}</p><p>${d.ex}</p>`;
+}
+let eqI=0;
+function drawEq(){const e=EQ[eqI];
+  $("#eq").innerHTML=`<div class="part"><b>Solute</b><span class="e">${e[0]}</span><span>${e[1]} <small class="th">${e[2]}</small></span></div><div class="op">+</div>
+  <div class="part"><b>Solvent</b><span class="e">${e[3]}</span><span>${e[4]}</span></div><div class="op">=</div>
+  <div class="part"><b>Solution</b><span class="e">${e[5]}</span><span>${e[6]}</span></div>`}
+$("#eqNext").onclick=()=>{eqI=(eqI+1)%EQ.length;drawEq()};
+drawEq();
+function chkMsg(){const n=$$(".chk.on").length;$("#chkMsg").textContent=n?(n===6?"All 6! You are a Water Hero! 💧🦸":`You do ${n} of 6. Great! 💧`):""}
+/* cloud flow */
+let flowI=0,flowT=null;
+function drawFlow(){
+  $("#flow").innerHTML=FLOW.map((s,i)=>(i?'<span class="ar">→</span>':'')+`<button data-fi="${i}" class="${i===flowI?'on':''}">${s[0]}</button>`).join("");
+  $("#flowInfo").innerHTML=`<h4>Step ${flowI+1}: ${FLOW[flowI][0]}</h4><p>${FLOW[flowI][1]}</p>`;
+}
+$("#flow").addEventListener("click",e=>{const b=e.target.closest("[data-fi]");if(b){clearInterval(flowT);flowT=null;$("#flowPlay").textContent="▶ Play";flowI=+b.dataset.fi;drawFlow()}});
+$("#flowPlay").onclick=()=>{
+  if(flowT){clearInterval(flowT);flowT=null;$("#flowPlay").textContent="▶ Play";return}
+  flowI=0;drawFlow();$("#flowPlay").textContent="⏸ Pause";
+  flowT=setInterval(()=>{if(flowI>=FLOW.length-1){clearInterval(flowT);flowT=null;$("#flowPlay").textContent="▶ Play again";return}flowI++;drawFlow()},2200);
+};
+drawFlow();
+
+/* ================= QUIZ RUNNER ================= */
+/* mode: "test" (pick freely, no feedback) | "practice" (2 tries + hint) ; cfg: {mode,title,color,timer,onDone} */
+function prep(q){
+  const it={q,pick:null,tries:0,done:false,ok:false,first:false,wrong:[],fb:null};
+  if(q.t==="mc") it.perm=shuffle(q.o.map((_,k)=>k));
+  if(q.t==="tf") it.perm=[true,false];
+  if(q.t==="sort"){it.order=shuffle(q.items.map((_,k)=>k));it.sel={};it.marks={}}
+  if(q.t==="order"){it.pool=shuffle(q.steps.map((_,k)=>k));it.seq=[]}
+  if(q.t==="type") it.val="";
+  return it;
+}
+function answerText(q){
+  if(q.t==="mc")return q.o[q.a];
+  if(q.t==="tf")return q.a?"True":"False";
+  if(q.t==="type")return q.ans;
+  if(q.t==="sort")return q.cats.map((c,ci)=>c+": "+q.items.filter(x=>x[1]===ci).map(x=>x[0]).join(", ")).join(" · ");
+  if(q.t==="order")return q.steps.join(" → ");
+}
+function pickText(it){const q=it.q;if(it.pick===null||it.pick===undefined)return "(no answer)";
+  if(q.t==="mc")return q.o[it.pick]; if(q.t==="tf")return it.pick?"True":"False"; return ""}
+function grade(it){const q=it.q;
+  if(q.t==="mc"||q.t==="tf")return it.pick===q.a;
+  if(q.t==="type")return q.acc.includes(norm(it.val));
+  if(q.t==="sort")return q.items.every((x,j)=>it.sel[j]===x[1]);
+  if(q.t==="order")return it.seq.length===q.steps.length&&it.seq.every((k,n)=>k===n);
+}
+function ready(it){const q=it.q;
+  if(q.t==="sort")return q.items.every((_,j)=>it.sel[j]!==undefined);
+  if(q.t==="order")return it.seq.length===q.steps.length;
+  return true;
+}
+
+function Runner(el,list,cfg){
+  const R={el,cfg,i:0,items:list.map(prep),t0:Date.now(),tick:null};
+  const test=cfg.mode==="test";
+  if(cfg.timer){R.tick=setInterval(()=>{const s=el.querySelector(".tmr");if(s)s.textContent="⏱ "+fmt(Math.floor((Date.now()-R.t0)/1000))},1000)}
+
+  function attempt(it){
+    const q=it.q;
+    if(q.t==="type"&&!norm(it.val)){it.fb={k:"hint",msg:"Type your answer first ✏️",h:""};return}
+    if(grade(it)){it.done=true;it.ok=true;it.first=it.tries===0;it.fb={k:"good",msg:it.first?pickOne(PRAISE):pickOne(FIXED)};if(q.t==="sort")q.items.forEach((x,j)=>it.marks[j]="ok");return}
+    it.tries++;
+    if(q.t==="mc"||q.t==="tf")it.wrong.push(it.pick);
+    if(q.t==="sort")q.items.forEach((x,j)=>it.marks[j]=it.sel[j]===x[1]?"ok":"no");
+    let extra="";
+    if(q.t==="order"){let n=0;it.seq.forEach((k,p)=>{if(k===p)n++});extra=` (${n} of ${q.steps.length} steps are in the right place.)`}
+    if(q.t==="sort"){const n=q.items.filter((x,j)=>it.sel[j]!==x[1]).length;extra=` (${n} ${n>1?"are":"is"} in the wrong group — look for the red ones.)`}
+    if(it.tries>=2||q.t==="tf"){it.done=true;it.ok=false;it.first=false;it.fb={k:"bad"}}
+    else it.fb={k:"hint",msg:"Almost! Let’s try again 😊",h:(q.h||"Read the question again carefully.")+extra};
+  }
+
+  function answerHTML(it){
+    const q=it.q, lock=!test&&it.done;
+    if(q.t==="mc"||q.t==="tf"){
+      return '<div class="opts">'+it.perm.map((v,k)=>{
+        const label=q.t==="mc"?esc(q.o[v]):(v?"True ✔":"False ✘");
+        let cls="opt";
+        if(test){if(it.pick===v)cls+=" sel"}
+        else{if(it.wrong.includes(v))cls+=" wrong";if(it.done&&v===q.a)cls+=" right"}
+        const dis=!test&&(it.done||it.wrong.includes(v));
+        return `<button class="${cls}" data-act="pick" data-k="${k}" ${dis?"disabled":""}><span class="L">${LET[k]}</span><span>${label}</span></button>`;
+      }).join("")+"</div>";
+    }
+    if(q.t==="sort"){
+      return '<div class="opts">'+it.order.map(j=>{
+        const [name,cat]=q.items[j];const m=it.marks[j]||"";
+        const fix=it.done&&!it.ok&&it.sel[j]!==cat?`<small>✔ ${esc(q.cats[cat])}</small>`:"";
+        return `<div class="srow ${m}"><span class="it">${esc(name)}${fix}</span><span class="segs">`+
+          q.cats.map((c,ci)=>`<button class="seg ${it.sel[j]===ci?"on":""}" data-act="sort" data-j="${j}" data-c="${ci}" ${lock?"disabled":""}>${esc(c)}</button>`).join("")+
+          "</span></div>";
+      }).join("")+"</div>";
+    }
+    if(q.t==="order"){
+      const used=new Set(it.seq);
+      return `<div class="ordzone"><span class="lab">Your order (tap a step to take it out):</span><div class="ordlist">`+
+        (it.seq.length?it.seq.map((k,n)=>`<button data-act="ordrm" data-n="${n}" class="${it.done&&it.ok?"ok":""}" ${lock?"disabled":""}>${n+1}. ${esc(q.steps[k])}</button>`).join(""):'<span class="th">Tap the steps below in the right order.</span>')+
+        `</div><span class="lab">Steps:</span><div class="ordpool">`+
+        it.pool.filter(k=>!used.has(k)).map(k=>`<button data-act="ordadd" data-k="${k}" ${lock?"disabled":""}>${esc(q.steps[k])}</button>`).join("")+
+        `</div></div>`;
+    }
+    if(q.t==="type"){
+      return `<input class="tin" type="text" value="${esc(it.val)}" ${lock?"disabled":""} autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Write your answer here ✏️" aria-label="Your answer">`;
+    }
+  }
+
+  function fbHTML(it){
+    const f=it.fb;if(!f)return "";const q=it.q;
+    if(f.k==="good")return `<div class="fb good"><b>${f.msg}</b><p>${esc(q.ex)}</p></div>`;
+    if(f.k==="hint")return `<div class="fb hint"><b>${f.msg}</b>${f.h?`<p>💡 Hint: ${esc(f.h)}</p>`:""}</div>`;
+    return `<div class="fb bad"><b>Let’s learn this one together 💡</b><p class="ansline">✅ Answer: ${esc(answerText(q))}</p><p>${esc(q.ex)}</p></div>`;
+  }
+
+  function render(){
+    const it=R.items[R.i],q=it.q,n=R.items.length,L=LESSONS[q.l];
+    const answered=R.items.filter(x=>test?x.pick!==null:x.done).length;
+    const dots=R.items.map((x,k)=>{
+      let c="dot";
+      if(test){if(x.pick!==null)c+=" ans"}else if(x.done)c+=x.first?" r":" w";
+      if(k===R.i)c+=" cur";
+      return test?`<button class="${c}" data-act="go" data-i="${k}" aria-label="Question ${k+1}">${k+1}</button>`:`<span class="${c}">${k+1}</span>`;
+    }).join("");
+    let navR="";
+    if(test){
+      navR=(R.i<n-1?`<button class="btn solid" data-act="next">Next ➜</button>`:"")+`<button class="btn ${R.i===n-1?"solid":""}" data-act="submit">Submit ✔ <span class="th" style="color:inherit">ส่งคำตอบ</span></button>`;
+    }else if(it.done){
+      navR=`<button class="btn solid" data-act="next">${R.i<n-1?"Next ➜":"See my score 🏁"}</button>`;
+    }else if(q.t==="sort"||q.t==="order"||q.t==="type"){
+      navR=(q.t==="order"&&it.seq.length?`<button class="btn" data-act="ordclr">Clear</button>`:"")+`<button class="btn solid" data-act="check" ${ready(it)?"":"disabled"}>Check ✔</button>`;
+    }
+    const kindTip={sort:"Choose a group for every item, then tap Check.",order:"",type:"",mc:"",tf:""}[q.t];
+    el.innerHTML=`<div class="run" style="--c:${cfg.color||"var(--sci)"}">
+      <div class="rtop"><h3>${cfg.title}</h3>${cfg.timer?`<span class="pill tmr">⏱ ${fmt(Math.floor((Date.now()-R.t0)/1000))}</span>`:""}<span class="pill">${test?"Answered":"Done"} ${answered}/${n}</span></div>
+      <div class="bar"><i style="width:${answered/n*100}%"></i></div>
+      <div class="dots">${dots}</div>
+      <div class="qcard" style="--c:${L.c}">
+        <div class="qmeta">Q${R.i+1} of ${n} · ${L.s} ${esc(L.t)}${q.t==="tf"?" · True or False":""}</div>
+        <p class="qtext">${esc(q.q)}</p>
+        ${kindTip?`<p class="th" style="margin:0">${kindTip}</p>`:""}
+        ${answerHTML(it)}
+        ${test?"":fbHTML(it)}
+      </div>
+      <div class="rnav">${test&&R.i>0?`<button class="btn" data-act="prev">⬅ Back</button>`:""}<span class="sp"></span>${navR}</div>
+      ${cfg.quit?`<div><button class="btn" data-act="quit" style="--c:var(--muted)">✕ ${cfg.quit}</button></div>`:""}
+    </div>`;
+    const tin=el.querySelector(".tin");
+    if(tin){tin.oninput=()=>{it.val=tin.value};tin.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();act("check")}};if(!it.done)tin.focus({preventScroll:true})}
+  }
+
+  function finish(){clearInterval(R.tick);const secs=Math.floor((Date.now()-R.t0)/1000);
+    if(test)R.items.forEach(x=>{x.ok=grade(x);x.first=x.ok;x.done=true});
+    cfg.onDone(R.items,secs)}
+
+  function act(a,d={}){
+    const it=R.items[R.i],q=it.q;
+    if(a==="pick"){const v=it.perm[+d.k];
+      if(test){it.pick=v;render();return}
+      if(it.done||it.wrong.includes(v))return;it.pick=v;attempt(it);render();return}
+    if(a==="sort"){if(it.done)return;it.sel[+d.j]=+d.c;delete it.marks[+d.j];render();return}
+    if(a==="ordadd"){if(it.done)return;it.seq.push(+d.k);render();return}
+    if(a==="ordrm"){if(it.done)return;it.seq.splice(+d.n,1);render();return}
+    if(a==="ordclr"){it.seq=[];render();return}
+    if(a==="check"){if(it.done||!ready(it))return;attempt(it);render();return}
+    if(a==="next"){if(R.i<R.items.length-1){R.i++;render();el.scrollIntoView({block:"start",behavior:"smooth"})}else finish();return}
+    if(a==="prev"){if(R.i>0){R.i--;render()}return}
+    if(a==="go"){R.i=+d.i;render();return}
+    if(a==="submit"){const left=R.items.filter(x=>x.pick===null).length;
+      if(left&&!confirm(`You have ${left} unanswered question${left>1?"s":""}. Submit anyway?`))return;finish();return}
+    if(a==="quit"){clearInterval(R.tick);cfg.onQuit&&cfg.onQuit();return}
+  }
+  el.onclick=e=>{const b=e.target.closest("[data-act]");if(!b||b.disabled)return;act(b.dataset.act,b.dataset)};
+  render();
+  return R;
+}
+
+function stars(p){return p>=90?"⭐⭐⭐":p>=70?"⭐⭐":p>=50?"⭐":"🌱"}
+
+/* ================= PRACTICE ================= */
+const best={};
+function drawSets(){
+  $("#sets").innerHTML=Object.keys(LESSONS).map(k=>{const L=LESSONS[k],n=PRACTICE.filter(q=>q.l===k).length;
+    return `<button class="setcard" style="--c:${L.c}" data-set="${k}"><small>${L.s}</small><b>${L.t}</b><small>${n} questions · mixed types</small>${best[k]!=null?`<span class="best">Best first-try score: ${best[k]}/${n} ${stars(best[k]/n*100)}</span>`:""}</button>`}).join("");
+}
+$("#sets").addEventListener("click",e=>{const b=e.target.closest("[data-set]");if(b)startSet(b.dataset.set,null,"full")});
+function backToSets(){$("#practiceRun").innerHTML="";$("#setsView").style.display="";drawSets();window.scrollTo({top:0})}
+function startSet(k,list,round){
+  const L=LESSONS[k];list=list||PRACTICE.filter(q=>q.l===k);
+  $("#setsView").style.display="none";
+  const el=$("#practiceRun");
+  Runner(el,list,{mode:"practice",title:(round==="fix"?"🔁 Fix my mistakes · ":"🎯 ")+L.s+" "+L.t,color:L.c,quit:"Back to all sets",onQuit:backToSets,
+    onDone:items=>practiceSummary(k,items,round)});
+  window.scrollTo({top:0});
+}
+function practiceSummary(k,items,round){
+  const L=LESSONS[k],n=items.length,got=items.filter(x=>x.first).length,miss=items.filter(x=>!x.first);
+  if(round==="full")best[k]=Math.max(best[k]||0,got);
+  const p=Math.round(got/n*100);
+  const head=round==="fix"?`Fix round: ${got} of ${n} right on the first try`:`You got ${got} out of ${n} on the first try`;
+  const msg=miss.length===0?(round==="fix"?"All fixed! 🎉 You learned from your mistakes!":"Perfect! 🎉 You know this lesson very well!"):
+    "Let’s fix the ones you missed. Practice makes progress! 💪";
+  $("#practiceRun").innerHTML=`<div class="box res" style="--c:${L.c}">
+    <h3>${L.s} ${esc(L.t)}</h3>
+    <div class="scorebig"><b>${got}/${n}</b><span class="stars">${stars(p)}</span></div>
+    <p><b>${head}.</b> ${msg}</p>
+    ${miss.length?`<h4>To fix (${miss.length})</h4><div class="rev">${miss.map(x=>`<div class="rv no"><span class="q">${esc(x.q.q)}</span><span class="cor">✅ ${esc(answerText(x.q))}</span><span class="ex">${esc(x.q.ex)}</span></div>`).join("")}</div>`:""}
+    <div class="lfoot">
+      ${miss.length?`<button class="btn solid" id="pFix">🔁 Fix my mistakes (${miss.length}) <span class="th" style="color:inherit">แก้มือ</span></button>`:""}
+      <button class="btn" id="pAgain">↺ Do the whole set again</button>
+      <button class="btn" data-go="${k}">📖 Review the lesson</button>
+      <button class="btn" id="pBack">All sets</button>
+    </div></div>`;
+  if(miss.length)$("#pFix").onclick=()=>startSet(k,miss.map(x=>x.q),"fix");
+  $("#pAgain").onclick=()=>startSet(k,null,"full");
+  $("#pBack").onclick=backToSets;
+  window.scrollTo({top:0});
+}
+drawSets();
+
+/* ================= FINAL TEST ================= */
+let T=null;
+$("#startTest").onclick=startTest;
+function startTest(){
+  $("#testIntro").style.display="none";
+  T={items:null,secs:0,fixed:new Set(),filter:"wrong"};
+  Runner($("#testRun"),TEST,{mode:"test",title:"🧪 Final Test · Unit 3 & 4",timer:true,quit:"Quit test",
+    onQuit:()=>{$("#testRun").innerHTML="";$("#testIntro").style.display=""},
+    onDone:(items,secs)=>{T.items=items;T.secs=secs;testResults()}});
+  window.scrollTo({top:0});
+}
+function testResults(){
+  const items=T.items,n=items.length,got=items.filter(x=>x.ok).length,p=Math.round(got/n*100);
+  const wrong=items.filter(x=>!x.ok),toFix=wrong.filter(x=>!T.fixed.has(x.q));
+  const after=got+T.fixed.size;
+  const msg=p>=90?"Excellent! You are ready for the final! 🏆":p>=70?"Great work! Fix the few you missed. ⭐":p>=50?"Good try! Review the weak lessons and fix your mistakes. 💪":"Let’s review the lessons and try again. You can do it! 🌱";
+  const secs=Object.keys(LESSONS).map(k=>{const L=LESSONS[k],g=items.filter(x=>x.q.l===k),r=g.filter(x=>x.ok).length,pc=r/g.length*100;
+    return `<div class="sec" style="--sc:${L.c}"><span><b>${L.s}</b> ${esc(L.t)}</span><span class="bar"><i style="width:${pc}%"></i></span><span>${r}/${g.length} ${pc<70?`<a href="#" data-go="${k}">📖 Review</a>`:"✅"}</span></div>`}).join("");
+  const list=items.map((x,k)=>({x,k})).filter(o=>T.filter==="all"||!o.x.ok);
+  const rev=list.map(({x,k})=>`<div class="rv ${x.ok?"":"no"}"><span class="q"><b>Q${k+1}.</b> ${esc(x.q.q)}</span>
+    ${x.ok?`<span class="cor">✅ ${esc(answerText(x.q))}</span>`:`<span class="you">❌ Your answer: ${esc(pickText(x))}</span><span class="cor">✅ Correct: ${esc(answerText(x.q))}</span>`}
+    <span class="ex">${esc(x.q.ex)}</span>${!x.ok&&T.fixed.has(x.q)?`<span class="fixed">🔁 Fixed in a retry round ✔</span>`:""}</div>`).join("")||`<p>🎉 No wrong answers!</p>`;
+  $("#testRun").innerHTML=`<div class="box res" style="--c:var(--sci)">
+    <h3>🏁 Your Final Test result</h3>
+    <div class="scorebig"><b>${got}/${n}</b><span>${p}% · ⏱ ${fmt(T.secs)}</span><span class="stars">${stars(p)}</span></div>
+    <p><b>${msg}</b></p>
+    ${T.fixed.size?`<div class="fixnote">🔁 After fixing mistakes: <b>${after}/${n}</b> — you fixed ${T.fixed.size} of ${wrong.length} wrong answers.${toFix.length?"":" All fixed! 🎉"}</div>`:""}
+    <h4>Score by lesson</h4><div class="secs">${secs}</div>
+    <div class="lfoot">
+      ${toFix.length?`<button class="btn solid" id="tFix">🔁 Fix my mistakes (${toFix.length}) <span class="th" style="color:inherit">แก้มือข้อที่ผิด</span></button>`:""}
+      <button class="btn" id="tRetake">↺ Take the whole test again</button>
+    </div>
+    <div class="rtop"><h4 style="flex:1">📋 Check your answers</h4><div class="toggle"><button data-f="wrong" class="${T.filter==="wrong"?"on":""}">Wrong only</button><button data-f="all" class="${T.filter==="all"?"on":""}">All</button></div></div>
+    <div class="rev">${rev}</div>
+  </div>`;
+  if(toFix.length)$("#tFix").onclick=()=>{
+    Runner($("#testRun"),toFix.map(x=>x.q),{mode:"practice",title:"🔁 Fix my mistakes · Final Test",color:"var(--sci)",quit:"Back to my result",onQuit:testResults,
+      onDone:its=>{its.forEach(x=>{if(x.first)T.fixed.add(x.q)});fixSummary(its)}});
+    window.scrollTo({top:0});
+  };
+  $("#tRetake").onclick=startTest;
+  $$("#testRun .toggle button").forEach(b=>b.onclick=()=>{T.filter=b.dataset.f;testResults()});
+}
+function fixSummary(its){
+  const n=its.length,got=its.filter(x=>x.first).length;
+  $("#testRun").innerHTML=`<div class="box res" style="--c:var(--sci)">
+    <h3>🔁 Fix round done!</h3>
+    <div class="scorebig"><b>${got}/${n}</b><span>fixed on the first try</span></div>
+    <p>${got===n?"Amazing! You fixed every mistake! 🎉":"Good effort! The ones you still missed are waiting for another try. 💪"}</p>
+    <div class="lfoot"><button class="btn solid" id="fBack">See my updated result ➜</button></div></div>`;
+  $("#fBack").onclick=testResults;
+  window.scrollTo({top:0});
+}
+</script>
+</body>
+</html>

@@ -10,13 +10,13 @@
 <style>
 :root{
   --paper:#f7f9fc; --grid:#e3e9f3; --ink:#1d2a44; --muted:#5a6781; --card:#ffffff; --line:#d5ddea;
-  --math:#2266c8; --eng:#d9651b; --chi:#c23b3b;
+  --math:#2266c8; --eng:#d9651b; --chi:#c23b3b; --sci:#1f8a4c;
   --display:"Baloo 2","Sarabun",system-ui,sans-serif;
   --body:"Lexend","Sarabun",system-ui,sans-serif;
 }
 @media (prefers-color-scheme: dark){:root{
   --paper:#131a27; --grid:#1c2536; --ink:#e7ecf5; --muted:#9aa7bf; --card:#1a2334; --line:#2c384e;
-  --math:#6a9ef0; --eng:#f28a45; --chi:#ec7676; color-scheme:dark}}
+  --math:#6a9ef0; --eng:#f28a45; --chi:#ec7676; --sci:#5fd08e; color-scheme:dark}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);line-height:1.55;
   background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
@@ -28,7 +28,7 @@ h1{font-size:clamp(2.2rem,7vw,3.2rem);font-weight:800}
 section{margin-bottom:30px}
 section h2{font-size:1.5rem;color:var(--c);border-bottom:3px solid var(--c);padding-bottom:4px;margin-bottom:12px;display:flex;gap:10px;align-items:baseline}
 section h2 span{font-family:"Sarabun",sans-serif;font-weight:400;font-size:1rem;color:var(--muted)}
-.math{--c:var(--math)} .eng{--c:var(--eng)} .chi{--c:var(--chi)}
+.math{--c:var(--math)} .eng{--c:var(--eng)} .chi{--c:var(--chi)} .sci{--c:var(--sci)}
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
 a.item{display:block;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid var(--line);
   border-left:4px solid var(--c);border-radius:8px;padding:12px 14px;min-width:0}
@@ -60,6 +60,13 @@ footer{color:var(--muted);font-size:.85rem;text-align:center}
       <a class="item" href="unit4-space-restaurant-review.html"><b>Unit 4: Space Restaurant <span class="new">NEW</span></b><small>Final review · Zero conditional · Vocabulary</small></a>
       <a class="item" href="unit3-rocknroll-review.html"><b>Unit 3: Rock 'n' Roll Show <span class="new">NEW</span></b><small>Final review · going to &amp; will · Vocabulary</small></a>
       <a class="item" href="grammar-booster/"><b>Grammar Booster 5/2</b><small>Grammar review</small></a>
+    </div>
+  </section>
+
+  <section class="sci">
+    <h2>Science <span>วิทยาศาสตร์</span></h2>
+    <div class="list">
+      <a class="item" href="science-final-review.html"><b>Science Final Review <span class="new">NEW</span></b><small>Unit 3 Changing State · Unit 4 Water on Earth</small></a>
     </div>
   </section>
 
